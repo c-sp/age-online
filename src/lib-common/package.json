@@ -1,0 +1,24 @@
+{
+  "name": "@age-online/lib-common",
+  "description": "AGE Online - Common Utilities",
+  "author": "Christoph Sprenger",
+  "version": "0.0.1",
+  "private": true,
+  "sideEffects": false,
+  "main": "dist/cjs/index.js",
+  "module": "dist/es6/index.js",
+  "types": "dist/es6/index.d.ts",
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.0",
+    "typescript": "^3.9.0"
+  },
+  "scripts": {
+    "build": "yarn clean && yarn build:cjs && yarn build:es6",
+    "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs --module commonjs",
+    "build:es6": "tsc -p tsconfig.build.json",
+    "clean": "rimraf dist"
+  }
+}

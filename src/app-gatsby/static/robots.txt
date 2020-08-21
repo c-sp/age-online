@@ -1,0 +1,8 @@
+#
+# helpful sites:
+#   - https://support.google.com/webmasters/answer/6062596?hl=en
+#
+
+# allow all crawlers
+User-agent: *
+Allow: /

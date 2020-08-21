@@ -1,0 +1,32 @@
+{
+  "name": "@age-online/monorepo",
+  "author": "Christoph Sprenger",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": [
+    "src/*"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.11.0",
+    "@babel/plugin-proposal-class-properties": "^7.10.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.11.0",
+    "@babel/plugin-transform-react-jsx": "^7.10.0",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-typescript": "^7.10.0",
+    "@types/jasmine": "^3.5.0",
+    "babel-loader": "^8.1.0",
+    "jasmine-core": "^3.6.0",
+    "karma": "^5.1.0",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-firefox-launcher": "^1.3.0",
+    "karma-jasmine": "^4.0.0",
+    "karma-jasmine-html-reporter": "^1.5.0",
+    "karma-webpack": "^4.0.0"
+  },
+  "scripts": {
+    "analyze": "yarn workspace @age-online/app-gatsby analyze",
+    "build": "yarn workspace @age-online/lib-common build && yarn workspace @age-online/lib-gui-react build && yarn workspace @age-online/app-gatsby build",
+    "develop": "yarn workspace @age-online/app-gatsby develop",
+    "test": "karma start src/karma.conf.js"
+  }
+}

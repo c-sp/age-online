@@ -1,0 +1,10 @@
+{
+  "reload": {
+    "en": "reload page",
+    "de": "Seite neu laden"
+  },
+  "title": {
+    "en": "something crashed ...",
+    "de": "das ging daneben ..."
+  }
+}

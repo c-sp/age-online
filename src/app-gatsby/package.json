@@ -1,0 +1,48 @@
+{
+  "name": "@age-online/app-gatsby",
+  "description": "AGE Online - Web App created with Gatsby",
+  "author": "Christoph Sprenger",
+  "version": "0.0.1",
+  "private": true,
+  "sideEffects": false,
+  "browserslist": [
+    "last 2 Chrome version",
+    "last 2 Firefox version",
+    "last 2 Edge versions",
+    "last 2 Safari major versions",
+    "last 2 iOS major versions",
+    "Firefox ESR"
+  ],
+  "dependencies": {
+    "@age-online/lib-emulator": "0.0.1",
+    "@age-online/lib-gui-react": "0.0.1",
+    "@age-online/lib-rom-storage": "0.0.1",
+    "@material-ui/core": "^4.11.0",
+    "@shopify/react-i18n": "^5.0.0",
+    "gatsby": "^2.24.0",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-helmet": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/react-helmet": "^6.1.0",
+    "cross-env": "^7.0.0",
+    "gatsby-plugin-layout": "^1.3.0",
+    "gatsby-plugin-manifest": "^2.4.0",
+    "gatsby-plugin-material-ui": "^2.1.0",
+    "gatsby-plugin-no-sourcemaps": "^2.2.0",
+    "gatsby-plugin-offline": "^3.2.0",
+    "gatsby-plugin-react-helmet": "^3.3.0",
+    "gatsby-plugin-sitemap": "^2.4.0",
+    "gatsby-plugin-webfonts": "^1.1.0",
+    "gatsby-plugin-webpack-bundle-analyzer": "^1.0.0",
+    "tsconfig-paths-webpack-plugin": "^3.3.0"
+  },
+  "scripts": {
+    "analyze": "cross-env ANALYZE=do-it yarn build",
+    "build": "yarn clean && cross-env BROWSERSLIST_DISABLE_CACHE=true gatsby build --prefix-paths",
+    "clean": "gatsby clean",
+    "develop": "yarn clean && gatsby develop",
+    "serve": "node serve-static.js"
+  }
+}

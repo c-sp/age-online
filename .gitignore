@@ -1,0 +1,15 @@
+
+# IDE files
+*.pro.user*
+.idea
+
+# 3rd party modules
+node_modules
+
+# build artifacts
+src/app-gatsby/.cache
+src/app-gatsby/public
+src/**/dist
+
+# miscellaneous files
+Thumbs.db

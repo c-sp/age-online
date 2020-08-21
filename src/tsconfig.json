@@ -1,0 +1,81 @@
+{
+  // https://www.typescriptlang.org/tsconfig
+
+  "compileOnSave": false,
+  "compilerOptions": {
+
+    // ------------------------------------------------------------------------
+    // MODULE RESOLUTION
+
+    // interoparability between CommonJS and ES Modules
+    // https://www.typescriptlang.org/tsconfig#esModuleInterop
+    "esModuleInterop": true,
+    // https://www.typescriptlang.org/tsconfig#forceConsistentCasingInFileNames
+    "forceConsistentCasingInFileNames": true,
+    // required for resolveJsonModule
+    "moduleResolution": "node",
+    // https://www.typescriptlang.org/tsconfig#resolveJsonModule
+    "resolveJsonModule": true,
+    // set the type roots
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    // disable automatic inclusion of @types packages
+    // (only relevant for global declarations)
+    "types": [],
+
+    // Note that path mappings are not resolved by the TypeScript compiler:
+    // https://github.com/microsoft/TypeScript/issues/26722#issuecomment-580975983
+    "baseUrl": ".",
+    "paths": {
+      "@age-online/lib-common": [
+        "./lib-common/src/index"
+      ],
+      "@age-online/lib-emulator": [
+        "./lib-emulator/src/index"
+      ],
+      "@age-online/lib-gui-react": [
+        "./lib-gui-react/src/index"
+      ],
+      "@age-online/lib-rom-storage": [
+        "./lib-rom-storage/src/index"
+      ]
+    },
+
+
+    // ------------------------------------------------------------------------
+    // COMPILATION
+
+    // https://www.typescriptlang.org/tsconfig#importHelpers
+    "importHelpers": true,
+    // disallow features that require cross-file information
+    // https://www.typescriptlang.org/tsconfig#isolatedModules
+    "isolatedModules": true,
+
+    "declaration": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+
+    // required for dynamic imports
+    "module": "esnext",
+
+    // transform JSX to JS
+    "jsx": "react",
+
+    // compile to es2018 compatible JavaScript (es2018 for object spread),
+    // support: https://kangax.github.io/compat-table/es2016plus/
+    // (similar configuration in .eslintrc.js)
+    "target": "es2018",
+
+    // this is a client-only repo (no server code) => include dom library
+    "lib": [
+      "es2018",
+      "dom"
+    ]
+  },
+  "exclude": [
+    "**/*.spec.ts"
+  ]
+}

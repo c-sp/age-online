@@ -1,0 +1,18 @@
+{
+  "seo:title": {
+    "en": "AGE Online",
+    "de": "AGE Online"
+  },
+  "seo:description": {
+    "en": "AGE Online - An Online Gameboy Emulator",
+    "de": "AGE Online - Ein Online Gameboy Emulator"
+  },
+  "page:heading": {
+    "en": "AGE Online",
+    "de": "AGE Online"
+  },
+  "page:text": {
+    "en": "Note that this is an early prototype.{:br}Expect errors!",
+    "de": "Bitte beachten Sie: dies ist ein Prototyp.{:br}Fehler sind an der Tagesordnung!"
+  }
+}
