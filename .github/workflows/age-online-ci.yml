@@ -40,7 +40,7 @@ jobs:
         env:
           CACHE_HIT: ${{ steps.node-modules-cache.outputs.cache-hit }}
         run: |
-          if [ $CACHE_HIT == 'true' ]
+          if [ $CACHE_HIT = 'true' ]
           then
             echo "node_modules cache hit, skipping yarn install"
           else
@@ -55,7 +55,7 @@ jobs:
         env:
           REF: ${{ github.ref }}
         run: |
-          if [ $REF == 'refs/heads/master' ]
+          if [ $REF = 'refs/heads/master' ]
           then
             echo "::set-output name=path_prefix::/age-online"
           else
@@ -106,7 +106,7 @@ jobs:
         env:
           CACHE_HIT: ${{ steps.node-modules-cache.outputs.cache-hit }}
         run: |
-          if [ $CACHE_HIT == 'true' ]
+          if [ $CACHE_HIT = 'true' ]
           then
             echo "node_modules cache hit, skipping yarn install"
           else
@@ -144,7 +144,7 @@ jobs:
         env:
           REF: ${{ github.ref }}
         run: |
-          if [ $REF == 'refs/heads/master' ]
+          if [ $REF = 'refs/heads/master' ]
           then
             echo "::set-output name=target_folder::"
           else
