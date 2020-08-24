@@ -27,6 +27,7 @@
     "analyze": "yarn workspace @age-online/app-gatsby analyze",
     "build": "yarn workspace @age-online/lib-common build && yarn workspace @age-online/lib-gui-react build && yarn workspace @age-online/app-gatsby build",
     "develop": "yarn workspace @age-online/app-gatsby develop",
-    "test": "karma start src/karma.conf.js"
+    "test:watch": "karma start src/karma.conf.js",
+    "test": "karma start src/karma.conf.js --single-run"
   }
 }
