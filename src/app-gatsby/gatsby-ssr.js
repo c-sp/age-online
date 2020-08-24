@@ -1,5 +1,7 @@
 const React = require('react');
 
+const isDev = process.env.NODE_ENV === 'development';
+
 
 // Sort the redirection script to the top as redirection should happen
 // preferably before anything has been rendered.
@@ -20,15 +22,10 @@ exports.onPreRenderHTML = ({getHeadComponents, replaceHeadComponents}) => {
 
 const locales = ['de', 'en']; // TODO redundant
 const joinedLocales = locales.map(l => `'${l}'`).join(', ');
+
 // TODO redundant: 'preferredLocale'
 
-function i18nRedirect(path, locales) {
-    const {href} = location;
-    const idx = href.lastIndexOf(path);
-    if (idx < 0) {
-        return;
-    }
-
+function getLoc(locales) {
     function storageLoc() {
         try {
             return typeof localStorage === 'undefined' ? '' : localStorage.getItem('preferredLocale');
@@ -41,10 +38,31 @@ function i18nRedirect(path, locales) {
         return locales.includes(loc) ? loc : 'en';
     }
 
-    const locale = sanitizeLoc(storageLoc() || (typeof navigator === 'undefined' ? '' : navigator.language).slice(0, 2));
+    return sanitizeLoc(storageLoc() || (typeof navigator === 'undefined' ? '' : navigator.language).slice(0, 2));
+}
+
+function i18nRedirect(path, locales) {
+    const {href} = location;
+    const idx = href.lastIndexOf(path);
+    if (idx < 0) {
+        return;
+    }
+
+    const locale = getLoc(locales);
     const dst = `${href.slice(0, idx)}/${locale}${href.slice(idx)}`;
     location.replace(dst);
 }
+
+function devI18nRedirect(locales) {
+    const {origin, pathname} = location;
+    const parts = pathname.split('/');
+    if (locales.includes(parts[1])) {
+        return;
+    }
+    parts.splice(1, 0, getLoc(locales));
+    location.replace(`${origin}${parts.join('/')}`);
+}
+
 
 exports.onRenderBody = ({setHeadComponents, pathname}) => {
     // remove trailing slash
@@ -57,10 +75,13 @@ exports.onRenderBody = ({setHeadComponents, pathname}) => {
     }
 
     // add i18n redirect script to page
-    console.log(`# i18n redirect for ${pathname}`);
-    setHeadComponents([
-        <script key='i18n-redirect' dangerouslySetInnerHTML={{
-            __html: `${i18nRedirect.toString()} i18nRedirect('${pathname}', [${joinedLocales}])`,
+    console.log(`# ${isDev ? 'dev-' : ''}i18n redirect for ${pathname}`);
+    setHeadComponents([isDev
+        ? <script key='i18n-redirect' dangerouslySetInnerHTML={{
+            __html: `${getLoc.toString()} ${devI18nRedirect.toString()} devI18nRedirect([${joinedLocales}])`,
         }}/>
+        : <script key='i18n-redirect' dangerouslySetInnerHTML={{
+            __html: `${getLoc.toString()} ${i18nRedirect.toString()} i18nRedirect('${pathname}', [${joinedLocales}])`,
+        }}/>,
     ]);
 }

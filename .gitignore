@@ -3,8 +3,11 @@
 *.pro.user*
 .idea
 
-# 3rd party modules
+# node_modules
 node_modules
+
+# git info
+**/git-info/last-commit.json
 
 # build artifacts
 src/app-gatsby/.cache

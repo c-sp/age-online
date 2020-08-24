@@ -106,10 +106,10 @@ export default class RootLayout extends Component<TRootLayoutProps, IRootLayoutS
 function i18nDetails(locale: TLocale): I18nDetails {
     return {
         locale,
-        onError(): void {
+        onError(err): void {
             // let the translation/formatting causing the error return
             // an empty string by not re-throwing the error
-            // TODO unit-test this
+            console.error('i18n error', err);
         },
     };
 }

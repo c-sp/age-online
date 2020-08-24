@@ -67,5 +67,5 @@ export function withI18nBundle(id: string, i18nBundle: II18nBundle): ReturnType<
 
 
 export const COMMON_I18N_REPLACEMENTS: ComplexReplacementDictionary = {
-    ':br': <br/>,
+    br: <br/>,
 };

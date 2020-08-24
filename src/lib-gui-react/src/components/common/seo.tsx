@@ -6,15 +6,18 @@ import {Helmet, HelmetProps} from 'react-helmet';
 export function SEO({i18n}: WithI18nProps): JSX.Element {
     const lang = i18n.locale;
 
-    const title = i18n.translate('seo:title');
+    const title = i18n.translationKeyExists('seo:title')
+        ? i18n.translate('seo:title')
+        : i18n.translate('page:heading');
+
     const description = i18n.translate('seo:description');
     const author = 'Christoph Sprenger';
 
     if (!title) {
-        throw new Error('SEO: title missing');
+        throw new Error('SEO title / page title missing');
     }
     if (!description) {
-        throw new Error('SEO: description missing');
+        throw new Error('SEO description missing');
     }
 
     return <Helmet htmlAttributes={{lang}}

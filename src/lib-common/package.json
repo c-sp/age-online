@@ -12,13 +12,15 @@
     "tslib": "^2.0.0"
   },
   "devDependencies": {
+    "git-last-commit": "^1.0.0",
     "rimraf": "^3.0.0",
     "typescript": "^3.9.0"
   },
   "scripts": {
-    "build": "yarn clean && yarn build:cjs && yarn build:es6",
+    "build": "yarn clean && yarn write-git-info && yarn build:cjs && yarn build:es6",
     "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs --module commonjs",
     "build:es6": "tsc -p tsconfig.build.json",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "write-git-info": "node write-git-info.js"
   }
 }

@@ -1,9 +1,3 @@
-/*
- * Copyright Christoph Sprenger - All Rights Reserved
- * Proprietary and confidential
- *
- * Unauthorized copying of this file, via any medium is strictly prohibited.
- */
 import {createStyles, WithStyles, withStyles} from '@material-ui/core';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {Component, ReactNode} from 'react';
