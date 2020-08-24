@@ -1,0 +1,170 @@
+name: AGE Online CI
+
+on: push
+
+env:
+  ARTIFACT_NAME: age-online-app
+  ARTIFACT_PATH: src/app-gatsby/public
+
+jobs:
+
+  ###############################################################################
+  ##
+  ##   build
+  ##
+  ###############################################################################
+
+  build:
+    name: build AGE Online
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+
+      # We cache every node_modules directory.
+      # To check for a cache-miss use:
+      # steps.node-modules-cache.outputs.cache-hit != 'true'
+
+      - uses: actions/cache@v2
+        id: node-modules-cache
+        with:
+          # Relying only on yarn.lock won't catch package.json changes that
+          # were made without updating yarn.lock.
+          # Instead we add all package.json hashes to the cache key and rely
+          # on "yarn install --frozen-lockfile" to fail if a yarn.lock update
+          # is needed.
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+          path: '**/node_modules'
+
+      - name: install node_modules
+        env:
+          CACHE_HIT: ${{ steps.node-modules-cache.outputs.cache-hit }}
+        run: |
+          if [ $CACHE_HIT == 'true' ]
+          then
+            echo "node_modules cache hit, skipping yarn install"
+          else
+            echo "node_modules cache miss, running yarn install"
+            yarn install --frozen-lockfile
+          fi
+
+      # set path prefix based on current branch
+
+      - name: set path prefix
+        id: path-prefix
+        env:
+          REF: ${{ github.ref }}
+        run: |
+          if [ $REF == 'refs/heads/master' ]
+          then
+            echo "::set-output name=path_prefix::/age-online"
+          else
+            echo "::set-output name=path_prefix::/age-online/$REF"
+          fi
+
+      # build
+
+      - name: build Web App
+        run: PATH_PREFIX="${{ steps.path-prefix.outputs.path_prefix }}" yarn build
+
+      - name: upload Web App artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.ARTIFACT_PATH }}
+
+
+  ###############################################################################
+  ##
+  ##   test
+  ##
+  ###############################################################################
+
+  test:
+    name: test AGE Online
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+
+      # We cache every node_modules directory.
+      # To check for a cache-miss use:
+      # steps.node-modules-cache.outputs.cache-hit != 'true'
+
+      - uses: actions/cache@v2
+        id: node-modules-cache
+        with:
+          # Relying only on yarn.lock won't catch package.json changes that
+          # were made without updating yarn.lock.
+          # Instead we add all package.json hashes to the cache key and rely
+          # on "yarn install --frozen-lockfile" to fail if a yarn.lock update
+          # is needed.
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/package.json') }}
+          path: '**/node_modules'
+
+      - name: install node_modules
+        env:
+          CACHE_HIT: ${{ steps.node-modules-cache.outputs.cache-hit }}
+        run: |
+          if [ $CACHE_HIT == 'true' ]
+          then
+            echo "node_modules cache hit, skipping yarn install"
+          else
+            echo "node_modules cache miss, running yarn install"
+            yarn install --frozen-lockfile
+          fi
+
+      # test
+
+      - name: test
+        run: yarn test
+
+
+  ###############################################################################
+  ##
+  ##   deploy
+  ##
+  ###############################################################################
+
+  deploy-pwa:
+    name: deploy AGE Online
+    runs-on: ubuntu-20.04
+    needs: [build, test]
+    steps:
+      - name: checkout
+        # https://github.com/marketplace/actions/deploy-to-github-pages
+        # If you're using actions/checkout@v2 you must set persist-credentials
+        # to false in most cases for the deployment to work correctly.
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: gh-pages target folder
+        id: target-folder
+        env:
+          REF: ${{ github.ref }}
+        run: |
+          if [ $REF == 'refs/heads/master' ]
+          then
+            echo "::set-output name=target_folder::"
+          else
+            echo "::set-output name=target_folder::$REF"
+          fi
+
+      - name: download artifacts
+        uses: actions/download-artifact@v1
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.ARTIFACT_PATH }}
+
+      # TODO download AGE wasm binaries
+
+      - name: deploy Web App
+        uses: JamesIves/github-pages-deploy-action@3.5.9
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: ${{ env.ARTIFACT_PATH }}
+          TARGET_FOLDER: ${{ steps.target-folder.outputs.target_folder }}
+          CLEAN: true
+          CLEAN_EXCLUDE: '["refs"]'
