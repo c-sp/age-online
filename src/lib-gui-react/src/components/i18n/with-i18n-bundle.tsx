@@ -1,19 +1,7 @@
 import {TranslationDictionary, withI18n} from '@shopify/react-i18n';
 import {ComplexReplacementDictionary} from '@shopify/react-i18n/dist/src/types';
 import React from 'react';
-
-
-export type TLocale = 'de' | 'en';
-export const FALLBACK_LOCALE: TLocale = 'en';
-const ALL_LOCALES: ReadonlyArray<string> = ['de', 'en'];
-
-export function isValidLocale(value: unknown): value is TLocale {
-    return (typeof value === 'string') && ALL_LOCALES.includes(value);
-}
-
-export function sanitizeLocale(value: unknown): TLocale {
-    return isValidLocale(value) ? value : FALLBACK_LOCALE;
-}
+import {FALLBACK_LOCALE} from './locale';
 
 
 export interface ITranslations {

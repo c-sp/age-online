@@ -1,9 +1,9 @@
 import {EXTERNAL_LINK_PROPS, LastGitCommit} from '@age-online/lib-common';
 import {createStyles, WithStyles, withStyles} from '@material-ui/core';
+import GitHubIcon from '@material-ui/icons/GitHub';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {Component, ReactNode} from 'react';
-import {COMMON_I18N_REPLACEMENTS, SEO, withI18nBundle} from '../components';
-import GitHubIcon from '@material-ui/icons/GitHub';
+import {AppPage, COMMON_I18N_REPLACEMENTS, IWithSiteApiProps, LOCALE_DE, LOCALE_EN, SEO, withI18nBundle, withSiteApi} from '../components';
 import i18nBundle from './page-help.i18n.json';
 
 
@@ -13,12 +13,12 @@ const styles = createStyles({
     },
 });
 
-type TPageHelpProps = WithStyles & WithI18nProps;
+type TPageHelpProps = WithStyles & WithI18nProps & IWithSiteApiProps;
 
 class ComposedPageHelp extends Component<TPageHelpProps> {
 
     render(): ReactNode {
-        const {classes, i18n} = this.props;
+        const {classes, i18n, siteApi: {SiteLink}} = this.props;
 
         const hrefCommit = `https://github.com/c-sp/age-online/tree/${LastGitCommit.hash}`;
         const hrefBranch = `https://github.com/c-sp/age-online/tree/${LastGitCommit.branch}`;
@@ -26,6 +26,10 @@ class ComposedPageHelp extends Component<TPageHelpProps> {
         return (
             <main className={classes.main}>
                 <SEO i18n={i18n}/>
+                <SiteLink appPage={AppPage.HELP} locale={LOCALE_DE}>{LOCALE_DE} </SiteLink>
+                <SiteLink appPage={AppPage.HELP} locale={LOCALE_EN}>{LOCALE_EN} </SiteLink>
+
+                <SiteLink appPage={AppPage.HOME}>home</SiteLink>
 
                 <h1>{i18n.translate('page:heading')}</h1>
 
@@ -53,6 +57,8 @@ class ComposedPageHelp extends Component<TPageHelpProps> {
 
 export const PageHelp = withI18nBundle('page-help', i18nBundle)(
     withStyles(styles)(
-        ComposedPageHelp,
+        withSiteApi(
+            ComposedPageHelp,
+        ),
     ),
 );

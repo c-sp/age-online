@@ -1,8 +1,17 @@
-import {createTheme, ErrorBoundary, FALLBACK_LOCALE, isValidLocale, TLocale} from '@age-online/lib-gui-react';
+import {
+    createTheme,
+    ErrorBoundary,
+    FALLBACK_LOCALE,
+    isValidLocale,
+    PageContainer,
+    SiteApiContext,
+    TLocale
+} from '@age-online/lib-gui-react';
 import {CssBaseline, Theme, ThemeProvider} from '@material-ui/core';
 import {I18nContext, I18nDetails, I18nManager} from '@shopify/react-i18n';
 import {PageProps} from 'gatsby';
 import React, {Component, ReactNode} from 'react';
+import {GatsbySiteApi} from './gatsby-site-api';
 
 
 interface IPageContext {
@@ -32,6 +41,7 @@ interface IRootLayoutState {
  */
 export default class RootLayout extends Component<TRootLayoutProps, IRootLayoutState> {
 
+    private readonly siteApi = new GatsbySiteApi();
     private readonly i18nManager: I18nManager;
 
     constructor(props: TRootLayoutProps) {
@@ -61,41 +71,45 @@ export default class RootLayout extends Component<TRootLayoutProps, IRootLayoutS
     }
 
     componentDidUpdate(): void {
-        const {i18nManager, props} = this;
+        const {i18nManager, siteApi, props} = this;
         const {pageContext} = props;
 
-        // Changing the locale here does not cause a re-render as we don't
-        // update props or state.
-        // Same for pathname.
+        // Adjusting the locale/pathname here does not cause a re-render as we
+        // don't update props or state.
+        // => components wrapped with withI18nBundle() will be re-rendered,
+        //    but not RootLayout
 
         const locale = getLocale(pageContext.locale);
         if (locale !== i18nManager.details.locale) {
+            siteApi.setCurrentLocale(locale);
             i18nManager.update(i18nDetails(locale));
         }
     }
 
 
     render(): ReactNode {
-        const {i18nManager, props, state} = this;
+        const {siteApi, i18nManager, props, state} = this;
         const {children} = props;
 
         // Material UI's CssBaseline activates the font "Roboto" on <body>
         // and resets box-sizing as described in:
         // https://css-tricks.com/box-sizing/#article-header-id-6
         //
-        // Note that we must declare it within <ThemeProvider> to appropriately
-        // handle theme changes.
+        // Note that we must declare it within <ThemeProvider> to handle theme
+        // changes appropriately.
         return (
             <ErrorBoundary error={state.error} locale={i18nManager.details.locale}>
 
-                <I18nContext.Provider value={i18nManager}>
-                    <ThemeProvider theme={createTheme()}>
-                        <CssBaseline/>
+                <SiteApiContext.Provider value={siteApi}>
+                    <I18nContext.Provider value={i18nManager}>
+                        <ThemeProvider theme={createTheme()}>
+                            <CssBaseline/>
 
-                        {children}
+                            <PageContainer>{children}</PageContainer>
 
-                    </ThemeProvider>
-                </I18nContext.Provider>
+                        </ThemeProvider>
+                    </I18nContext.Provider>
+                </SiteApiContext.Provider>
 
             </ErrorBoundary>
         );

@@ -19,6 +19,7 @@
     "@types/react-helmet": "^6.1.0",
     "react": "^16.13.0",
     "react-helmet": "^6.1.0",
+    "rxjs": "^6.6.0",
     "tslib": "^2.0.0"
   },
   "devDependencies": {

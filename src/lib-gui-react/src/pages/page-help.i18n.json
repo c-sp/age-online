@@ -1,11 +1,15 @@
 {
+  "seo:title": {
+    "en": "AGE Online Help",
+    "de": "AGE Online Hilfe"
+  },
   "seo:description": {
     "en": "Details about AGE Online",
     "de": "Details zu AGE Online"
   },
   "page:heading": {
-    "en": "AGE Online Help",
-    "de": "AGE Online Hilfe"
+    "en": "Help",
+    "de": "Hilfe"
   },
   "source:heading": {
     "en": "Source Code",

@@ -1,8 +1,8 @@
 import {errorInfo} from '@age-online/lib-common';
 import {Button, createStyles, WithStyles, withStyles} from '@material-ui/core';
 import React, {Component, ReactNode} from 'react';
-import {sanitizeLocale} from '../i18n';
 import i18nBundle from './error-boundary.i18n.json';
+import { sanitizeLocale } from '../i18n';
 
 
 const styles = createStyles({
@@ -15,6 +15,7 @@ const styles = createStyles({
 
         '& > button': {
             marginTop: '2em',
+            marginBottom: '2em',
         },
 
         '& > *': {
@@ -76,7 +77,7 @@ class ComposedErrorBoundary extends Component<TErrorBoundaryProps, IErrorBoundar
             {!hideReloadButton && <Button variant="contained"
                                           color="primary"
                                           onClick={() => location.reload()}>{reloadPage}</Button>}
-            {title}
+            <div>{title}</div>
             <pre>{errorInfo(error)}</pre>
         </div>;
     }

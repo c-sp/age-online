@@ -24,10 +24,14 @@
     "karma-webpack": "^4.0.0"
   },
   "scripts": {
+    "//  DEV  ////////////////////////////////////////////////////////////": "",
     "analyze": "yarn workspace @age-online/app-gatsby analyze",
-    "build": "yarn workspace @age-online/lib-common build && yarn workspace @age-online/lib-gui-react build && yarn workspace @age-online/app-gatsby build",
     "develop": "yarn workspace @age-online/app-gatsby develop",
+    "serve": "yarn workspace @age-online/app-gatsby serve",
     "test:watch": "karma start src/karma.conf.js",
-    "test": "karma start src/karma.conf.js --single-run"
+    "write-git-info": "yarn workspace @age-online/lib-common write-git-info",
+    "//  CI  /////////////////////////////////////////////////////////////": "",
+    "ci:build": "yarn workspace @age-online/lib-common build && yarn workspace @age-online/lib-gui-react build && yarn workspace @age-online/app-gatsby build",
+    "ci:test": "karma start src/karma.conf.js --single-run"
   }
 }

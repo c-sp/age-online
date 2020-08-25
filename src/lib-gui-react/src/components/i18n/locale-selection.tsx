@@ -3,7 +3,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import React, {Component, ReactNode} from 'react';
 import {SVG_FLAG_DE, SVG_FLAG_US} from '../common';
-import {sanitizeLocale, TLocale} from './with-i18n-bundle';
+import {LOCALE_DE, LOCALE_EN, sanitizeLocale, TLocale} from './locale';
 
 
 const StyledRadio = withStyles({
@@ -18,29 +18,26 @@ const StyledRadio = withStyles({
     },
 })(Radio);
 
-const LOCALE_DE: TLocale = 'de';
-const LOCALE_EN: TLocale = 'en';
 
-
-export interface ILanguageSelectionProps {
-    readonly selectedLanguage?: string | null;
+export interface ILocaleSelectionProps {
+    readonly selectedLocale?: string | null;
     readonly color?: 'primary' | 'secondary' | 'default';
     readonly onSelect?: (locale: TLocale) => void;
 }
 
-class ComposedLocaleSelection extends Component<ILanguageSelectionProps> {
+class ComposedLocaleSelection extends Component<ILocaleSelectionProps> {
 
     render(): ReactNode {
         const {props} = this;
-        const {color, onSelect, selectedLanguage} = props;
+        const {color, onSelect, selectedLocale} = props;
 
         const svgDe = <SvgIcon fontSize="large">{SVG_FLAG_DE}</SvgIcon>;
         const svgEn = <SvgIcon fontSize="large">{SVG_FLAG_US}</SvgIcon>;
 
-        return <RadioGroup value={selectedLanguage}
+        return <RadioGroup value={selectedLocale}
                            onChange={(ev): void => onSelect?.(sanitizeLocale(ev.target.value))}
-                           aria-label="language"
-                           name="language-selection">
+                           aria-label="locale"
+                           name="locale-selection">
 
             <FormControlLabel value={LOCALE_DE}
                               label="Deutsch"

@@ -65,7 +65,7 @@ jobs:
       # build
 
       - name: build Web App
-        run: PATH_PREFIX="${{ steps.path-prefix.outputs.path_prefix }}" yarn build
+        run: PATH_PREFIX="${{ steps.path-prefix.outputs.path_prefix }}" yarn ci:build
 
       - name: upload Web App artifact
         uses: actions/upload-artifact@v1
@@ -117,7 +117,7 @@ jobs:
       # test
 
       - name: test
-        run: yarn test
+        run: yarn ci:test
 
 
   ###############################################################################
