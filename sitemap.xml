@@ -6,4 +6,7 @@
 <url> <loc>https://c-sp.github.io/age-online/age-online/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://c-sp.github.io/age-online/age-online/de</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://c-sp.github.io/age-online/age-online/en</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://c-sp.github.io/age-online/age-online/settings/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://c-sp.github.io/age-online/age-online/de/settings</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://c-sp.github.io/age-online/age-online/en/settings</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 </urlset>
