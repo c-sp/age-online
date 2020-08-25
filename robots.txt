@@ -3,6 +3,8 @@
 #   - https://support.google.com/webmasters/answer/6062596?hl=en
 #
 
+Sitemap: https://c-sp.github.io/age-online/sitemap.xml
+
 # allow all crawlers
 User-agent: *
 Allow: /
