@@ -1,7 +1,11 @@
 import {
+    AppPage,
+    AppStateManager,
+    AppStateManagerContext,
     createTheme,
     ErrorBoundary,
     FALLBACK_LOCALE,
+    isAppPage,
     isValidLocale,
     PageContainer,
     SiteApiContext,
@@ -16,7 +20,6 @@ import {GatsbySiteApi} from './gatsby-site-api';
 
 interface IPageContext {
     readonly locale?: string;
-    readonly isDev?: boolean;
 }
 
 type TRootLayoutProps = PageProps<Record<string, unknown>, IPageContext>;
@@ -41,16 +44,20 @@ interface IRootLayoutState {
  */
 export default class RootLayout extends Component<TRootLayoutProps, IRootLayoutState> {
 
-    private readonly siteApi = new GatsbySiteApi();
+    private readonly siteApi: GatsbySiteApi;
+    private readonly appStateManager = new AppStateManager();
     private readonly i18nManager: I18nManager;
 
     constructor(props: TRootLayoutProps) {
         super(props);
 
-        const {pageContext} = props;
-        const locale = getLocale(pageContext.locale);
+        const {pageContext, location: {pathname}} = props;
+        const currentPage = appPageFromPathname(pathname);
 
+        const locale = getLocale(pageContext.locale);
+        this.siteApi = new GatsbySiteApi(locale);
         this.i18nManager = new I18nManager(i18nDetails(locale));
+        this.appStateManager.updateState({currentPage});
 
         this.state = {};
     }
@@ -71,8 +78,7 @@ export default class RootLayout extends Component<TRootLayoutProps, IRootLayoutS
     }
 
     componentDidUpdate(): void {
-        const {i18nManager, siteApi, props} = this;
-        const {pageContext} = props;
+        const {appStateManager, i18nManager, siteApi, props: {pageContext, location}} = this;
 
         // Adjusting the locale/pathname here does not cause a re-render as we
         // don't update props or state.
@@ -84,11 +90,15 @@ export default class RootLayout extends Component<TRootLayoutProps, IRootLayoutS
             siteApi.setCurrentLocale(locale);
             i18nManager.update(i18nDetails(locale));
         }
+
+        const {pathname} = location;
+        const currentPage = appPageFromPathname(pathname);
+        appStateManager.updateState({currentPage});
     }
 
 
     render(): ReactNode {
-        const {siteApi, i18nManager, props, state} = this;
+        const {siteApi, appStateManager, i18nManager, props, state} = this;
         const {children} = props;
 
         // Material UI's CssBaseline activates the font "Roboto" on <body>
@@ -101,14 +111,16 @@ export default class RootLayout extends Component<TRootLayoutProps, IRootLayoutS
             <ErrorBoundary error={state.error} locale={i18nManager.details.locale}>
 
                 <SiteApiContext.Provider value={siteApi}>
-                    <I18nContext.Provider value={i18nManager}>
-                        <ThemeProvider theme={createTheme()}>
-                            <CssBaseline/>
+                    <AppStateManagerContext.Provider value={appStateManager}>
+                        <I18nContext.Provider value={i18nManager}>
+                            <ThemeProvider theme={createTheme()}>
+                                <CssBaseline/>
 
-                            <PageContainer>{children}</PageContainer>
+                                <PageContainer>{children}</PageContainer>
 
-                        </ThemeProvider>
-                    </I18nContext.Provider>
+                            </ThemeProvider>
+                        </I18nContext.Provider>
+                    </AppStateManagerContext.Provider>
                 </SiteApiContext.Provider>
 
             </ErrorBoundary>
@@ -143,4 +155,16 @@ function getLocale(locale: string | undefined): TLocale {
         const navLocale = (typeof navigator === 'undefined' ? '' : navigator.language).slice(0, 2);
         return isValidLocale(navLocale) ? navLocale : null;
     }
+}
+
+
+function appPageFromPathname(pathname: string): AppPage {
+    // '/de/foo' => ['', 'en', 'foo'] => ['en', 'foo']
+    const pathParts = pathname.split('/').slice(1);
+
+    // ['en', 'foo'] => ['foo']
+    // ['xy', 'foo'] => ['xy', 'foo']
+    const appPageStr = `/${isValidLocale(pathParts[0]) ? pathParts.slice(1) : pathParts}`;
+
+    return isAppPage(appPageStr) ? appPageStr : AppPage.HOME;
 }

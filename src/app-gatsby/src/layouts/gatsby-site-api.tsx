@@ -1,4 +1,4 @@
-import {AppPage, FALLBACK_LOCALE, ISiteApi, ISiteLinkProps, TLocale} from '@age-online/lib-gui-react';
+import {AppPage, ISiteApi, ISiteLinkProps, TLocale} from '@age-online/lib-gui-react';
 import {Link, navigate} from 'gatsby';
 import React, {ReactElement} from 'react';
 
@@ -15,7 +15,8 @@ export class GatsbySiteApi implements ISiteApi {
         return <Link to={this.localizePath(appPage, locale)} {...classProp}>{children}</Link>;
     };
 
-    private currentLocale: TLocale = FALLBACK_LOCALE;
+    constructor(private currentLocale: TLocale) {
+    }
 
     setCurrentLocale(currentLocale: TLocale): void {
         this.currentLocale = currentLocale;

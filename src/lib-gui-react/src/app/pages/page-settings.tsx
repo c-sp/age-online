@@ -1,7 +1,7 @@
-import {createStyles, WithStyles, withStyles} from '@material-ui/core';
+import {createStyles, Paper, WithStyles, withStyles} from '@material-ui/core';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {Component, ReactNode} from 'react';
-import {SEO, withI18nBundle} from '../components';
+import {SEO, withI18nBundle} from '../../components';
 import i18nBundle from './page-settings.i18n.json';
 
 
@@ -18,12 +18,14 @@ class ComposedPageSettings extends Component<TPageSettingsProps> {
     render(): ReactNode {
         const {classes, i18n} = this.props;
 
-        return (
+        return <Paper elevation={0}>
+            <SEO i18n={i18n}/>
+
             <main className={classes.main}>
-                <SEO i18n={i18n}/>
                 <h1>{i18n.translate('page:heading')}</h1>
             </main>
-        );
+
+        </Paper>;
     }
 }
 

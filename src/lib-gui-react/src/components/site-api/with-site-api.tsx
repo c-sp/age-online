@@ -16,11 +16,11 @@ class NoSiteApi implements ISiteApi {
 
 export const SiteApiContext = createContext<ISiteApi>(new NoSiteApi());
 
-export interface IWithSiteApiProps {
+export interface ISiteApiProps {
     readonly siteApi: ISiteApi;
 }
 
-export function withSiteApi<P>(WrappedComponent: ComponentType<P & IWithSiteApiProps>): ComponentType<P> {
+export function withSiteApi<P>(WrappedComponent: ComponentType<P & ISiteApiProps>): ComponentType<P> {
     return function WithSiteApi(props: P): ReactElement {
         return (
             <SiteApiContext.Consumer>{

@@ -1,6 +1,7 @@
 import {createMuiTheme, responsiveFontSizes, Theme, ThemeOptions} from '@material-ui/core';
 
 
+// TODO move this to AppStateManager
 export function createTheme(themeOptions?: ThemeOptions): Theme {
     const options: ThemeOptions = {
         overrides: {
@@ -19,7 +20,7 @@ export function createTheme(themeOptions?: ThemeOptions): Theme {
                         height: '100%',
                         width: '100%',
                     },
-                    '#___gatsby, #___gatsby > div': {
+                    '#___gatsby, #___gatsby > div': { // TODO move this to ISiteApi
                         height: '100%',
                     },
                 },
