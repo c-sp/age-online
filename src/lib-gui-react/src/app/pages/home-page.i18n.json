@@ -1,0 +1,26 @@
+{
+  "seo:description": {
+    "en": "AGE Online - An Online Gameboy Emulator",
+    "de": "AGE Online - Ein Online Gameboy Emulator"
+  },
+  "page:heading": {
+    "en": "AGE Online",
+    "de": "AGE Online"
+  },
+  "page:text": {
+    "en": "The currently running AGE Online Application is based on commit {commitLink} (branch {branchLink}).",
+    "de": "Die laufende AGE Online Applikation basiert auf Commit {commitLink} (Branch {branchLink})."
+  },
+  "link:repo": {
+    "en": "AGE Online on GitHub",
+    "de": "AGE Online auf GitHub"
+  },
+  "link:commit": {
+    "en": "GitHub link to deployed AGE Online commit",
+    "de": "GitHub Link zum installierten AGE Online Commit"
+  },
+  "link:branch": {
+    "en": "GitHub link to deployed AGE Online branch",
+    "de": "GitHub Link zum installierten AGE Online Branch"
+  }
+}

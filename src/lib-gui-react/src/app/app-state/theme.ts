@@ -1,9 +1,11 @@
 import {createMuiTheme, responsiveFontSizes, Theme, ThemeOptions} from '@material-ui/core';
 
 
-// TODO move this to AppStateManager
-export function createTheme(themeOptions?: ThemeOptions): Theme {
+export function createTheme(additionalGlobalCss?: object,
+                            themeOptions?: ThemeOptions): Theme {
+
     const options: ThemeOptions = {
+        ...themeOptions,
         overrides: {
             MuiCssBaseline: {
                 '@global': {
@@ -20,25 +22,20 @@ export function createTheme(themeOptions?: ThemeOptions): Theme {
                         height: '100%',
                         width: '100%',
                     },
-                    '#___gatsby, #___gatsby > div': { // TODO move this to ISiteApi
-                        height: '100%',
-                    },
+                    ...additionalGlobalCss,
                 },
             },
         },
-        ...themeOptions,
     };
 
     const theme = responsiveFontSizes(createMuiTheme(options));
 
     // set global <a> style
-    const globalCss = theme.overrides?.MuiCssBaseline?.['@global'];
-    if (globalCss) {
-        globalCss.a = {
-            color: theme.palette.primary.main,
-            textDecoration: 'none',
-        };
-    }
+    const globalCss = theme.overrides!.MuiCssBaseline!['@global']!;
+    globalCss.a = {
+        color: theme.palette.primary.main,
+        textDecoration: 'none',
+    };
 
     return theme;
 }

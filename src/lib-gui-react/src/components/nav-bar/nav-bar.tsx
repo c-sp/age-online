@@ -1,5 +1,5 @@
 import {createStyles, fade, IconButton, StyleRules, SvgIcon, Theme, WithStyles, withStyles} from '@material-ui/core';
-import {Home, HomeTwoTone, Info, InfoTwoTone, SettingsRounded, SettingsTwoTone} from '@material-ui/icons';
+import {Home, HomeTwoTone, SettingsRounded, SettingsTwoTone} from '@material-ui/icons';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {Component, CSSProperties, ReactElement} from 'react';
 import {withI18nBundle} from '../i18n';
@@ -61,21 +61,17 @@ class ComposedNavBar extends Component<TNavProps> {
         const classNames = `${classes.root} ${verticalBar ? classes.vertical : classes.horizontal}`;
 
         const HomeIcon = this.icon(AppPage.HOME, Home, HomeTwoTone);
-        const HelpIcon = this.icon(AppPage.HELP, Info, InfoTwoTone);
         const SettingsIcon = this.icon(AppPage.SETTINGS, SettingsRounded, SettingsTwoTone);
 
         return (
-            <div className={classNames} style={style}>
+            <nav className={classNames} style={style} aria-label={i18n.translate('nav-label')}>
                 <SiteLink appPage={AppPage.HOME}>
                     <IconButton aria-label={i18n.translate('link:home')}>{HomeIcon}</IconButton>
-                </SiteLink>
-                <SiteLink appPage={AppPage.HELP}>
-                    <IconButton aria-label={i18n.translate('link:help')}>{HelpIcon}</IconButton>
                 </SiteLink>
                 <SiteLink appPage={AppPage.SETTINGS}>
                     <IconButton aria-label={i18n.translate('link:settings')}>{SettingsIcon}</IconButton>
                 </SiteLink>
-            </div>
+            </nav>
         );
     }
 

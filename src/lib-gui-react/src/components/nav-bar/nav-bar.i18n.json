@@ -1,8 +1,4 @@
 {
-  "link:help": {
-    "en": "AGE Online Help",
-    "de": "AGE Online Hilfe"
-  },
   "link:home": {
     "en": "AGE Online",
     "de": "AGE Online"
@@ -10,5 +6,9 @@
   "link:settings": {
     "en": "AGE Online Settings",
     "de": "AGE Online Einstellungen"
+  },
+  "nav-label": {
+    "en": "primary navigation",
+    "de": "Hauptnavigation"
   }
 }

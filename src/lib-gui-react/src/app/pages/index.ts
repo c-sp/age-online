@@ -1,3 +1,2 @@
-export * from './page-help';
-export * from './page-home';
-export * from './page-settings';
+export * from './home-page';
+export * from './settings-page';

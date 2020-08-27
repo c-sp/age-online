@@ -4,7 +4,6 @@ import {TLocale} from '../i18n';
 
 export enum AppPage {
     HOME = '/',
-    HELP = '/help',
     SETTINGS = '/settings',
 }
 

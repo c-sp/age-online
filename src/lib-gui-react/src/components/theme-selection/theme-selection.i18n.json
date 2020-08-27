@@ -1,0 +1,18 @@
+{
+  "label:theme": {
+    "en": "Theme",
+    "de": "Farbschema"
+  },
+  "label:theme-light": {
+    "en": "light",
+    "de": "hell"
+  },
+  "label:theme-auto-detect": {
+    "en": "auto detect",
+    "de": "automatisch"
+  },
+  "label:theme-dark": {
+    "en": "dark",
+    "de": "dunkel"
+  }
+}

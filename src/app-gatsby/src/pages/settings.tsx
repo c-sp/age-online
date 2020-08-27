@@ -1,3 +1,3 @@
-import {PageSettings} from '@age-online/lib-gui-react';
+import {SettingsPage} from '@age-online/lib-gui-react';
 
-export default PageSettings;
+export default SettingsPage;

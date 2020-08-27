@@ -103,15 +103,15 @@ export const PageContainer = withStyles(styles)(
 function calculateState$(sizeSubject: BehaviorSubject<IContentSize>,
                          appStateManager: AppStateManager): Observable<IPageContainerState> {
 
-    const landscapeOrPortrait$ = sizeSubject.asObservable().pipe(
-        map(isPortrait),
+    const showVerticalNavBar$ = sizeSubject.asObservable().pipe(
+        map(showVerticalNavBar),
         distinctUntilChanged(),
         map(() => sizeSubject.value),
     );
 
     return combineLatest([
         appStateManager.appState$('currentPage'),
-        landscapeOrPortrait$,
+        showVerticalNavBar$,
     ]).pipe(
         map((values) => calculateState(...values)),
     );
@@ -124,13 +124,20 @@ function calculateState(appState: IAppState,
 
     const navBarProps: INavBarProps = {
         currentPage,
-        verticalBar: !isPortrait(viewportSize),
+        verticalBar: showVerticalNavBar(viewportSize),
     };
 
     return {navBarProps};
 }
 
-function isPortrait(contentSize: IContentSize): boolean {
+
+/**
+ * Display a vertical navigation bar only on landscape-oriented phones
+ * (`width > height` and `height < 415px`).
+ *
+ * @see https://www.mydevice.io/#tab1
+ */
+function showVerticalNavBar(contentSize: IContentSize): boolean {
     const {heightPx, widthPx} = contentSize;
-    return heightPx >= widthPx;
+    return (widthPx > heightPx) && (heightPx < 415);
 }

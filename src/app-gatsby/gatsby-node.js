@@ -25,13 +25,11 @@ exports.onCreatePage = ({page, actions}) => {
 
     function newPage(locale) {
         let {context, path} = page;
+        context = {...context, page: noTrailingSlash(path)};
 
         if (locale) {
             path = noTrailingSlash(`/${locale}${path}`);
             context = {...context, locale};
-        }
-        if (isDev) {
-            context = {...context, isDev};
         }
         return {...page, context, path};
     }

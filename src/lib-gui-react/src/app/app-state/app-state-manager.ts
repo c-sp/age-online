@@ -1,17 +1,48 @@
+import {Unsubscriber} from '@age-online/lib-common';
+import {Theme} from '@material-ui/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {filter, map, startWith} from 'rxjs/operators';
-import {AppPage} from '../../components';
+import {AppPage, ThemePreference} from '../../components';
 import {IAppState, TAppStateKey} from './app-state';
+import {createTheme} from './theme';
 
 
-export class AppStateManager {
+export class AppStateManager extends Unsubscriber {
 
-    private readonly appStateSubject = new BehaviorSubject<[
+    private readonly lightTheme: Theme;
+    private readonly darkTheme: Theme;
+    private preferDarkTheme = false;
+
+    private readonly appStateSubject: BehaviorSubject<[
         updatedKeys: ReadonlyArray<string>,
         updatedState: IAppState,
-    ]>([[], {
-        currentPage: AppPage.HOME,
-    }]);
+    ]>;
+
+    constructor(globalCss?: object) {
+        super();
+
+        this.lightTheme = createTheme(globalCss);
+        this.darkTheme = createTheme(globalCss, {
+            palette: {
+                primary: {
+                    main: '#708dff',
+                },
+                type: 'dark',
+            },
+        });
+
+        this.appStateSubject = new BehaviorSubject<[
+            updatedKeys: ReadonlyArray<string>,
+            updatedState: IAppState,
+        ]>([[], {
+            currentPage: AppPage.HOME,
+            themePreference: ThemePreference.AUTO_DETECT,
+            currentTheme: this.lightTheme,
+        }]);
+
+        this.setThemePreference(this.appState.themePreference);
+    }
+
 
     get appState(): IAppState {
         return this.appStateSubject.value[1];
@@ -30,7 +61,23 @@ export class AppStateManager {
     }
 
 
-    updateState(newState: Partial<IAppState>): void {
+    setCurrentPage(currentPage: AppPage): void {
+        this.updateState({currentPage});
+    }
+
+    setThemePreference(themePreference: ThemePreference): void {
+        const currentTheme = this.themeForPref(themePreference);
+
+        const {appState} = this;
+        if ((currentTheme === appState.currentTheme) && (themePreference === appState.themePreference)) {
+            return;
+        }
+
+        this.updateState({themePreference, currentTheme});
+    }
+
+
+    private updateState(newState: Partial<IAppState>): void {
         const updatedState = {...this.appState};
         const updatedKeys = new Array<string>();
 
@@ -54,5 +101,13 @@ export class AppStateManager {
         if (updatedKeys.length) {
             this.appStateSubject.next([updatedKeys, updatedState]);
         }
+    }
+
+    private themeForPref(themePreference: ThemePreference): Theme {
+        const {lightTheme, darkTheme, preferDarkTheme} = this;
+        const {AUTO_DETECT, DARK} = ThemePreference;
+        return (themePreference === DARK) || ((themePreference === AUTO_DETECT) && preferDarkTheme)
+            ? darkTheme
+            : lightTheme;
     }
 }

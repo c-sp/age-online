@@ -2,30 +2,31 @@ import {
     AppPage,
     AppStateManager,
     AppStateManagerContext,
-    createTheme,
     ErrorBoundary,
     FALLBACK_LOCALE,
     isAppPage,
     isValidLocale,
     PageContainer,
     SiteApiContext,
-    TLocale
+    TidyComponent,
+    TLocale,
 } from '@age-online/lib-gui-react';
 import {CssBaseline, Theme, ThemeProvider} from '@material-ui/core';
 import {I18nContext, I18nDetails, I18nManager} from '@shopify/react-i18n';
 import {PageProps} from 'gatsby';
-import React, {Component, ReactNode} from 'react';
+import React, {ReactNode} from 'react';
 import {GatsbySiteApi} from './gatsby-site-api';
 
 
 interface IPageContext {
     readonly locale?: string;
+    readonly page: string;
 }
 
 type TRootLayoutProps = PageProps<Record<string, unknown>, IPageContext>;
 
 interface IRootLayoutState {
-    readonly currentTheme?: Theme;
+    readonly currentTheme: Theme;
     readonly error?: unknown;
 }
 
@@ -42,35 +43,40 @@ interface IRootLayoutState {
  * @see https://gatsbyjs.org/docs/browser-apis/#wrapPageElement
  * @see https://gatsbyjs.org/docs/ssr-apis/#wrapPageElement
  */
-export default class RootLayout extends Component<TRootLayoutProps, IRootLayoutState> {
+export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLayoutState> {
 
-    private readonly siteApi: GatsbySiteApi;
-    private readonly appStateManager = new AppStateManager();
     private readonly i18nManager: I18nManager;
+    private readonly siteApi: GatsbySiteApi;
+    private readonly appStateManager = new AppStateManager({
+        '#___gatsby, #___gatsby > div': {
+            height: '100%',
+        }
+    });
 
     constructor(props: TRootLayoutProps) {
         super(props);
 
-        const {pageContext, location: {pathname}} = props;
-        const currentPage = appPageFromPathname(pathname);
+        const {pageContext: {locale, page}} = props;
+        const currentPage = appPageFromPath(page);
 
-        const locale = getLocale(pageContext.locale);
-        this.siteApi = new GatsbySiteApi(locale);
-        this.i18nManager = new I18nManager(i18nDetails(locale));
-        this.appStateManager.updateState({currentPage});
+        const loc = getLocale(locale);
+        this.i18nManager = new I18nManager(i18nDetails(loc));
+        this.siteApi = new GatsbySiteApi(loc);
+        this.appStateManager.setCurrentPage(currentPage);
 
-        this.state = {};
+        const {currentTheme} = this.appStateManager.appState;
+        this.state = {currentTheme};
     }
 
 
     componentDidMount(): void {
-        // const {appStateManager} = this;
-        // this.callOnUnmount(() => appStateManager.cleanup());
-        //
-        // // update ThemeProvider on theme change
-        // this.unsubscribeOnUnmount(
-        //     appStateManager.appState$('currentTheme').subscribe(({currentTheme}) => this.setState({currentTheme})),
-        // );
+        const {appStateManager} = this;
+        this.callOnUnmount(() => appStateManager.cleanup());
+
+        // update ThemeProvider on theme change
+        this.unsubscribeOnUnmount(
+            appStateManager.appState$('currentTheme').subscribe(({currentTheme}) => this.setState({currentTheme})),
+        );
 
         // catch unhandled errors
         window.onerror = (_message, _source, _lineno, _colno, error) => this.setState({error});
@@ -78,27 +84,26 @@ export default class RootLayout extends Component<TRootLayoutProps, IRootLayoutS
     }
 
     componentDidUpdate(): void {
-        const {appStateManager, i18nManager, siteApi, props: {pageContext, location}} = this;
+        const {appStateManager, i18nManager, siteApi, props: {pageContext: {locale, page}}} = this;
 
-        // Adjusting the locale/pathname here does not cause a re-render as we
+        // Adjusting locale/currentPage here does not cause a re-render as we
         // don't update props or state.
         // => components wrapped with withI18nBundle() will be re-rendered,
         //    but not RootLayout
 
-        const locale = getLocale(pageContext.locale);
-        if (locale !== i18nManager.details.locale) {
-            siteApi.setCurrentLocale(locale);
-            i18nManager.update(i18nDetails(locale));
+        const loc = getLocale(locale);
+        if (loc !== i18nManager.details.locale) {
+            siteApi.setCurrentLocale(loc);
+            i18nManager.update(i18nDetails(loc));
         }
 
-        const {pathname} = location;
-        const currentPage = appPageFromPathname(pathname);
-        appStateManager.updateState({currentPage});
+        const currentPage = appPageFromPath(page);
+        appStateManager.setCurrentPage(currentPage);
     }
 
 
     render(): ReactNode {
-        const {siteApi, appStateManager, i18nManager, props, state} = this;
+        const {siteApi, appStateManager, i18nManager, props, state: {currentTheme, error}} = this;
         const {children} = props;
 
         // Material UI's CssBaseline activates the font "Roboto" on <body>
@@ -108,12 +113,12 @@ export default class RootLayout extends Component<TRootLayoutProps, IRootLayoutS
         // Note that we must declare it within <ThemeProvider> to handle theme
         // changes appropriately.
         return (
-            <ErrorBoundary error={state.error} locale={i18nManager.details.locale}>
+            <ErrorBoundary error={error} locale={i18nManager.details.locale}>
 
                 <SiteApiContext.Provider value={siteApi}>
                     <AppStateManagerContext.Provider value={appStateManager}>
                         <I18nContext.Provider value={i18nManager}>
-                            <ThemeProvider theme={createTheme()}>
+                            <ThemeProvider theme={currentTheme}>
                                 <CssBaseline/>
 
                                 <PageContainer>{children}</PageContainer>
@@ -158,9 +163,9 @@ function getLocale(locale: string | undefined): TLocale {
 }
 
 
-function appPageFromPathname(pathname: string): AppPage {
+function appPageFromPath(path: string): AppPage {
     // '/de/foo' => ['', 'en', 'foo'] => ['en', 'foo']
-    const pathParts = pathname.split('/').slice(1);
+    const pathParts = path.split('/').slice(1);
 
     // ['en', 'foo'] => ['foo']
     // ['xy', 'foo'] => ['xy', 'foo']
