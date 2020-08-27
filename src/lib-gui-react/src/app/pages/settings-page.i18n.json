@@ -10,5 +10,9 @@
   "page:heading": {
     "en": "Settings",
     "de": "Einstellungen"
+  },
+  "flag-hint": {
+    "en": "Flag icons made by {LinkFreepik} from {LinkFlaticon}.",
+    "de": "Flaggen-Icons erstellt von {LinkFreepik} von {LinkFlaticon}."
   }
 }

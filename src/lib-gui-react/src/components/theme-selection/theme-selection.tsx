@@ -1,6 +1,6 @@
 import {assertNever, formatValue} from '@age-online/lib-common';
 import {createStyles, Mark, Slider, withStyles, WithStyles} from '@material-ui/core';
-import {Brightness4, Brightness7, Palette, Search} from '@material-ui/icons';
+import {NightsStay, Palette, PhonelinkSetup, WbSunny} from '@material-ui/icons';
 import {I18n, WithI18nProps} from '@shopify/react-i18n';
 import React, {Component, ReactNode} from 'react';
 import {withI18nBundle} from '../i18n';
@@ -55,7 +55,7 @@ const styles = createStyles({
 
 export interface IThemeSelectionProps {
     readonly themePreference: ThemePreference;
-    readonly preferTheme: (themePreference: ThemePreference) => void;
+    readonly preferTheme?: (themePreference: ThemePreference) => void;
 }
 
 type TThemeSelectionProps = IThemeSelectionProps & WithStyles & WithI18nProps;
@@ -73,7 +73,7 @@ export class ComposedThemeSelection extends Component<TThemeSelectionProps> {
                 <ThemeSlider value={toSliderValue(themePreference)}
                              onChange={(_, newValue): void => {
                                  const pref = fromSliderValue(newValue);
-                                 if (pref !== themePreference) {
+                                 if (preferTheme && pref !== themePreference) {
                                      preferTheme(pref);
                                  }
                              }}
@@ -126,15 +126,15 @@ function sliderMarks(i18n: I18n): Array<Mark> {
     return [
         {
             value: 0,
-            label: <Brightness7 aria-label={i18n.translate('label:theme-light')}/>,
+            label: <WbSunny aria-label={i18n.translate('label:theme-light')}/>,
         },
         {
             value: 1,
-            label: <Search aria-label={i18n.translate('label:theme-auto-detect')}/>,
+            label: <PhonelinkSetup aria-label={i18n.translate('label:theme-auto-detect')}/>,
         },
         {
             value: 2,
-            label: <Brightness4 aria-label={i18n.translate('label:theme-dark')}/>,
+            label: <NightsStay aria-label={i18n.translate('label:theme-dark')}/>,
         },
     ];
 }
