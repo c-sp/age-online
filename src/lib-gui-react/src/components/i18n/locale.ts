@@ -1,18 +1,17 @@
-export type TLocale = 'de' | 'en';
+export enum Locale {
+    DE = 'de',
+    EN = 'en',
+}
 
-export const LOCALE_DE: TLocale = 'de';
-export const LOCALE_EN: TLocale = 'en';
+const localeValues = new Set<string>(Object.values(Locale));
 
-
-const ALL_LOCALES: ReadonlyArray<string> = [LOCALE_DE, LOCALE_EN];
-
-export function isValidLocale(value: unknown): value is TLocale {
-    return (typeof value === 'string') && ALL_LOCALES.includes(value);
+export function isLocale(value: unknown): value is Locale {
+    return (typeof value === 'string') && localeValues.has(value);
 }
 
 
-export const FALLBACK_LOCALE = LOCALE_EN;
+export const FALLBACK_LOCALE = Locale.EN;
 
-export function sanitizeLocale(value: unknown): TLocale {
-    return isValidLocale(value) ? value : FALLBACK_LOCALE;
+export function sanitizeLocale(value: unknown): Locale {
+    return isLocale(value) ? value : FALLBACK_LOCALE;
 }

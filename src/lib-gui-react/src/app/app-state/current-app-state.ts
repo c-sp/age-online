@@ -2,16 +2,14 @@ import {Unsubscriber} from '@age-online/lib-common';
 import {Theme} from '@material-ui/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {filter, map, startWith} from 'rxjs/operators';
-import {AppPage, ThemePreference} from '../../components';
-import {IAppState, TAppStateKey} from './app-state';
-import {createTheme} from './theme';
+import {AppPage, createTheme, Locale, PreferredTheme} from '../../components';
+import {IAppState, ICurrentAppState, TAppStateKey} from './app-state';
 
 
-export class AppStateManager extends Unsubscriber {
+export class CurrentAppState extends Unsubscriber implements ICurrentAppState {
 
-    private readonly lightTheme: Theme;
-    private readonly darkTheme: Theme;
-    private preferDarkTheme = false;
+    protected readonly lightTheme: Theme;
+    protected readonly darkTheme: Theme;
 
     private readonly appStateSubject: BehaviorSubject<[
         updatedKeys: ReadonlyArray<string>,
@@ -36,11 +34,10 @@ export class AppStateManager extends Unsubscriber {
             updatedState: IAppState,
         ]>([[], {
             currentPage: AppPage.HOME,
-            themePreference: ThemePreference.AUTO_DETECT,
+            preferredLocale: Locale.EN,
+            preferredTheme: PreferredTheme.AUTO_DETECT,
             currentTheme: this.lightTheme,
         }]);
-
-        this.setThemePreference(this.appState.themePreference);
     }
 
 
@@ -61,23 +58,7 @@ export class AppStateManager extends Unsubscriber {
     }
 
 
-    setCurrentPage(currentPage: AppPage): void {
-        this.updateState({currentPage});
-    }
-
-    setThemePreference(themePreference: ThemePreference): void {
-        const currentTheme = this.themeForPref(themePreference);
-
-        const {appState} = this;
-        if ((currentTheme === appState.currentTheme) && (themePreference === appState.themePreference)) {
-            return;
-        }
-
-        this.updateState({themePreference, currentTheme});
-    }
-
-
-    private updateState(newState: Partial<IAppState>): void {
+    protected updateState(newState: Partial<IAppState>): void {
         const updatedState = {...this.appState};
         const updatedKeys = new Array<string>();
 
@@ -101,13 +82,5 @@ export class AppStateManager extends Unsubscriber {
         if (updatedKeys.length) {
             this.appStateSubject.next([updatedKeys, updatedState]);
         }
-    }
-
-    private themeForPref(themePreference: ThemePreference): Theme {
-        const {lightTheme, darkTheme, preferDarkTheme} = this;
-        const {AUTO_DETECT, DARK} = ThemePreference;
-        return (themePreference === DARK) || ((themePreference === AUTO_DETECT) && preferDarkTheme)
-            ? darkTheme
-            : lightTheme;
     }
 }

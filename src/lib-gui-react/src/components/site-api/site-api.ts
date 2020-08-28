@@ -1,5 +1,5 @@
 import {FunctionComponent, ReactNode} from 'react';
-import {TLocale} from '../i18n';
+import {Locale} from '../i18n';
 
 
 export enum AppPage {
@@ -14,7 +14,7 @@ export function isAppPage(value: unknown): value is AppPage {
 
 export interface ISiteLinkProps {
     readonly appPage: AppPage;
-    readonly locale?: TLocale;
+    readonly locale?: Locale;
     readonly className?: string;
     readonly children?: ReactNode;
 }
@@ -40,5 +40,5 @@ export interface ISiteApi {
      * Navigate to the specified page using the specified locale.
      * If no locale is specified, the current locale is used.
      */
-    navigateLocalized(appPage: AppPage, locale?: TLocale): void;
+    navigateLocalized(appPage: AppPage, locale?: Locale): void;
 }

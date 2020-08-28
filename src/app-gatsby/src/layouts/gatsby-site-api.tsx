@@ -1,4 +1,4 @@
-import {AppPage, ISiteApi, ISiteLinkProps, TLocale} from '@age-online/lib-gui-react';
+import {AppPage, ISiteApi, ISiteLinkProps, Locale} from '@age-online/lib-gui-react';
 import {Link, navigate} from 'gatsby';
 import React, {ReactElement} from 'react';
 
@@ -15,19 +15,19 @@ export class GatsbySiteApi implements ISiteApi {
         return <Link to={this.localizePath(appPage, locale)} {...classProp}>{children}</Link>;
     };
 
-    constructor(private currentLocale: TLocale) {
+    constructor(private currentLocale: Locale) {
     }
 
-    setCurrentLocale(currentLocale: TLocale): void {
+    setCurrentLocale(currentLocale: Locale): void {
         this.currentLocale = currentLocale;
     }
 
     /** @inheritDoc */
-    navigateLocalized(appPage: AppPage, locale?: TLocale): void {
+    navigateLocalized(appPage: AppPage, locale?: Locale): void {
         navigateTo(this.localizePath(appPage, locale));
     }
 
-    private localizePath(path: string, locale?: TLocale): string {
+    private localizePath(path: string, locale?: Locale): string {
         const checkedPath = path.startsWith('/') ? path : `/${path}`;
         return `/${locale ?? this.currentLocale}${checkedPath}`;
     }

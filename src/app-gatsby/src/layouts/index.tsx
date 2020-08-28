@@ -1,15 +1,15 @@
 import {
     AppPage,
-    AppStateManager,
-    AppStateManagerContext,
+    AppStateContext,
+    PersistentAppState,
     ErrorBoundary,
     FALLBACK_LOCALE,
     isAppPage,
-    isValidLocale,
+    isLocale,
     PageContainer,
     SiteApiContext,
     TidyComponent,
-    TLocale,
+    Locale,
 } from '@age-online/lib-gui-react';
 import {CssBaseline, Theme, ThemeProvider} from '@material-ui/core';
 import {I18nContext, I18nDetails, I18nManager} from '@shopify/react-i18n';
@@ -47,7 +47,7 @@ export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLay
 
     private readonly i18nManager: I18nManager;
     private readonly siteApi: GatsbySiteApi;
-    private readonly appStateManager = new AppStateManager({
+    private readonly persistentAppState = new PersistentAppState({
         '#___gatsby, #___gatsby > div': {
             height: '100%',
         }
@@ -62,20 +62,20 @@ export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLay
         const loc = getLocale(locale);
         this.i18nManager = new I18nManager(i18nDetails(loc));
         this.siteApi = new GatsbySiteApi(loc);
-        this.appStateManager.setCurrentPage(currentPage);
+        this.persistentAppState.setCurrentPage(currentPage);
 
-        const {currentTheme} = this.appStateManager.appState;
+        const {currentTheme} = this.persistentAppState.appState;
         this.state = {currentTheme};
     }
 
 
     componentDidMount(): void {
-        const {appStateManager} = this;
-        this.callOnUnmount(() => appStateManager.cleanup());
+        const {persistentAppState} = this;
+        this.callOnUnmount(() => persistentAppState.cleanup());
 
         // update ThemeProvider on theme change
         this.unsubscribeOnUnmount(
-            appStateManager.appState$('currentTheme').subscribe(({currentTheme}) => this.setState({currentTheme})),
+            persistentAppState.appState$('currentTheme').subscribe(({currentTheme}) => this.setState({currentTheme})),
         );
 
         // catch unhandled errors
@@ -84,7 +84,7 @@ export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLay
     }
 
     componentDidUpdate(): void {
-        const {appStateManager, i18nManager, siteApi, props: {pageContext: {locale, page}}} = this;
+        const {persistentAppState, i18nManager, siteApi, props: {pageContext: {locale, page}}} = this;
 
         // Adjusting locale/currentPage here does not cause a re-render as we
         // don't update props or state.
@@ -98,12 +98,12 @@ export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLay
         }
 
         const currentPage = appPageFromPath(page);
-        appStateManager.setCurrentPage(currentPage);
+        persistentAppState.setCurrentPage(currentPage);
     }
 
 
     render(): ReactNode {
-        const {siteApi, appStateManager, i18nManager, props, state: {currentTheme, error}} = this;
+        const {siteApi, persistentAppState, i18nManager, props, state: {currentTheme, error}} = this;
         const {children} = props;
 
         // Material UI's CssBaseline activates the font "Roboto" on <body>
@@ -116,7 +116,7 @@ export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLay
             <ErrorBoundary error={error} locale={i18nManager.details.locale}>
 
                 <SiteApiContext.Provider value={siteApi}>
-                    <AppStateManagerContext.Provider value={appStateManager}>
+                    <AppStateContext.Provider value={persistentAppState}>
                         <I18nContext.Provider value={i18nManager}>
                             <ThemeProvider theme={currentTheme}>
                                 <CssBaseline/>
@@ -125,7 +125,7 @@ export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLay
 
                             </ThemeProvider>
                         </I18nContext.Provider>
-                    </AppStateManagerContext.Provider>
+                    </AppStateContext.Provider>
                 </SiteApiContext.Provider>
 
             </ErrorBoundary>
@@ -134,7 +134,7 @@ export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLay
 }
 
 
-function i18nDetails(locale: TLocale): I18nDetails {
+function i18nDetails(locale: Locale): I18nDetails {
     return {
         locale,
         onError(err): void {
@@ -146,9 +146,9 @@ function i18nDetails(locale: TLocale): I18nDetails {
 }
 
 
-function getLocale(locale: string | undefined): TLocale {
+function getLocale(locale: string | undefined): Locale {
 
-    return (isValidLocale(locale) ? locale : null)
+    return (isLocale(locale) ? locale : null)
         // check local storage for user preference
         // TODO ?? LOCAL_STORAGE.getPreferredLocale()
         // check navigator locale
@@ -156,9 +156,9 @@ function getLocale(locale: string | undefined): TLocale {
         // use default locale
         ?? FALLBACK_LOCALE;
 
-    function navigatorLocale(): TLocale | null {
+    function navigatorLocale(): Locale | null {
         const navLocale = (typeof navigator === 'undefined' ? '' : navigator.language).slice(0, 2);
-        return isValidLocale(navLocale) ? navLocale : null;
+        return isLocale(navLocale) ? navLocale : null;
     }
 }
 
@@ -169,7 +169,7 @@ function appPageFromPath(path: string): AppPage {
 
     // ['en', 'foo'] => ['foo']
     // ['xy', 'foo'] => ['xy', 'foo']
-    const appPageStr = `/${isValidLocale(pathParts[0]) ? pathParts.slice(1) : pathParts}`;
+    const appPageStr = `/${isLocale(pathParts[0]) ? pathParts.slice(1) : pathParts}`;
 
     return isAppPage(appPageStr) ? appPageStr : AppPage.HOME;
 }

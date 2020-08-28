@@ -1,3 +1,4 @@
+import {EXTERNAL_LINK_PROPS} from "@age-online/lib-common";
 import {createStyles, Paper, Typography, WithStyles, withStyles} from '@material-ui/core';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {ReactNode} from 'react';
@@ -5,16 +6,15 @@ import {
     AppPage,
     ISiteApiProps,
     LocaleSelection,
+    PreferredTheme,
     SEO,
-    ThemePreference,
     ThemeSelection,
     TidyComponent,
     withI18nBundle,
     withSiteApi,
 } from '../../components';
-import {IAppStateManagerProps, withAppStateManager} from '../app-state';
+import {IPersistentAppStateProps, withPersistentAppState} from '../app-state';
 import i18nBundle from './settings-page.i18n.json';
-import {EXTERNAL_LINK_PROPS} from "@age-online/lib-common";
 
 
 const HREF_FREEPIK = 'https://www.flaticon.com/authors/freepik';
@@ -31,36 +31,38 @@ const styles = createStyles({
             marginTop: '2em',
         },
 
+        // flag hint
         '& > :last-child': {
-            marginTop: '3em',
+            marginTop: '4em',
+            textAlign: 'center',
         },
     },
 });
 
 interface ISettingsPageState {
-    readonly themePreference: ThemePreference;
+    readonly preferredTheme: PreferredTheme;
 }
 
-type TSettingsPageProps = WithStyles & WithI18nProps & IAppStateManagerProps & ISiteApiProps;
+type TSettingsPageProps = WithStyles & WithI18nProps & ISiteApiProps & IPersistentAppStateProps;
 
 class ComposedSettingsPage extends TidyComponent<TSettingsPageProps, ISettingsPageState> {
 
     constructor(props: TSettingsPageProps) {
         super(props);
-        const {themePreference} = props.appStateManager.appState
-        this.state = {themePreference};
+        const {preferredTheme} = props.currentAppState.appState
+        this.state = {preferredTheme};
     }
 
     componentDidMount(): void {
         this.unsubscribeOnUnmount(
-            this.props.appStateManager.appState$('themePreference').subscribe(
-                ({themePreference}) => this.setState({themePreference}),
+            this.props.currentAppState.appState$('preferredTheme').subscribe(
+                ({preferredTheme}) => this.setState({preferredTheme}),
             ),
         );
     }
 
     render(): ReactNode {
-        const {props: {classes, i18n, appStateManager, siteApi}, state: {themePreference}} = this;
+        const {props: {classes, i18n, persistentAppState, siteApi}, state: {preferredTheme}} = this;
 
         return (
             <Paper component={'main'} className={classes.main} elevation={0}>
@@ -69,28 +71,27 @@ class ComposedSettingsPage extends TidyComponent<TSettingsPageProps, ISettingsPa
 
                 <LocaleSelection selectedLocale={i18n.locale}
                                  onSelect={(locale): void => {
+                                     persistentAppState.setPreferredLocale(locale);
                                      siteApi.navigateLocalized(AppPage.SETTINGS, locale);
-                                     // TODO LOCAL_STORAGE.setPreferredLocale(locale);
                                  }}
                                  color="primary"/>
 
-                <ThemeSelection themePreference={themePreference}
-                                preferTheme={(themePreference: ThemePreference) => {
-                                    appStateManager.setThemePreference(themePreference);
+                <ThemeSelection preferredTheme={preferredTheme}
+                                preferTheme={(themePreference: PreferredTheme) => {
+                                    persistentAppState.setPreferredTheme(themePreference);
                                 }}/>
 
-                <div className={classes.flagHint}>
-                    <Typography variant="caption"
-                                color="textSecondary">
-                        {i18n.translate(
-                            'flag-hint',
-                            {
-                                LinkFreepik: <a href={HREF_FREEPIK} {...EXTERNAL_LINK_PROPS}>Freepik</a>,
-                                LinkFlaticon: <a href={HREF_FLATICON} {...EXTERNAL_LINK_PROPS}>www.flaticon.com</a>,
-                            },
-                        )}
-                    </Typography>
-                </div>
+                <Typography component={'div'}
+                            color="textSecondary"
+                            variant="caption">
+                    {i18n.translate(
+                        'flag-hint',
+                        {
+                            LinkFreepik: <a href={HREF_FREEPIK} {...EXTERNAL_LINK_PROPS}>Freepik</a>,
+                            LinkFlaticon: <a href={HREF_FLATICON} {...EXTERNAL_LINK_PROPS}>www.flaticon.com</a>,
+                        },
+                    )}
+                </Typography>
 
             </Paper>
         );
@@ -100,8 +101,8 @@ class ComposedSettingsPage extends TidyComponent<TSettingsPageProps, ISettingsPa
 
 export const SettingsPage = withI18nBundle('settings-page', i18nBundle)(
     withStyles(styles)(
-        withAppStateManager(
-            withSiteApi(
+        withSiteApi(
+            withPersistentAppState(
                 ComposedSettingsPage,
             ),
         ),

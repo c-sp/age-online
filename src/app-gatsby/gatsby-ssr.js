@@ -20,15 +20,15 @@ exports.onPreRenderHTML = ({getHeadComponents, replaceHeadComponents}) => {
 // Add a head script tag for redirecting to a localized version of this page,
 // if the locale is not part of the current pathname.
 
-const locales = ['de', 'en']; // TODO redundant
+// TODO redundant: list of locales
+// TODO redundant: 'settings:preferred-locale'
+const locales = ['de', 'en'];
 const joinedLocales = locales.map(l => `'${l}'`).join(', ');
-
-// TODO redundant: 'preferredLocale'
 
 function getLoc(locales) {
     function storageLoc() {
         try {
-            return typeof localStorage === 'undefined' ? '' : localStorage.getItem('preferredLocale');
+            return typeof localStorage === 'undefined' ? '' : localStorage.getItem('settings:preferred-locale');
         } catch (_) {
             return '';
         }

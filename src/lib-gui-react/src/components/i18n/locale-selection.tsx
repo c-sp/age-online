@@ -3,7 +3,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import React, {Component, ReactNode} from 'react';
 import {SVG_FLAG_DE, SVG_FLAG_US} from '../common';
-import {LOCALE_DE, LOCALE_EN, sanitizeLocale, TLocale} from './locale';
+import {sanitizeLocale, Locale} from './locale';
 
 
 const StyledRadio = withStyles({
@@ -18,11 +18,18 @@ const StyledRadio = withStyles({
     },
 })(Radio);
 
+const StylesFormControlLabel = withStyles({
+    root: {
+        marginLeft: 0,
+        marginRight: 0,
+    }
+})(FormControlLabel);
+
 
 export interface ILocaleSelectionProps {
     readonly selectedLocale?: string | null;
     readonly color?: 'primary' | 'secondary' | 'default';
-    readonly onSelect?: (locale: TLocale) => void;
+    readonly onSelect?: (locale: Locale) => void;
 }
 
 class ComposedLocaleSelection extends Component<ILocaleSelectionProps> {
@@ -37,19 +44,20 @@ class ComposedLocaleSelection extends Component<ILocaleSelectionProps> {
         return <RadioGroup value={selectedLocale}
                            onChange={(ev): void => onSelect?.(sanitizeLocale(ev.target.value))}
                            aria-label="locale"
-                           name="locale-selection">
+                           name="locale-selection"
+                           row={true}>
 
-            <FormControlLabel value={LOCALE_DE}
-                              label="Deutsch"
-                              control={
-                                  <StyledRadio icon={svgDe} checkedIcon={svgDe} color={color}/>
-                              }/>
+            <StylesFormControlLabel value={Locale.EN}
+                                    label=""
+                                    control={
+                                        <StyledRadio icon={svgEn} checkedIcon={svgEn} color={color}/>
+                                    }/>
 
-            <FormControlLabel value={LOCALE_EN}
-                              label="English"
-                              control={
-                                  <StyledRadio icon={svgEn} checkedIcon={svgEn} color={color}/>
-                              }/>
+            <StylesFormControlLabel value={Locale.DE}
+                                    label=""
+                                    control={
+                                        <StyledRadio icon={svgDe} checkedIcon={svgDe} color={color}/>
+                                    }/>
         </RadioGroup>;
     }
 }

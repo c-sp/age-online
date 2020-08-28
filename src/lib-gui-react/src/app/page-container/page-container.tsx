@@ -4,7 +4,7 @@ import React, {ReactNode} from 'react';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {distinctUntilChanged, map} from 'rxjs/operators';
 import {INavBarProps, NavBar, TidyComponent} from '../../components';
-import {AppStateManager, IAppState, IAppStateManagerProps, withAppStateManager} from '../app-state';
+import {IAppState, ICurrentAppState, ICurrentAppStateProps, withCurrentAppState} from '../app-state';
 
 
 const styles = createStyles({
@@ -49,7 +49,7 @@ interface IPageContainerState {
     readonly navBarProps: INavBarProps;
 }
 
-type TPageContainerProps = IPageContainerProps & IAppStateManagerProps & WithStyles;
+type TPageContainerProps = IPageContainerProps & ICurrentAppStateProps & WithStyles;
 
 class ComposedPageContainer extends TidyComponent<TPageContainerProps, IPageContainerState> {
 
@@ -58,11 +58,11 @@ class ComposedPageContainer extends TidyComponent<TPageContainerProps, IPageCont
 
     constructor(props: TPageContainerProps) {
         super(props);
-        this.state = calculateState(props.appStateManager.appState, this.sizeSubject.value);
+        this.state = calculateState(props.currentAppState.appState, this.sizeSubject.value);
     }
 
     componentDidMount(): void {
-        const {containerDiv, sizeSubject, props: {appStateManager}} = this;
+        const {containerDiv, sizeSubject, props: {currentAppState}} = this;
         const div = assertElement(containerDiv, 'app container <div>');
 
         this.callOnUnmount(
@@ -71,7 +71,7 @@ class ComposedPageContainer extends TidyComponent<TPageContainerProps, IPageCont
         );
 
         this.unsubscribeOnUnmount(
-            calculateState$(sizeSubject, appStateManager).subscribe((state) => this.setState(state)),
+            calculateState$(sizeSubject, currentAppState).subscribe((state) => this.setState(state)),
         );
     }
 
@@ -94,14 +94,14 @@ class ComposedPageContainer extends TidyComponent<TPageContainerProps, IPageCont
 }
 
 export const PageContainer = withStyles(styles)(
-    withAppStateManager(
+    withCurrentAppState(
         ComposedPageContainer,
     ),
 );
 
 
 function calculateState$(sizeSubject: BehaviorSubject<IContentSize>,
-                         appStateManager: AppStateManager): Observable<IPageContainerState> {
+                         appStateReader: ICurrentAppState): Observable<IPageContainerState> {
 
     const showVerticalNavBar$ = sizeSubject.asObservable().pipe(
         map(showVerticalNavBar),
@@ -110,7 +110,7 @@ function calculateState$(sizeSubject: BehaviorSubject<IContentSize>,
     );
 
     return combineLatest([
-        appStateManager.appState$('currentPage'),
+        appStateReader.appState$('currentPage'),
         showVerticalNavBar$,
     ]).pipe(
         map((values) => calculateState(...values)),
