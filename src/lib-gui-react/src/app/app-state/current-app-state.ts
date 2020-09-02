@@ -16,11 +16,12 @@ export class CurrentAppState extends Unsubscriber implements ICurrentAppState {
         updatedState: IAppState,
     ]>;
 
-    constructor(globalCss?: object) {
+    constructor(fontsPath: string,
+                globalCss?: object) {
         super();
 
-        this.lightTheme = createTheme(globalCss);
-        this.darkTheme = createTheme(globalCss, {
+        this.lightTheme = createTheme(fontsPath, globalCss);
+        this.darkTheme = createTheme(fontsPath, globalCss, {
             palette: {
                 primary: {
                     main: '#708dff',
@@ -37,6 +38,7 @@ export class CurrentAppState extends Unsubscriber implements ICurrentAppState {
             preferredLocale: Locale.EN,
             preferredTheme: PreferredTheme.AUTO_DETECT,
             currentTheme: this.lightTheme,
+            romFile: null,
         }]);
     }
 

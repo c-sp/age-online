@@ -1,28 +1,25 @@
-import {createStyles, fade, IconButton, StyleRules, SvgIcon, Theme, WithStyles, withStyles} from '@material-ui/core';
+import {createStyles, IconButton, SvgIcon, WithStyles, withStyles} from '@material-ui/core';
 import {Home, HomeTwoTone, SettingsRounded, SettingsTwoTone} from '@material-ui/icons';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {Component, CSSProperties, ReactElement} from 'react';
 import {withI18nBundle} from '../i18n';
 import {AppPage, ISiteApiProps, withSiteApi} from '../site-api';
-import i18nBundle from './nav-bar.i18n.json';
+import i18nBundle from './page-nav-bar.i18n.json';
 
 
-function styles(theme: Theme): StyleRules {
-    return createStyles({
-        root: {
-            display: 'flex',
-            alignItems: 'center',
-            backgroundColor: fade(theme.palette.background.default, 0.5),
-        },
-        horizontal: {
-            flexDirection: 'row',
-            justifyContent: 'center',
-        },
-        vertical: {
-            flexDirection: 'column',
-        },
-    });
-}
+const styles = createStyles({
+    root: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    horizontal: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    vertical: {
+        flexDirection: 'column',
+    },
+});
 
 /**
  * to override Material UI styles we have to use a custom
@@ -41,22 +38,21 @@ const ICON_STYLE_INACTIVE: CSSProperties = {
 };
 
 
-export interface INavBarProps {
+export interface IPageNavBarProps {
     readonly verticalBar: boolean;
     readonly currentPage: AppPage;
-    readonly style?: CSSProperties;
 }
 
-type TNavProps = INavBarProps & ISiteApiProps & WithStyles & WithI18nProps;
+type TNavProps = IPageNavBarProps & ISiteApiProps & WithStyles & WithI18nProps;
 
-class ComposedNavBar extends Component<TNavProps> {
+class ComposedPageNavBar extends Component<TNavProps> {
 
     constructor(props: TNavProps) {
         super(props);
     }
 
     render(): JSX.Element {
-        const {classes, verticalBar, style, i18n, siteApi: {SiteLink}} = this.props;
+        const {classes, verticalBar, i18n, siteApi: {SiteLink}} = this.props;
 
         const classNames = `${classes.root} ${verticalBar ? classes.vertical : classes.horizontal}`;
 
@@ -64,7 +60,7 @@ class ComposedNavBar extends Component<TNavProps> {
         const SettingsIcon = this.icon(AppPage.SETTINGS, SettingsRounded, SettingsTwoTone);
 
         return (
-            <nav className={classNames} style={style} aria-label={i18n.translate('nav-label')}>
+            <nav className={classNames} aria-label={i18n.translate('nav-label')}>
                 <SiteLink appPage={AppPage.HOME}>
                     <IconButton aria-label={i18n.translate('link:home')}>{HomeIcon}</IconButton>
                 </SiteLink>
@@ -86,10 +82,10 @@ class ComposedNavBar extends Component<TNavProps> {
 }
 
 
-export const NavBar = withStyles(styles)(
-    withI18nBundle('nav-bar', i18nBundle)(
+export const PageNavBar = withStyles(styles)(
+    withI18nBundle('page-nav-bar', i18nBundle)(
         withSiteApi(
-            ComposedNavBar,
+            ComposedPageNavBar,
         ),
     ),
 );

@@ -1,15 +1,15 @@
 import {
+    AppContainer,
     AppPage,
     AppStateContext,
-    PersistentAppState,
     ErrorBoundary,
     FALLBACK_LOCALE,
     isAppPage,
     isLocale,
-    PageContainer,
+    Locale,
+    PersistentAppState,
     SiteApiContext,
     TidyComponent,
-    Locale,
 } from '@age-online/lib-gui-react';
 import {CssBaseline, Theme, ThemeProvider} from '@material-ui/core';
 import {I18nContext, I18nDetails, I18nManager} from '@shopify/react-i18n';
@@ -21,6 +21,7 @@ import {GatsbySiteApi} from './gatsby-site-api';
 interface IPageContext {
     readonly locale?: string;
     readonly page: string;
+    readonly pathPrefix: string;
 }
 
 type TRootLayoutProps = PageProps<Record<string, unknown>, IPageContext>;
@@ -47,21 +48,26 @@ export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLay
 
     private readonly i18nManager: I18nManager;
     private readonly siteApi: GatsbySiteApi;
-    private readonly persistentAppState = new PersistentAppState({
-        '#___gatsby, #___gatsby > div': {
-            height: '100%',
-        }
-    });
+    private readonly persistentAppState: PersistentAppState;
 
     constructor(props: TRootLayoutProps) {
         super(props);
 
-        const {pageContext: {locale, page}} = props;
+        const {pageContext: {locale, page, pathPrefix}} = props;
         const currentPage = appPageFromPath(page);
 
         const loc = getLocale(locale);
         this.i18nManager = new I18nManager(i18nDetails(loc));
         this.siteApi = new GatsbySiteApi(loc);
+
+        this.persistentAppState = new PersistentAppState(
+            `${pathPrefix}/fonts`,
+            {
+                '#___gatsby, #___gatsby > div': {
+                    height: '100%',
+                }
+            },
+        );
         this.persistentAppState.setCurrentPage(currentPage);
 
         const {currentTheme} = this.persistentAppState.appState;
@@ -121,7 +127,7 @@ export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLay
                             <ThemeProvider theme={currentTheme}>
                                 <CssBaseline/>
 
-                                <PageContainer>{children}</PageContainer>
+                                <AppContainer>{children}</AppContainer>
 
                             </ThemeProvider>
                         </I18nContext.Provider>
@@ -147,19 +153,7 @@ function i18nDetails(locale: Locale): I18nDetails {
 
 
 function getLocale(locale: string | undefined): Locale {
-
-    return (isLocale(locale) ? locale : null)
-        // check local storage for user preference
-        // TODO ?? LOCAL_STORAGE.getPreferredLocale()
-        // check navigator locale
-        ?? navigatorLocale()
-        // use default locale
-        ?? FALLBACK_LOCALE;
-
-    function navigatorLocale(): Locale | null {
-        const navLocale = (typeof navigator === 'undefined' ? '' : navigator.language).slice(0, 2);
-        return isLocale(navLocale) ? navLocale : null;
-    }
+    return isLocale(locale) ? locale : FALLBACK_LOCALE;
 }
 
 

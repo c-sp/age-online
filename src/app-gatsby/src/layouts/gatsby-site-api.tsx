@@ -1,5 +1,5 @@
 import {AppPage, ISiteApi, ISiteLinkProps, Locale} from '@age-online/lib-gui-react';
-import {Link, navigate} from 'gatsby';
+import {Link, navigate, withPrefix} from 'gatsby';
 import React, {ReactElement} from 'react';
 
 
@@ -14,6 +14,10 @@ export class GatsbySiteApi implements ISiteApi {
         //      component tree with a pure component)
         return <Link to={this.localizePath(appPage, locale)} {...classProp}>{children}</Link>;
     };
+
+    readonly ageWasmJsUrl = withPrefix('age-wasm/age_wasm.js');
+    readonly ageWasmUrl = withPrefix('age-wasm/age_wasm.wasm');
+
 
     constructor(private currentLocale: Locale) {
     }

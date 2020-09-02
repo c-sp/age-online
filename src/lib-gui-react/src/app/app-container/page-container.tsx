@@ -1,11 +1,54 @@
 import {assertElement, IContentSize, observeSize} from '@age-online/lib-common';
 import {createStyles, WithStyles, withStyles} from '@material-ui/core';
-import React, {ReactNode} from 'react';
+import React from 'react';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {distinctUntilChanged, map} from 'rxjs/operators';
-import {INavBarProps, NavBar, TidyComponent} from '../../components';
+import {IPageNavBarProps, PageNavBar, TidyComponent} from '../../components';
 import {IAppState, ICurrentAppState, ICurrentAppStateProps, withCurrentAppState} from '../app-state';
 
+
+interface IPageContainerState {
+    readonly navBarProps: IPageNavBarProps;
+}
+
+/**
+ * Display a vertical navigation bar only on landscape-oriented phones
+ * (`width > height` and `height < 415px`).
+ *
+ * @see https://www.mydevice.io/#tab1
+ */
+function showVerticalNavBar(contentSize: IContentSize): boolean {
+    const {heightPx, widthPx} = contentSize;
+    return (widthPx > heightPx) && (heightPx < 415);
+}
+
+function calculateState(contentSize: IContentSize, {currentPage}: IAppState): IPageContainerState {
+    const verticalBar = showVerticalNavBar(contentSize);
+    return {
+        navBarProps: {verticalBar, currentPage},
+    };
+}
+
+function calculateState$(contentSizeSubject: BehaviorSubject<IContentSize>,
+                         currentAppState: ICurrentAppState): Observable<IPageContainerState> {
+
+    // reduce content-size changes to vertical-nav-bar changes
+    const contentSize$ = contentSizeSubject.asObservable().pipe(
+        map(showVerticalNavBar),
+        distinctUntilChanged(),
+        map(() => contentSizeSubject.value)
+    );
+
+    return combineLatest([
+        contentSize$,
+        currentAppState.appState$('currentPage'),
+    ]).pipe(
+        map(([contentSize, appState]) => calculateState(contentSize, appState)),
+    );
+}
+
+
+const maxWidth = '1000px';
 
 const styles = createStyles({
     container: {
@@ -16,40 +59,35 @@ const styles = createStyles({
     page: {
         display: 'flex',
 
-        // the page can grow & shrink
         '& > :nth-child(n+2)': {
             flex: '1 1 0',
             overflow: 'auto',
-            maxWidth: '1000px',
-            padding: '32px',
         },
     },
     pagePortrait: {
         flexDirection: 'column',
-        alignItems: 'center',
 
-        // the page may use the full width
-        // (don't use alignItems: 'stretch' which breaks page alignment)
+        // scrollbar at the viewport edge
         '& > :nth-child(n+2)': {
-            width: '100%',
+            '& > :first-child': {
+                width: '100%',
+                maxWidth,
+                marginLeft: 'auto',
+                marginRight: 'auto',
+            },
         },
     },
     pageLandscape: {
         flexDirection: 'row',
         justifyContent: 'center',
+
+        '& > :nth-child(n+2)': {
+            maxWidth,
+        },
     },
 });
 
-
-export interface IPageContainerProps {
-    readonly children?: ReactNode;
-}
-
-interface IPageContainerState {
-    readonly navBarProps: INavBarProps;
-}
-
-type TPageContainerProps = IPageContainerProps & ICurrentAppStateProps & WithStyles;
+type TPageContainerProps = ICurrentAppStateProps & WithStyles;
 
 class ComposedPageContainer extends TidyComponent<TPageContainerProps, IPageContainerState> {
 
@@ -58,7 +96,7 @@ class ComposedPageContainer extends TidyComponent<TPageContainerProps, IPageCont
 
     constructor(props: TPageContainerProps) {
         super(props);
-        this.state = calculateState(props.currentAppState.appState, this.sizeSubject.value);
+        this.state = calculateState(this.sizeSubject.value, props.currentAppState.appState);
     }
 
     componentDidMount(): void {
@@ -79,14 +117,14 @@ class ComposedPageContainer extends TidyComponent<TPageContainerProps, IPageCont
         const {props: {children, classes}, state: {navBarProps}} = this;
 
         const orientationCss = navBarProps.verticalBar ? classes.pageLandscape : classes.pagePortrait;
-        const containerCssClasses = `${classes.container} ${classes.page} ${orientationCss}`;
+        const classNames = `${classes.container} ${classes.page} ${orientationCss}`;
 
         return (
-            <div className={containerCssClasses}
+            <div className={classNames}
                  ref={(div) => this.containerDiv = div}>
 
-                <NavBar {...navBarProps}/>
-                {children}
+                <PageNavBar {...navBarProps}/>
+                <div>{children}</div>
 
             </div>
         );
@@ -98,46 +136,3 @@ export const PageContainer = withStyles(styles)(
         ComposedPageContainer,
     ),
 );
-
-
-function calculateState$(sizeSubject: BehaviorSubject<IContentSize>,
-                         appStateReader: ICurrentAppState): Observable<IPageContainerState> {
-
-    const showVerticalNavBar$ = sizeSubject.asObservable().pipe(
-        map(showVerticalNavBar),
-        distinctUntilChanged(),
-        map(() => sizeSubject.value),
-    );
-
-    return combineLatest([
-        appStateReader.appState$('currentPage'),
-        showVerticalNavBar$,
-    ]).pipe(
-        map((values) => calculateState(...values)),
-    );
-}
-
-function calculateState(appState: IAppState,
-                        viewportSize: IContentSize): IPageContainerState {
-
-    const {currentPage} = appState;
-
-    const navBarProps: INavBarProps = {
-        currentPage,
-        verticalBar: showVerticalNavBar(viewportSize),
-    };
-
-    return {navBarProps};
-}
-
-
-/**
- * Display a vertical navigation bar only on landscape-oriented phones
- * (`width > height` and `height < 415px`).
- *
- * @see https://www.mydevice.io/#tab1
- */
-function showVerticalNavBar(contentSize: IContentSize): boolean {
-    const {heightPx, widthPx} = contentSize;
-    return (widthPx > heightPx) && (heightPx < 415);
-}

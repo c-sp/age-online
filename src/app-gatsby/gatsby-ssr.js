@@ -21,14 +21,14 @@ exports.onPreRenderHTML = ({getHeadComponents, replaceHeadComponents}) => {
 // if the locale is not part of the current pathname.
 
 // TODO redundant: list of locales
-// TODO redundant: 'settings:preferred-locale'
+// TODO redundant: 'age-online:preferred-locale'
 const locales = ['de', 'en'];
 const joinedLocales = locales.map(l => `'${l}'`).join(', ');
 
 function getLoc(locales) {
     function storageLoc() {
         try {
-            return typeof localStorage === 'undefined' ? '' : localStorage.getItem('settings:preferred-locale');
+            return typeof localStorage === 'undefined' ? '' : localStorage.getItem('age-online:preferred-locale');
         } catch (_) {
             return '';
         }

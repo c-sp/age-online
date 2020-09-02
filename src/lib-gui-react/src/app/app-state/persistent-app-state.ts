@@ -1,20 +1,22 @@
-import {AppPage, isPreferredTheme, Locale, PreferredTheme} from '../../components';
+import {isPreferredTheme, PreferredTheme} from '../../components';
 import {IAppState, IPersistentAppState} from './app-state';
 import {CurrentAppState} from './current-app-state';
 import {LocalStorage} from './local-storage';
 
 
-const KEY_PREFERRED_LOCALE = 'settings:preferred-locale';
-const KEY_PREFERRED_THEME = 'settings:preferred-theme';
+const KEY_PREFERRED_LOCALE = 'preferred-locale';
+const KEY_PREFERRED_THEME = 'preferred-theme';
 
 
 export class PersistentAppState extends CurrentAppState implements IPersistentAppState {
 
-    private readonly store = new LocalStorage();
+    private readonly store = new LocalStorage('age-online');
     private preferDarkTheme = false;
 
-    constructor(globalCss?: object) {
-        super(globalCss);
+    constructor(fontsPath: string,
+                globalCss?: object) {
+
+        super(fontsPath, globalCss);
         this.updateState(this.readFromStore());
 
         if (typeof window !== 'undefined') {
@@ -40,14 +42,19 @@ export class PersistentAppState extends CurrentAppState implements IPersistentAp
     }
 
 
-    setCurrentPage(currentPage: AppPage): void {
+    openRomFile(romFile: IAppState['romFile']): void {
+        this.updateState({romFile});
+    }
+
+
+    setCurrentPage(currentPage: IAppState['currentPage']): void {
         if (currentPage !== this.appState.currentPage) {
             this.updateState({currentPage});
         }
     }
 
 
-    setPreferredLocale(preferredLocale: Locale): void {
+    setPreferredLocale(preferredLocale: IAppState['preferredLocale']): void {
         this.store.setItem(KEY_PREFERRED_LOCALE, preferredLocale);
         if (preferredLocale !== this.appState.preferredLocale) {
             this.updateState({preferredLocale});
@@ -55,7 +62,7 @@ export class PersistentAppState extends CurrentAppState implements IPersistentAp
     }
 
 
-    setPreferredTheme(preferredTheme: PreferredTheme): void {
+    setPreferredTheme(preferredTheme: IAppState['preferredTheme']): void {
         this.store.setItem(KEY_PREFERRED_THEME, preferredTheme);
 
         const {lightTheme, darkTheme, preferDarkTheme} = this;

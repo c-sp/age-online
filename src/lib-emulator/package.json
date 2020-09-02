@@ -9,6 +9,7 @@
   "module": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
   "dependencies": {
+    "rxjs": "^6.6.0",
     "tslib": "^2.0.0"
   },
   "devDependencies": {

@@ -8,7 +8,8 @@ const {extname} = require('path');
 const locales = ['de', 'en']; // TODO redundant
 
 
-exports.onCreatePage = ({page, actions}) => {
+exports.onCreatePage = (param) => {
+    const {page, actions, pathPrefix} = param;
     const {createPage, deletePage} = actions;
 
     // ignore pages auto-created by Gatsby
@@ -25,7 +26,7 @@ exports.onCreatePage = ({page, actions}) => {
 
     function newPage(locale) {
         let {context, path} = page;
-        context = {...context, page: noTrailingSlash(path)};
+        context = {...context, page: noTrailingSlash(path), pathPrefix: noTrailingSlash(pathPrefix)};
 
         if (locale) {
             path = noTrailingSlash(`/${locale}${path}`);

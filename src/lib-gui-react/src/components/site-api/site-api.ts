@@ -36,6 +36,9 @@ export interface ISiteApi {
      */
     readonly SiteLink: TSiteLinkComponent;
 
+    readonly ageWasmJsUrl: string;
+    readonly ageWasmUrl: string;
+
     /**
      * Navigate to the specified page using the specified locale.
      * If no locale is specified, the current locale is used.

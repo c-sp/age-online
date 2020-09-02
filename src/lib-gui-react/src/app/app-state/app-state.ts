@@ -1,3 +1,4 @@
+import {TRomFile} from '@age-online/lib-emulator';
 import {Theme} from '@material-ui/core';
 import {Observable} from 'rxjs';
 import {AppPage, Locale, PreferredTheme} from '../../components';
@@ -23,6 +24,8 @@ export interface IAppState {
      * (if available).
      */
     readonly currentTheme: Theme;
+
+    readonly romFile: TRomFile | null;
 }
 
 export type TAppStateKey = keyof IAppState;
@@ -36,9 +39,11 @@ export interface ICurrentAppState {
 
 
 export interface IPersistentAppState extends ICurrentAppState {
-    setCurrentPage(currentPage: AppPage): void;
+    openRomFile(romFile: IAppState['romFile']): void;
 
-    setPreferredLocale(locale: Locale): void;
+    setCurrentPage(currentPage: IAppState['currentPage']): void;
 
-    setPreferredTheme(preferredTheme: PreferredTheme): void;
+    setPreferredLocale(locale: IAppState['preferredLocale']): void;
+
+    setPreferredTheme(preferredTheme: IAppState['preferredTheme']): void;
 }

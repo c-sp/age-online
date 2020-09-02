@@ -13,7 +13,7 @@ export class LocalStorage {
 
     private readonly store: Storage | null;
 
-    constructor() {
+    constructor(private readonly globalPrefix: string) {
         try {
             // not available for SSR
             this.store = typeof localStorage === 'undefined' ? null : localStorage;
@@ -27,7 +27,7 @@ export class LocalStorage {
 
 
     getItem(key: string): string | null {
-        const value = this.store?.getItem(key);
+        const value = this.store?.getItem(`${this.globalPrefix}/${key}`);
         return value ?? null;
     }
 
@@ -35,7 +35,7 @@ export class LocalStorage {
         try {
             const {store} = this;
             if (store) {
-                store.setItem(key, value);
+                store.setItem(`${this.globalPrefix}/${key}`, value);
             }
 
         } catch (err) {

@@ -7,9 +7,13 @@
     "en": "AGE Online",
     "de": "AGE Online"
   },
-  "page:text": {
-    "en": "The currently running AGE Online Application is based on commit {commitLink} (branch {branchLink}).",
-    "de": "Die laufende AGE Online Applikation basiert auf Commit {commitLink} (Branch {branchLink})."
+  "commit:text": {
+    "en": "deployed commit: {commitLink} ({commitDate}){br}branch {branchLink}",
+    "de": "installierter Commit: {commitLink} ({commitDate}){br}Branch {branchLink}"
+  },
+  "label:open-file": {
+    "en": "open local rom file",
+    "de": "lokale Rom Datei öffnen"
   },
   "link:repo": {
     "en": "AGE Online on GitHub",

@@ -8,6 +8,9 @@ class NoSiteApi implements ISiteApi {
         return <></>;
     };
 
+    readonly ageWasmJsUrl = '';
+    readonly ageWasmUrl = '';
+
     navigateLocalized(): void {
         throw new Error('site api not implemented');
     }

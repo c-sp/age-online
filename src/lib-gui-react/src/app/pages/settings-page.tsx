@@ -23,6 +23,7 @@ const HREF_FLATICON = 'https://www.flaticon.com/packs/countrys-flags';
 
 const styles = createStyles({
     main: {
+        padding: '32px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -84,13 +85,13 @@ class ComposedSettingsPage extends TidyComponent<TSettingsPageProps, ISettingsPa
                 <Typography component={'div'}
                             color="textSecondary"
                             variant="caption">
-                    {i18n.translate(
+                    <p>{i18n.translate(
                         'flag-hint',
                         {
                             LinkFreepik: <a href={HREF_FREEPIK} {...EXTERNAL_LINK_PROPS}>Freepik</a>,
                             LinkFlaticon: <a href={HREF_FLATICON} {...EXTERNAL_LINK_PROPS}>www.flaticon.com</a>,
                         },
-                    )}
+                    )}</p>
                 </Typography>
 
             </Paper>

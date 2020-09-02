@@ -31,31 +31,6 @@ module.exports = {
         ...sourceMapsPlugin,
         ...webpackAnalyzerPlugin,
 
-        // Download and self-host web fonts.
-        // Set 'https_proxy' when behind a proxy.
-        //
-        // gatsby-plugin-webfonts downloads font files using
-        // https://github.com/axios/axios
-        // See also:
-        // https://github.com/hupe1980/gatsby-plugin-webfonts/blob/master/gatsby-plugin-webfonts/src/modules/utils.js
-        {
-            resolve: `gatsby-plugin-webfonts`,
-            options: {
-                fonts: {
-                    google: [
-                        {
-                            family: 'Roboto',
-                            variants: ['400'],
-                        },
-                        {
-                            family: 'Roboto Condensed',
-                            variants: ['400'],
-                        },
-                    ],
-                },
-            },
-        },
-
         // Use Gatsby V1 Layout for context providers and AppContainer.
         // This plugin generates the files gatsby-browser.js and gatsby-ssr.js
         // from layouts/index.
