@@ -1,14 +1,14 @@
 {
-  "link:home": {
+  "home": {
     "en": "AGE Online",
     "de": "AGE Online"
   },
-  "link:settings": {
+  "emulator": {
+    "en": "running emulator",
+    "de": "laufender Emulator"
+  },
+  "settings": {
     "en": "AGE Online Settings",
     "de": "AGE Online Einstellungen"
-  },
-  "nav-label": {
-    "en": "primary navigation",
-    "de": "primäre Navigation"
   }
 }

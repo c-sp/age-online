@@ -1,71 +1,33 @@
-import {createStyles, fade, IconButton, StyleRules, Theme, WithStyles, withStyles} from '@material-ui/core';
-import {SettingsTwoTone} from '@material-ui/icons';
 import {WithI18nProps} from '@shopify/react-i18n';
-import React, {Component, CSSProperties} from 'react';
-import {withI18nBundle} from '../i18n';
-import {AppPage, ISiteApiProps, withSiteApi} from '../site-api';
-import i18nBundle from './emulator-toolbar.i18n.json';
+import React, {Component} from 'react';
+import {TOOLBAR_ICON_STYLE} from '../common';
+import {OpenRomFileButton} from '../open-local-file';
+import {SettingsIconSiteLink} from '../site-api';
+import {EmulatorBar, IEmulatorBarProps, withBarsI18n} from './emulator-bar';
 
 
-function styles(theme: Theme): StyleRules {
-    return createStyles({
-        root: {
-            display: 'flex',
-            alignItems: 'center',
-            backgroundColor: fade(theme.palette.background.default, 0.8),
-        },
-    });
+export interface IEmulatorToolbarProps extends IEmulatorBarProps {
+    openRomFile?(file: File): void;
 }
 
-/**
- * to override Material UI styles we have to use a custom
- * CSSProperties instance
- */
-const ICON_STYLE: CSSProperties = {
-    fontSize: '40px',
-    // remove descenders, see also:
-    // https://stackoverflow.com/a/5804278
-    display: 'block',
-    opacity: '0.5',
-};
+type TEmulatorToolbarProps = IEmulatorToolbarProps & WithI18nProps;
 
-
-export interface IEmulatorToolbarProps {
-    readonly className?: string;
-}
-
-type TNavProps = IEmulatorToolbarProps & ISiteApiProps & WithStyles & WithI18nProps;
-
-class ComposedEmulatorToolbar extends Component<TNavProps> {
-
-    constructor(props: TNavProps) {
-        super(props);
-    }
+class ComposedEmulatorToolbar extends Component<TEmulatorToolbarProps> {
 
     render(): JSX.Element {
-        const {className, classes, i18n, siteApi: {SiteLink}} = this.props;
-
-        const classNames = className ? `${className} ${classes.root}` : classes.root;
-
+        const {className, i18n} = this.props;
         return (
-            <nav className={classNames}>
+            <EmulatorBar className={className}
+                         aria-label={i18n.translate('bar-label')}>
 
-                <SiteLink appPage={AppPage.SETTINGS}>
-                    <IconButton aria-label={i18n.translate('link:settings')}>
-                        <SettingsTwoTone style={ICON_STYLE}/>
-                    </IconButton>
-                </SiteLink>
+                <OpenRomFileButton style={TOOLBAR_ICON_STYLE}/>
+                <SettingsIconSiteLink style={TOOLBAR_ICON_STYLE}/>
 
-            </nav>
+            </EmulatorBar>
         );
     }
 }
 
-
-export const EmulatorToolbar = withStyles(styles)(
-    withI18nBundle('emulator-toolbar', i18nBundle)(
-        withSiteApi(
-            ComposedEmulatorToolbar,
-        ),
-    ),
+export const EmulatorToolbar = withBarsI18n()(
+    ComposedEmulatorToolbar,
 );

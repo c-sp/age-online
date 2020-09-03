@@ -119,22 +119,26 @@ export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLay
         // Note that we must declare it within <ThemeProvider> to handle theme
         // changes appropriately.
         return (
-            <ErrorBoundary error={error} locale={i18nManager.details.locale}>
+            <ThemeProvider theme={currentTheme}>
+                <CssBaseline/>
 
-                <SiteApiContext.Provider value={siteApi}>
-                    <AppStateContext.Provider value={persistentAppState}>
-                        <I18nContext.Provider value={i18nManager}>
-                            <ThemeProvider theme={currentTheme}>
-                                <CssBaseline/>
+                <ErrorBoundary error={error}
+                               locale={i18nManager.details.locale}
+                               showReloadButton={true}>
+
+                    <SiteApiContext.Provider value={siteApi}>
+                        <AppStateContext.Provider value={persistentAppState}>
+                            <I18nContext.Provider value={i18nManager}>
 
                                 <AppContainer>{children}</AppContainer>
 
-                            </ThemeProvider>
-                        </I18nContext.Provider>
-                    </AppStateContext.Provider>
-                </SiteApiContext.Provider>
+                            </I18nContext.Provider>
+                        </AppStateContext.Provider>
+                    </SiteApiContext.Provider>
 
-            </ErrorBoundary>
+                </ErrorBoundary>
+
+            </ThemeProvider>
         );
     }
 }

@@ -1,0 +1,10 @@
+{
+  "bar-label": {
+    "en": "emulator toolbar",
+    "de": "Emulator Toolbar"
+  },
+  "close-emulator": {
+    "en": "stop emulator",
+    "de": "Emulator beenden"
+  }
+}

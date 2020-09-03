@@ -1,19 +1,27 @@
 {
+  "seo:title": {
+    "en": "AGE Online",
+    "de": "AGE Online"
+  },
   "seo:description": {
     "en": "AGE Online - An Online Gameboy Emulator",
     "de": "AGE Online - Ein Online Gameboy Emulator"
   },
-  "page:heading": {
-    "en": "AGE Online",
-    "de": "AGE Online"
+  "page:heading1": {
+    "en": "AGE",
+    "de": "AGE"
   },
-  "commit:text": {
-    "en": "deployed commit: {commitLink} ({commitDate}){br}branch {branchLink}",
-    "de": "installierter Commit: {commitLink} ({commitDate}){br}Branch {branchLink}"
+  "page:heading2": {
+    "en": "(Another Gameboy Emulator)",
+    "de": "(Another Gameboy Emulator)"
   },
-  "label:open-file": {
-    "en": "open local rom file",
-    "de": "lokale Rom Datei öffnen"
+  "page:commit": {
+    "en": "deployed commit: {commitLink}{br}({commitDate}){br}branch: {branchLink}",
+    "de": "installierter Commit: {commitLink}{br}({commitDate}){br}Branch: {branchLink}"
+  },
+  "page:open-rom-file": {
+    "en": "open rom file",
+    "de": "Rom Datei öffnen"
   },
   "link:repo": {
     "en": "AGE Online on GitHub",

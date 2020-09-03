@@ -13,16 +13,16 @@ interface IAppContainerState {
 }
 
 function calculateAppContainerState$(currentAppState: ICurrentAppState): Observable<IAppContainerState> {
-    return currentAppState.appState$('currentPage', 'romFile').pipe(
+    return currentAppState.appState$('currentPage', 'currentRomFile').pipe(
         map(calculateAppContainerState),
     );
 }
 
 function calculateAppContainerState(appState: IAppState): IAppContainerState {
-    const {romFile, currentPage} = appState;
+    const {currentRomFile, currentPage} = appState;
     return {
-        renderEmulator: !!romFile,
-        renderPage: !romFile || (currentPage !== AppPage.HOME),
+        renderEmulator: !!currentRomFile,
+        renderPage: !currentRomFile || (currentPage !== AppPage.HOME),
     };
 }
 

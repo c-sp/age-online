@@ -22,10 +22,10 @@ function showVerticalNavBar(contentSize: IContentSize): boolean {
     return (widthPx > heightPx) && (heightPx < 415);
 }
 
-function calculateState(contentSize: IContentSize, {currentPage}: IAppState): IPageContainerState {
+function calculateState(contentSize: IContentSize, {currentPage, emulatorState}: IAppState): IPageContainerState {
     const verticalBar = showVerticalNavBar(contentSize);
     return {
-        navBarProps: {verticalBar, currentPage},
+        navBarProps: {verticalBar, currentPage, emulatorState},
     };
 }
 

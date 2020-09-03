@@ -1,15 +1,16 @@
-import {EXTERNAL_LINK_PROPS, LastGitCommit} from '@age-online/lib-common';
-import {createStyles, Paper, WithStyles, withStyles} from '@material-ui/core';
+import {LastGitCommit} from '@age-online/lib-common';
+import {createStyles, Paper, Typography, WithStyles, withStyles} from '@material-ui/core';
 import {GitHub} from '@material-ui/icons';
-import {DateStyle, WithI18nProps} from '@shopify/react-i18n';
+import {WithI18nProps} from '@shopify/react-i18n';
 import React, {Component, ReactNode} from 'react';
-import {Cartridge, COMMON_I18N_REPLACEMENTS, OpenLocalFile, SEO, withI18nBundle} from '../../components';
+import {COMMON_I18N_REPLACEMENTS, EXTERNAL_LINK_PROPS, OpenRomFileButton, SEO, withI18nBundle} from '../../components';
 import {IPersistentAppStateProps, withPersistentAppState} from '../app-state';
 import i18nBundle from './home-page.i18n.json';
 
 
 const styles = createStyles({
     main: {
+        minHeight: '100%', // extend <Paper> style to the page's bottom
         padding: '32px',
         textAlign: 'center',
 
@@ -18,6 +19,12 @@ const styles = createStyles({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+
+            '& svg': {
+                // remove descenders, see also:
+                // https://stackoverflow.com/a/5804278
+                display: 'block',
+            },
 
             '& > :last-child': {
                 marginLeft: '1em',
@@ -42,16 +49,14 @@ class ComposedHomePage extends Component<THomePageProps> {
         return (
             <Paper component={'main'} className={classes.main} elevation={0}>
                 <SEO i18n={i18n}/>
-                <h1>{i18n.translate('page:heading')}</h1>
+                <h1>{i18n.translate('page:heading1')}</h1>
+                <h2>{i18n.translate('page:heading2')}</h2>
 
                 <div>
-                    <OpenLocalFile accept=".gb, .gbc, .zip"
-                                   aria-label={i18n.translate('label:open-file')}
-                                   openFile={localFile => persistentAppState.openRomFile({localFile})}>
-
-                        <Cartridge style={{fontSize: '100px'}} color="primary"/>
-                    </OpenLocalFile><br/>
-                    open rom file
+                    <OpenRomFileButton openFile={localFile => persistentAppState.openRomFile({localFile})}
+                                       style={{fontSize: '100px'}}
+                                       color="primary"
+                                       showLabel={true}/>
                 </div>
 
                 <div>
@@ -62,19 +67,30 @@ class ComposedHomePage extends Component<THomePageProps> {
                         <GitHub fontSize="large"/>
                     </a>
 
-                    <div>{i18n.translate(
-                        'commit:text',
-                        {
+                    <Typography component={'div'}
+                                variant="caption">{
+                        i18n.translate('page:commit', {
                             ...COMMON_I18N_REPLACEMENTS,
+
                             commitLink: <a href={hrefCommit}
                                            aria-label={i18n.translate('link:commit')}
                                            {...EXTERNAL_LINK_PROPS}>{LastGitCommit.shortHash}</a>,
-                            commitDate: i18n.formatDate(commitedOn, {style: DateStyle.Humanize}),
+
+                            commitDate: <span style={{whiteSpace: 'nowrap'}}>{i18n.formatDate(commitedOn, {
+                                // https://tc39.es/ecma402/#datetimeformat-objects
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                timeZoneName: 'short',
+                            })}</span>,
+
                             branchLink: <a href={hrefBranch}
                                            aria-label={i18n.translate('link:branch')}
                                            {...EXTERNAL_LINK_PROPS}>{LastGitCommit.branch}</a>,
-                        },
-                    )}</div>
+                        })
+                    }</Typography>
                 </div>
 
             </Paper>

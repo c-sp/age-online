@@ -2,7 +2,7 @@ import {errorInfo} from '@age-online/lib-common';
 import {Button, createStyles, WithStyles, withStyles} from '@material-ui/core';
 import React, {Component, ReactNode} from 'react';
 import i18nBundle from './error-boundary.i18n.json';
-import { sanitizeLocale } from '../i18n';
+import {sanitizeLocale} from '../i18n';
 
 
 const styles = createStyles({
@@ -29,7 +29,7 @@ const styles = createStyles({
 export interface IErrorBoundaryProps {
     readonly error?: unknown;
     readonly locale?: string;
-    readonly hideReloadButton?: true;
+    readonly showReloadButton?: boolean;
 }
 
 interface IErrorBoundaryState {
@@ -62,7 +62,7 @@ class ComposedErrorBoundary extends Component<TErrorBoundaryProps, IErrorBoundar
     }
 
     render(): ReactNode {
-        const {props: {classes, children, locale, hideReloadButton}, state: {error}} = this;
+        const {props: {classes, children, locale, showReloadButton}, state: {error}} = this;
 
         if (error === undefined) {
             return children;
@@ -74,9 +74,9 @@ class ComposedErrorBoundary extends Component<TErrorBoundaryProps, IErrorBoundar
         const reloadPage = i18nBundle.reload[loc] || 'reload page';
 
         return <div className={classes.container}>
-            {!hideReloadButton && <Button variant="contained"
-                                          color="primary"
-                                          onClick={() => location.reload()}>{reloadPage}</Button>}
+            {showReloadButton && <Button variant="contained"
+                                         color="primary"
+                                         onClick={() => location.reload()}>{reloadPage}</Button>}
             <div>{title}</div>
             <pre>{errorInfo(error)}</pre>
         </div>;

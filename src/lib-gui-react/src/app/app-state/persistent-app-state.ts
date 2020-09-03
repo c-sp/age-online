@@ -42,11 +42,6 @@ export class PersistentAppState extends CurrentAppState implements IPersistentAp
     }
 
 
-    openRomFile(romFile: IAppState['romFile']): void {
-        this.updateState({romFile});
-    }
-
-
     setCurrentPage(currentPage: IAppState['currentPage']): void {
         if (currentPage !== this.appState.currentPage) {
             this.updateState({currentPage});
@@ -75,6 +70,15 @@ export class PersistentAppState extends CurrentAppState implements IPersistentAp
         if ((newTheme !== appState.currentTheme) || (preferredTheme !== appState.preferredTheme)) {
             this.updateState({preferredTheme, currentTheme: newTheme});
         }
+    }
+
+
+    openRomFile(currentRomFile: IAppState['currentRomFile']): void {
+        this.updateState({currentRomFile});
+    }
+
+    setEmulatorState(emulatorState: IAppState["emulatorState"]): void {
+        this.updateState({emulatorState});
     }
 
 

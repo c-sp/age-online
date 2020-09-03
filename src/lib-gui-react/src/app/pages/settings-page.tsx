@@ -1,9 +1,9 @@
-import {EXTERNAL_LINK_PROPS} from "@age-online/lib-common";
 import {createStyles, Paper, Typography, WithStyles, withStyles} from '@material-ui/core';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {ReactNode} from 'react';
 import {
     AppPage,
+    EXTERNAL_LINK_PROPS,
     ISiteApiProps,
     LocaleSelection,
     PreferredTheme,
@@ -23,6 +23,7 @@ const HREF_FLATICON = 'https://www.flaticon.com/packs/countrys-flags';
 
 const styles = createStyles({
     main: {
+        minHeight: '100%', // extend <Paper> style to the page's bottom
         padding: '32px',
         display: 'flex',
         flexDirection: 'column',

@@ -1,9 +1,17 @@
-import {createStyles, IconButton, SvgIcon, WithStyles, withStyles} from '@material-ui/core';
-import {Home, HomeTwoTone, SettingsRounded, SettingsTwoTone} from '@material-ui/icons';
+import {assertNever} from '@age-online/lib-common';
+import {createStyles, WithStyles, withStyles} from '@material-ui/core';
 import {WithI18nProps} from '@shopify/react-i18n';
-import React, {Component, CSSProperties, ReactElement} from 'react';
+import React, {Component, ComponentType, CSSProperties} from 'react';
+import {TOOLBAR_ICON_STYLE} from '../common';
 import {withI18nBundle} from '../i18n';
-import {AppPage, ISiteApiProps, withSiteApi} from '../site-api';
+import {
+    AppPage,
+    EmulatorErrorIconSiteLink,
+    EmulatorLoadingIconSiteLink,
+    EmulatorRunningIconSiteLink,
+    HomeIconSiteLink, IStyleProps,
+    SettingsIconSiteLink,
+} from '../site-api';
 import i18nBundle from './page-nav-bar.i18n.json';
 
 
@@ -21,71 +29,76 @@ const styles = createStyles({
     },
 });
 
-/**
- * to override Material UI styles we have to use a custom
- * CSSProperties instance
- */
-const ICON_STYLE_ACTIVE: CSSProperties = {
-    fontSize: '40px',
-    // remove descenders, see also:
-    // https://stackoverflow.com/a/5804278
-    display: 'block',
-};
-
 const ICON_STYLE_INACTIVE: CSSProperties = {
-    ...ICON_STYLE_ACTIVE,
+    ...TOOLBAR_ICON_STYLE,
     opacity: '0.5',
 };
 
 
-export interface IPageNavBarProps {
-    readonly verticalBar: boolean;
-    readonly currentPage: AppPage;
+export enum EmulatorState {
+    NO_EMULATOR = 'no-emulator',
+    EMULATOR_LOADING = 'emulator-loading',
+    EMULATOR_RUNNING = 'emulator-running',
+    EMULATOR_ERROR = 'emulator-error',
 }
 
-type TNavProps = IPageNavBarProps & ISiteApiProps & WithStyles & WithI18nProps;
+export interface IPageNavBarProps {
+    readonly verticalBar?: boolean;
+    readonly currentPage?: AppPage;
+    readonly emulatorState?: EmulatorState;
+}
 
-class ComposedPageNavBar extends Component<TNavProps> {
+type TPageNavBarProps = IPageNavBarProps & WithStyles & WithI18nProps;
 
-    constructor(props: TNavProps) {
-        super(props);
-    }
+class ComposedPageNavBar extends Component<TPageNavBarProps> {
 
     render(): JSX.Element {
-        const {classes, verticalBar, i18n, siteApi: {SiteLink}} = this.props;
+        const {classes, i18n, verticalBar} = this.props;
 
+        const HomeIcon = this.HomeIcon();
         const classNames = `${classes.root} ${verticalBar ? classes.vertical : classes.horizontal}`;
 
-        const HomeIcon = this.icon(AppPage.HOME, Home, HomeTwoTone);
-        const SettingsIcon = this.icon(AppPage.SETTINGS, SettingsRounded, SettingsTwoTone);
-
         return (
-            <nav className={classNames} aria-label={i18n.translate('nav-label')}>
-                <SiteLink appPage={AppPage.HOME}>
-                    <IconButton aria-label={i18n.translate('link:home')}>{HomeIcon}</IconButton>
-                </SiteLink>
-                <SiteLink appPage={AppPage.SETTINGS}>
-                    <IconButton aria-label={i18n.translate('link:settings')}>{SettingsIcon}</IconButton>
-                </SiteLink>
+            <nav className={classNames}
+                 aria-label={i18n.translate('nav-label')}>
+
+                <HomeIcon style={this.iconStyle(AppPage.HOME)}/>
+                <SettingsIconSiteLink style={this.iconStyle(AppPage.SETTINGS)}/>
+
             </nav>
         );
     }
 
-    private icon(forPage: AppPage,
-                 ActiveIcon: typeof SvgIcon,
-                 InactiveIcon: typeof SvgIcon): ReactElement {
+    private HomeIcon(): ComponentType<IStyleProps> {
+        const {emulatorState} = this.props;
+        switch (emulatorState) {
 
-        return this.props.currentPage === forPage
-            ? <ActiveIcon style={ICON_STYLE_ACTIVE}/>
-            : <InactiveIcon style={ICON_STYLE_INACTIVE}/>;
+            case undefined:
+            case EmulatorState.NO_EMULATOR:
+                return HomeIconSiteLink;
+
+            case EmulatorState.EMULATOR_LOADING:
+                return EmulatorLoadingIconSiteLink;
+
+            case EmulatorState.EMULATOR_ERROR:
+                return EmulatorErrorIconSiteLink;
+
+            case EmulatorState.EMULATOR_RUNNING:
+                return EmulatorRunningIconSiteLink;
+
+            default:
+                return assertNever(emulatorState);
+        }
+    }
+
+    private iconStyle(appPage: AppPage): CSSProperties {
+        return this.props.currentPage === appPage ? TOOLBAR_ICON_STYLE : ICON_STYLE_INACTIVE;
     }
 }
 
 
 export const PageNavBar = withStyles(styles)(
     withI18nBundle('page-nav-bar', i18nBundle)(
-        withSiteApi(
-            ComposedPageNavBar,
-        ),
+        ComposedPageNavBar,
     ),
 );
