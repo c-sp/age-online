@@ -6,17 +6,17 @@ import {FlagDE, FlagUS} from '../icons';
 import {Locale, sanitizeLocale} from './locale';
 
 
-const StyledRadio = withStyles({
+const StyledRadio = withStyles(theme => ({
     root: {
-        padding: '4px',
-        marginLeft: '8px',
-        marginRight: '8px',
-        border: '2px solid transparent',
+        padding: theme.spacing(0.5),
+        marginLeft: theme.spacing(),
+        marginRight: theme.spacing(),
+        border: '3px solid transparent',
     },
     checked: {
-        border: '2px solid',
+        border: '3px solid',
     },
-})(Radio);
+}))(Radio);
 
 const StylesFormControlLabel = withStyles({
     root: {

@@ -1,8 +1,9 @@
 import {combineLatest, from, Observable} from 'rxjs';
 import {fromFetch} from 'rxjs/fetch';
 import {catchError, map, shareReplay, switchMap, take} from 'rxjs/operators';
-import {AgeWasmFetchError, AgeWasmInitError, IEmulation, IEmulationFactory, TRomFile} from '../api';
+import {IEmulation, IEmulationFactory, RomFileLoadingError, TRomFile, WasmFetchError, WasmInitError} from '../api';
 import {Emulation} from './emulation';
+import {readRomFile$} from './rom-file';
 import {IWasmInstance} from './wasm-instance';
 
 
@@ -18,7 +19,7 @@ export class EmulationFactory implements IEmulationFactory {
             // load the wasm-Initializing JavaScript module (WebPack: don't bundle this!)
             from(import(/* webpackIgnore: true */ ageWasmJsUrl)).pipe(
                 catchError(err => {
-                    throw new AgeWasmFetchError(err);
+                    throw new WasmFetchError(err);
                 }),
             ),
 
@@ -28,11 +29,11 @@ export class EmulationFactory implements IEmulationFactory {
                     if (response.ok) {
                         return response.arrayBuffer();
                     }
-                    throw new Error();
+                    throw new WasmFetchError();
                 }),
             ).pipe(
                 catchError(err => {
-                    throw new AgeWasmFetchError(err);
+                    throw new WasmFetchError(err);
                 }),
             ),
 
@@ -46,11 +47,11 @@ export class EmulationFactory implements IEmulationFactory {
             // initialize new wasm module
             switchMap(([wasmInit, wasmBinary]) => from(wasmInit.default({wasmBinary})).pipe(
                 catchError(err => {
-                    throw new AgeWasmInitError(err);
+                    throw new WasmInitError(err);
                 }),
                 map(wasmInstance => {
                     if (!wasmInstance) {
-                        throw new AgeWasmInitError();
+                        throw new WasmInitError();
                     }
                     return wasmInstance as IWasmInstance;
                 }),
@@ -59,9 +60,16 @@ export class EmulationFactory implements IEmulationFactory {
     }
 
 
-    newEmulation$(_romFile: TRomFile): Observable<IEmulation> {
-        return this.ageWasmInstance$.pipe(
-            map(wasmInstance => new Emulation(wasmInstance)),
+    newEmulation$(romFile: TRomFile): Observable<IEmulation> {
+        return combineLatest([
+            this.ageWasmInstance$,
+            readRomFile$(romFile).pipe(
+                catchError(err => {
+                    throw new RomFileLoadingError(err);
+                }),
+            ),
+        ]).pipe(
+            map(([wasmInstance, romFile]) => new Emulation(wasmInstance, romFile)),
         );
     }
 }

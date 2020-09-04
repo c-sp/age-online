@@ -1,21 +1,39 @@
 import {LastGitCommit} from '@age-online/lib-common';
-import {createStyles, Paper, Typography, WithStyles, withStyles} from '@material-ui/core';
+import {Button, createStyles, IconButton, Paper, Typography, WithStyles, withStyles} from '@material-ui/core';
+import {Theme} from '@material-ui/core/styles/createMuiTheme';
 import {GitHub} from '@material-ui/icons';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {Component, ReactNode} from 'react';
-import {COMMON_I18N_REPLACEMENTS, EXTERNAL_LINK_PROPS, OpenRomFileButton, SEO, withI18nBundle} from '../../components';
+import {
+    Cartridge,
+    COMMON_I18N_REPLACEMENTS,
+    EXTERNAL_LINK_PROPS,
+    OpenLocalRomFile,
+    SEO,
+    withI18nBundle,
+} from '../../components';
 import {IPersistentAppStateProps, withPersistentAppState} from '../app-state';
 import i18nBundle from './home-page.i18n.json';
 
 
-const styles = createStyles({
+const styles = (theme: Theme) => createStyles({
     main: {
         minHeight: '100%', // extend <Paper> style to the page's bottom
-        padding: '32px',
+        padding: theme.spacing(4),
         textAlign: 'center',
 
+        '& > :nth-child(1)': {
+            marginBottom: 0,
+        },
+        '& > :nth-child(2)': {
+            marginTop: 0,
+        },
+
+        '& > :nth-child(n+3)': {
+            marginTop: theme.spacing(4),
+        },
+
         '& > :last-child': {
-            marginTop: '3em',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -27,12 +45,17 @@ const styles = createStyles({
             },
 
             '& > :last-child': {
-                marginLeft: '1em',
                 textAlign: 'left',
             }
         }
     },
 });
+
+const StyledButton = withStyles({
+    label: {
+        flexDirection: 'column',
+    }
+})(Button) as typeof Button; // the cast is required to allow component="span" below
 
 type THomePageProps = WithStyles & WithI18nProps & IPersistentAppStateProps;
 
@@ -53,10 +76,12 @@ class ComposedHomePage extends Component<THomePageProps> {
                 <h2>{i18n.translate('page:heading2')}</h2>
 
                 <div>
-                    <OpenRomFileButton openFile={localFile => persistentAppState.openRomFile({localFile})}
-                                       style={{fontSize: '100px'}}
-                                       color="primary"
-                                       showLabel={true}/>
+                    <OpenLocalRomFile openRomFile={localFile => persistentAppState.openRomFile({localFile})}>
+                        <StyledButton color="primary" component="span">
+                            <Cartridge style={{fontSize: '100px'}}/>
+                            <span>{i18n.translate('page:open-rom-file')}</span>
+                        </StyledButton>
+                    </OpenLocalRomFile>
                 </div>
 
                 <div>
@@ -64,7 +89,9 @@ class ComposedHomePage extends Component<THomePageProps> {
                        aria-label={i18n.translate('link:repo')}
                        {...EXTERNAL_LINK_PROPS}>
 
-                        <GitHub fontSize="large"/>
+                        <IconButton color="primary">
+                            <GitHub fontSize="large"/>
+                        </IconButton>
                     </a>
 
                     <Typography component={'div'}

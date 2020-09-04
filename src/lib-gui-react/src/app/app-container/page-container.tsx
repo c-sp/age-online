@@ -41,7 +41,7 @@ function calculateState$(contentSizeSubject: BehaviorSubject<IContentSize>,
 
     return combineLatest([
         contentSize$,
-        currentAppState.appState$('currentPage'),
+        currentAppState.appState$('currentPage', 'emulatorState'),
     ]).pipe(
         map(([contentSize, appState]) => calculateState(contentSize, appState)),
     );

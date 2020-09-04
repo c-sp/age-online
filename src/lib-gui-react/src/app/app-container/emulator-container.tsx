@@ -1,7 +1,9 @@
 import {assertElement, IContentSize, observeSize} from '@age-online/lib-common';
+import {IEmulation, newEmulationFactory} from '@age-online/lib-emulator';
 import {createStyles, StyleRules, Theme, WithStyles, withStyles} from '@material-ui/core';
 import React from 'react';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
 import {
     EmulatorCloseBar,
     EmulatorState,
@@ -11,6 +13,7 @@ import {
     withSiteApi,
 } from '../../components';
 import {IPersistentAppStateProps, withPersistentAppState} from '../app-state';
+import {EmulatorStateDetails, TEmulatorState} from './emulation-state';
 
 
 function styles(theme: Theme): StyleRules {
@@ -20,15 +23,21 @@ function styles(theme: Theme): StyleRules {
             width: '100%',
             height: '100%',
             backgroundColor: theme.palette.background.paper,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
         },
         hide: {
             display: 'none',
         },
         toolbar: {
             position: 'absolute',
+            top: 0,
+            left: 0,
         },
         closeBar: {
             position: 'absolute',
+            top: 0,
             right: 0,
         },
     });
@@ -41,6 +50,7 @@ export interface IEmulatorContainerProps {
 
 interface IEmulatorContainerState {
     readonly showToolbar: boolean;
+    readonly emulatorState: TEmulatorState;
 }
 
 type TEmulatorContainerProps = IEmulatorContainerProps & IPersistentAppStateProps & ISiteApiProps & WithStyles;
@@ -52,15 +62,38 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
 
     constructor(props: TEmulatorContainerProps) {
         super(props);
-        this.state = {showToolbar: true};
+        this.state = {showToolbar: true, emulatorState: {state: EmulatorState.NO_EMULATOR}};
     }
 
+    private setEmulatorState(emulatorState: TEmulatorState): void {
+        this.setState({emulatorState});
+        this.props.persistentAppState.setEmulatorState(emulatorState.state);
+    }
+
+
     componentDidMount(): void {
-        const {containerDiv, sizeSubject, props: {persistentAppState}, /*siteApi: {ageWasmJsUrl, ageWasmUrl}}*/} = this;
+        const {containerDiv, sizeSubject, props: {persistentAppState, siteApi: {ageWasmJsUrl, ageWasmUrl}}} = this;
         const div = assertElement(containerDiv, 'app container <div>');
 
-        persistentAppState.setEmulatorState(EmulatorState.EMULATOR_LOADING); // TODO just for now ...
+        // TODO closing the emulator leads to wasm reload
+        const emulatorFactory = newEmulationFactory(ageWasmJsUrl, ageWasmUrl);
 
+        this.unsubscribeOnUnmount(
+            persistentAppState.appState$('currentRomFile').pipe(
+                switchMap(({currentRomFile}): Observable<IEmulation | null> => {
+                    if (!currentRomFile) {
+                        return of(null);
+                    }
+                    this.setEmulatorState({state: EmulatorState.EMULATOR_LOADING});
+                    return emulatorFactory.newEmulation$(currentRomFile);
+                }),
+            ).subscribe(
+                emulation => this.setEmulatorState(emulation
+                    ? {state: EmulatorState.EMULATOR_RUNNING, emulation}
+                    : {state: EmulatorState.NO_EMULATOR}),
+                error => this.setEmulatorState({state: EmulatorState.EMULATOR_ERROR, error}),
+            ),
+        );
         this.callOnUnmount(
             observeSize(div, (contentSize) => sizeSubject.next(contentSize)),
             () => sizeSubject.complete(),
@@ -68,9 +101,11 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
         );
     }
 
-    render(): JSX.Element {
-        const {props: {hideEmulator, classes, persistentAppState}, state: {showToolbar}} = this;
 
+    render(): JSX.Element {
+        const {props: {hideEmulator, classes, persistentAppState}, state: {showToolbar, emulatorState}} = this;
+
+        const toolbar = showToolbar || (emulatorState.state !== EmulatorState.EMULATOR_RUNNING);
         const classNames = hideEmulator ? `${classes.container} ${classes.hide}` : classes.container;
 
         return (
@@ -84,7 +119,10 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
                      }
                  }}>
 
-                {showToolbar && <>
+                {!hideEmulator && <EmulatorStateDetails emulatorState={emulatorState}
+                                                        onConfirmError={() => persistentAppState.openRomFile(null)}/>}
+
+                {toolbar && <>
                     <EmulatorToolbar className={classes.toolbar}
                                      openRomFile={localFile => persistentAppState.openRomFile({localFile})}/>
 

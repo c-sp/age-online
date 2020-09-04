@@ -1,4 +1,5 @@
 import {createStyles, Paper, Typography, WithStyles, withStyles} from '@material-ui/core';
+import {Theme} from '@material-ui/core/styles/createMuiTheme';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {ReactNode} from 'react';
 import {
@@ -21,21 +22,21 @@ const HREF_FREEPIK = 'https://www.flaticon.com/authors/freepik';
 const HREF_FLATICON = 'https://www.flaticon.com/packs/countrys-flags';
 
 
-const styles = createStyles({
+const styles = (theme: Theme) => createStyles({
     main: {
         minHeight: '100%', // extend <Paper> style to the page's bottom
-        padding: '32px',
+        padding: theme.spacing(4),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
 
         '& > :nth-child(n+2)': {
-            marginTop: '2em',
+            marginTop: theme.spacing(3),
         },
 
         // flag hint
         '& > :last-child': {
-            marginTop: '4em',
+            marginTop: theme.spacing(5),
             textAlign: 'center',
         },
     },

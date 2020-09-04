@@ -1,0 +1,26 @@
+{
+  "loading": {
+    "en": "loading ...",
+    "de": "lade Daten ..."
+  },
+  "error:confirm": {
+    "en": "close",
+    "de": "schließen"
+  },
+  "error-text": {
+    "en": "Failed to start emulator.",
+    "de": "Der Emulator konnte nicht gestartet werden."
+  },
+  "error-text:wasm-fetch": {
+    "en": "Could not load WebAssembly files.",
+    "de": "WebAssembly Dateien konnten nicht geladen werden."
+  },
+  "error-text:wasm-init": {
+    "en": "WebAssembly initialization failed.",
+    "de": "WebAssembly Initialisierung fehlgeschlagen."
+  },
+  "error-text:rom-file-loading": {
+    "en": "Could not load rom file.",
+    "de": "Rom Datei konnte nicht geladen werden."
+  }
+}

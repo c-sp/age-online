@@ -1,6 +1,6 @@
 import {Badge, IconButton} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
-import {Error, Home, Settings, SettingsRounded, VideogameAsset} from '@material-ui/icons';
+import {Error, Home, SettingsOutlined, SettingsRounded, VideogameAsset} from '@material-ui/icons';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {Component, ComponentType, CSSProperties} from 'react';
 import {withI18nBundle} from '../i18n';
@@ -57,14 +57,14 @@ const useLoadingStyles = makeStyles({
         to: {transform: 'rotate(360deg)'},
     },
     animatedIcon: {
-        animation: '2s ease-in-out 0s infinite alternate $animateIcon',
+        animation: '2s ease-in-out 0s infinite $animateIcon',
     },
 });
 
 function EmulatorLoadingIcon({style}: IStyleProps): JSX.Element {
     const classes = useLoadingStyles();
     return (
-        <Badge badgeContent={<Settings className={classes.animatedIcon} color="disabled"/>}
+        <Badge badgeContent={<SettingsOutlined className={classes.animatedIcon} color="disabled"/>}
                overlap="circle">
 
             <VideogameAsset style={style}/>

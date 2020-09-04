@@ -4,17 +4,24 @@ import {Observable} from 'rxjs';
 import {TRomFile} from './rom-file';
 
 
-export class AgeWasmFetchError extends ErrorWithCause {
+export class WasmFetchError extends ErrorWithCause {
 
     constructor(cause?: Error) {
         super('fetching WebAssembly files failed', cause);
     }
 }
 
-export class AgeWasmInitError extends ErrorWithCause {
+export class WasmInitError extends ErrorWithCause {
 
     constructor(cause?: Error) {
         super('WebAssembly initialization error', cause);
+    }
+}
+
+export class RomFileLoadingError extends ErrorWithCause {
+
+    constructor(cause?: Error) {
+        super('rom file loading error', cause);
     }
 }
 

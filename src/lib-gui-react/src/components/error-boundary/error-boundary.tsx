@@ -1,11 +1,11 @@
 import {errorInfo} from '@age-online/lib-common';
-import {Button, createStyles, WithStyles, withStyles} from '@material-ui/core';
+import {Button, createStyles, Theme, WithStyles, withStyles} from '@material-ui/core';
 import React, {Component, ReactNode} from 'react';
 import i18nBundle from './error-boundary.i18n.json';
 import {sanitizeLocale} from '../i18n';
 
 
-const styles = createStyles({
+const styles = (theme: Theme) => createStyles({
     container: {
         width: '100%',
         height: '100%',
@@ -14,8 +14,8 @@ const styles = createStyles({
         overflow: 'auto',
 
         '& > button': {
-            marginTop: '2em',
-            marginBottom: '2em',
+            marginTop: theme.spacing(3),
+            marginBottom: theme.spacing(3),
         },
 
         '& > *': {
