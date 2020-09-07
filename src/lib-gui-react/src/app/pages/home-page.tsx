@@ -76,7 +76,7 @@ class ComposedHomePage extends Component<THomePageProps> {
                 <h2>{i18n.translate('page:heading2')}</h2>
 
                 <div>
-                    <OpenLocalRomFile openRomFile={localFile => persistentAppState.openRomFile({localFile})}>
+                    <OpenLocalRomFile openRomFile={localFile => persistentAppState.setRomSource({localFile})}>
                         <StyledButton color="primary" component="span">
                             <Cartridge style={{fontSize: '100px'}}/>
                             <span>{i18n.translate('page:open-rom-file')}</span>

@@ -12,7 +12,7 @@ export interface IPersistentAppStateProps extends ICurrentAppStateProps {
 }
 
 
-export const AppStateContext = createContext<PersistentAppState>(new PersistentAppState(''));
+export const AppStateContext = createContext<PersistentAppState>(new PersistentAppState());
 
 export function withCurrentAppState<P>(WrappedComponent: ComponentType<P & ICurrentAppStateProps>): ComponentType<P> {
     return (props: P): ReactElement => (

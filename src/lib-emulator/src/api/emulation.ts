@@ -1,3 +1,6 @@
+import {IGameboyRom} from './rom-file';
+
+
 export enum GameboyButton {
     GB_BUTTON_RIGHT = 0x01,
     GB_BUTTON_LEFT = 0x02,
@@ -11,6 +14,8 @@ export enum GameboyButton {
 
 
 export interface IEmulation {
+
+    readonly romFile: IGameboyRom;
 
     /**
      * Initialize emulation output:

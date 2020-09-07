@@ -1,4 +1,4 @@
-import {TRomFile} from '@age-online/lib-emulator';
+import {TGameboyRomSource} from '@age-online/lib-emulator';
 import {Theme} from '@material-ui/core';
 import {Observable} from 'rxjs';
 import {AppPage, EmulatorState, Locale, PreferredTheme} from '../../components';
@@ -25,7 +25,7 @@ export interface IAppState {
      */
     readonly currentTheme: Theme;
 
-    readonly currentRomFile: TRomFile | null;
+    readonly romSource: TGameboyRomSource | null;
 
     readonly emulatorState: EmulatorState;
 }
@@ -47,7 +47,7 @@ export interface IPersistentAppState extends ICurrentAppState {
 
     setPreferredTheme(preferredTheme: IAppState['preferredTheme']): void;
 
-    openRomFile(romFile: IAppState['currentRomFile']): void;
+    setRomSource(romFile: IAppState['romSource']): void;
 
     setEmulatorState(emulatorState: IAppState['emulatorState']): void;
 }

@@ -1,4 +1,4 @@
-import {GameboyButton, IEmulation} from '../api';
+import {GameboyButton, IEmulation, IGameboyRom} from '../api';
 import {IWasmInstance} from './wasm-instance';
 
 
@@ -8,9 +8,9 @@ export class Emulation implements IEmulation {
     private emulatedMillis = 0;
 
     constructor(private readonly wasmInstance: IWasmInstance,
-                romFile: ArrayBuffer) {
+                readonly romFile: IGameboyRom) {
 
-        const romArray = new Uint8Array(romFile);
+        const romArray = new Uint8Array(romFile.romData);
         const bufferPtr = wasmInstance._gb_allocate_rom_buffer(romArray.length);
         wasmInstance.HEAPU8.set(romArray, bufferPtr);
         wasmInstance._gb_new_emulator();

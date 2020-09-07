@@ -1,7 +1,7 @@
 import {combineLatest, from, Observable} from 'rxjs';
 import {fromFetch} from 'rxjs/fetch';
 import {catchError, map, shareReplay, switchMap, take} from 'rxjs/operators';
-import {IEmulation, IEmulationFactory, RomFileLoadingError, TRomFile, WasmFetchError, WasmInitError} from '../api';
+import {IEmulation, IEmulationFactory, RomFileLoadingError, TGameboyRomSource, WasmFetchError, WasmInitError} from '../api';
 import {Emulation} from './emulation';
 import {readRomFile$} from './rom-file';
 import {IWasmInstance} from './wasm-instance';
@@ -60,7 +60,7 @@ export class EmulationFactory implements IEmulationFactory {
     }
 
 
-    newEmulation$(romFile: TRomFile): Observable<IEmulation> {
+    newEmulation$(romFile: TGameboyRomSource): Observable<IEmulation> {
         return combineLatest([
             this.ageWasmInstance$,
             readRomFile$(romFile).pipe(

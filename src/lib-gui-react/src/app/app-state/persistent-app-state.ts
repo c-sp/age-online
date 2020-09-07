@@ -13,10 +13,8 @@ export class PersistentAppState extends CurrentAppState implements IPersistentAp
     private readonly store = new LocalStorage('age-online');
     private preferDarkTheme = false;
 
-    constructor(fontsPath: string,
-                globalCss?: object) {
-
-        super(fontsPath, globalCss);
+    constructor(globalCss?: object) {
+        super(globalCss);
         this.updateState(this.readFromStore());
 
         if (typeof window !== 'undefined') {
@@ -73,8 +71,8 @@ export class PersistentAppState extends CurrentAppState implements IPersistentAp
     }
 
 
-    openRomFile(currentRomFile: IAppState['currentRomFile']): void {
-        this.updateState({currentRomFile});
+    setRomSource(romSource: IAppState['romSource']): void {
+        this.updateState({romSource});
     }
 
     setEmulatorState(emulatorState: IAppState["emulatorState"]): void {

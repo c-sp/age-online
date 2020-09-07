@@ -15,6 +15,7 @@ import {CssBaseline, Theme, ThemeProvider} from '@material-ui/core';
 import {I18nContext, I18nDetails, I18nManager} from '@shopify/react-i18n';
 import {PageProps} from 'gatsby';
 import React, {ReactNode} from 'react';
+import {Helmet} from 'react-helmet';
 import {GatsbySiteApi} from './gatsby-site-api';
 
 
@@ -49,6 +50,7 @@ export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLay
     private readonly i18nManager: I18nManager;
     private readonly siteApi: GatsbySiteApi;
     private readonly persistentAppState: PersistentAppState;
+    private readonly fontsPath: string;
 
     constructor(props: TRootLayoutProps) {
         super(props);
@@ -60,15 +62,14 @@ export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLay
         this.i18nManager = new I18nManager(i18nDetails(loc));
         this.siteApi = new GatsbySiteApi(loc);
 
-        this.persistentAppState = new PersistentAppState(
-            `${pathPrefix}/fonts`,
-            {
-                '#___gatsby, #___gatsby > div': {
-                    height: '100%',
-                }
-            },
-        );
+        this.persistentAppState = new PersistentAppState({
+            '#___gatsby, #___gatsby > div': {
+                height: '100%',
+            }
+        });
         this.persistentAppState.setCurrentPage(currentPage);
+
+        this.fontsPath = `${pathPrefix}/fonts`;
 
         const {currentTheme} = this.persistentAppState.appState;
         this.state = {currentTheme};
@@ -109,8 +110,18 @@ export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLay
 
 
     render(): ReactNode {
-        const {siteApi, persistentAppState, i18nManager, props, state: {currentTheme, error}} = this;
+        const {fontsPath, siteApi, persistentAppState, i18nManager, props, state: {currentTheme, error}} = this;
         const {children} = props;
+
+        // https://google-webfonts-helper.herokuapp.com/fonts/roboto?subsets=latin
+        const robotoPath = `${fontsPath}/roboto/roboto-v20-latin-regular.woff`;
+        const roboto2Path = `${fontsPath}/roboto/roboto-v20-latin-regular.woff2`;
+
+        // https://google-webfonts-helper.herokuapp.com/fonts/roboto-condensed?subsets=latin
+        const robotoCondensedPath = `${fontsPath}/roboto-condensed/roboto-condensed-v18-latin-regular.woff`;
+        const robotoCondensed2Path = `${fontsPath}/roboto-condensed/roboto-condensed-v18-latin-regular.woff2`;
+
+        const fontAttributes = {as: "font", type: "font/woff2", crossOrigin: "anonymous"};
 
         // Material UI's CssBaseline activates the font "Roboto" on <body>
         // and resets box-sizing as described in:
@@ -118,7 +129,33 @@ export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLay
         //
         // Note that we must declare it within <ThemeProvider> to handle theme
         // changes appropriately.
-        return (
+        return <>
+            <Helmet>
+                <link rel="preload" href={roboto2Path} {...fontAttributes}/>
+                <link rel="preload" href={robotoCondensed2Path} {...fontAttributes}/>
+                <style type="text/css">{`
+                    @font-face {
+                        font-family: "Roboto";
+                        font-style: normal;
+                        font-weight: 400;
+                        font-display: swap;
+                        src: local("Roboto"), local("Roboto-Regular"),
+                             url("${roboto2Path}") format("woff2"),
+                             url("${robotoPath}") format("woff");
+                    }
+
+                    @font-face {
+                        font-family: "Roboto Condensed";
+                        font-style: normal;
+                        font-weight: 400;
+                        font-display: swap;
+                        src: local("Roboto Condensed"), local("RobotoCondensed-Regular"),
+                             url("${robotoCondensed2Path}") format("woff2"),
+                             url("${robotoCondensedPath}") format("woff");
+                    }
+                `}</style>
+            </Helmet>
+
             <ThemeProvider theme={currentTheme}>
                 <CssBaseline/>
 
@@ -139,7 +176,7 @@ export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLay
                 </ErrorBoundary>
 
             </ThemeProvider>
-        );
+        </>;
     }
 }
 

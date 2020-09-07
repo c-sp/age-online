@@ -79,13 +79,13 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
         const emulatorFactory = newEmulationFactory(ageWasmJsUrl, ageWasmUrl);
 
         this.unsubscribeOnUnmount(
-            persistentAppState.appState$('currentRomFile').pipe(
-                switchMap(({currentRomFile}): Observable<IEmulation | null> => {
-                    if (!currentRomFile) {
+            persistentAppState.appState$('romSource').pipe(
+                switchMap(({romSource}): Observable<IEmulation | null> => {
+                    if (!romSource) {
                         return of(null);
                     }
                     this.setEmulatorState({state: EmulatorState.EMULATOR_LOADING});
-                    return emulatorFactory.newEmulation$(currentRomFile);
+                    return emulatorFactory.newEmulation$(romSource);
                 }),
             ).subscribe(
                 emulation => this.setEmulatorState(emulation
@@ -120,14 +120,14 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
                  }}>
 
                 {!hideEmulator && <EmulatorStateDetails emulatorState={emulatorState}
-                                                        onConfirmError={() => persistentAppState.openRomFile(null)}/>}
+                                                        onConfirmError={() => persistentAppState.setRomSource(null)}/>}
 
                 {toolbar && <>
                     <EmulatorToolbar className={classes.toolbar}
-                                     openRomFile={localFile => persistentAppState.openRomFile({localFile})}/>
+                                     openRomFile={localFile => persistentAppState.setRomSource({localFile})}/>
 
                     <EmulatorCloseBar className={classes.closeBar}
-                                      closeEmulator={() => persistentAppState.openRomFile(null)}/>
+                                      closeEmulator={() => persistentAppState.setRomSource(null)}/>
                 </>}
 
             </div>

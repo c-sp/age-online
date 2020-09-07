@@ -1,7 +1,7 @@
 import {ErrorWithCause} from '@age-online/lib-common';
 import {IEmulation} from './emulation';
 import {Observable} from 'rxjs';
-import {TRomFile} from './rom-file';
+import {TGameboyRomSource} from './rom-file';
 
 
 export class WasmFetchError extends ErrorWithCause {
@@ -25,8 +25,15 @@ export class RomFileLoadingError extends ErrorWithCause {
     }
 }
 
+export class InvalidRomFileError extends ErrorWithCause {
+
+    constructor(cause?: Error) {
+        super('no valid rom file', cause);
+    }
+}
+
 
 export interface IEmulationFactory {
 
-    newEmulation$(romFile: TRomFile): Observable<IEmulation>;
+    newEmulation$(romFile: TGameboyRomSource): Observable<IEmulation>;
 }
