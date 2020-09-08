@@ -31,6 +31,8 @@ export type TSiteLinkComponent = FunctionComponent<ISiteLinkProps>;
  */
 export interface ISiteApi {
 
+    readonly currentPage: AppPage;
+
     /**
      * Site link component based on the current locale
      */

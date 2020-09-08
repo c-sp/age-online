@@ -1,29 +1,20 @@
-import React, {ReactElement} from 'react';
+import {IEmulationFactory} from '@age-online/lib-emulator';
+import React, {ReactElement, ReactNode} from 'react';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {AppPage, TidyComponent} from '../../components';
-import {IAppState, ICurrentAppState, ICurrentAppStateProps, withCurrentAppState} from '../app-state';
+import {AppPage, ISiteApiProps, TidyComponent, withSiteApi} from '../../components';
+import {IAppState, ICurrentAppStateProps, withCurrentAppState} from '../app-state';
 import {EmulatorContainer} from './emulator-container';
 import {PageContainer} from './page-container';
+import {emulatorFactory$, EmulatorFactory$Context} from './with-emulation-factory';
 
 
 interface IAppContainerState {
-    readonly renderEmulator: boolean;
-    readonly renderPage: boolean;
+    readonly emulatorActive: boolean;
 }
 
-function calculateAppContainerState$(currentAppState: ICurrentAppState): Observable<IAppContainerState> {
-    return currentAppState.appState$('currentPage', 'romSource').pipe(
-        map(calculateAppContainerState),
-    );
-}
-
-function calculateAppContainerState(appState: IAppState): IAppContainerState {
-    const {romSource, currentPage} = appState;
-    return {
-        renderEmulator: !!romSource,
-        renderPage: !romSource || (currentPage !== AppPage.HOME),
-    };
+function calculateAppContainerState({romSource}: IAppState): IAppContainerState {
+    return {emulatorActive: !!romSource};
 }
 
 
@@ -31,30 +22,46 @@ export interface IAppContainerProps {
     readonly children?: ReactElement;
 }
 
-type TAppContainerProps = IAppContainerProps & ICurrentAppStateProps;
+type TAppContainerProps = IAppContainerProps & ICurrentAppStateProps & ISiteApiProps;
 
 class ComposedAppContainer extends TidyComponent<TAppContainerProps, IAppContainerState> {
 
-    constructor(props: ICurrentAppStateProps) {
+    private readonly emulatorFactory$: Observable<IEmulationFactory>;
+
+    constructor(props: TAppContainerProps) {
         super(props);
+        const {siteApi: {ageWasmJsUrl, ageWasmUrl}} = props;
+        this.emulatorFactory$ = emulatorFactory$(ageWasmJsUrl, ageWasmUrl);
         this.state = calculateAppContainerState(props.currentAppState.appState);
     }
 
     componentDidMount(): void {
         this.unsubscribeOnUnmount(
-            calculateAppContainerState$(this.props.currentAppState).subscribe((state) => this.setState(state)),
+            this.props.currentAppState
+                .appState$('romSource')
+                .pipe(map(calculateAppContainerState))
+                .subscribe((state) => this.setState(state)),
         );
     }
 
-    render(): JSX.Element {
-        const {props: {children}, state: {renderEmulator, renderPage}} = this;
-        return <>
-            {renderEmulator ? <EmulatorContainer hideEmulator={renderPage}/> : false}
-            {renderPage ? <PageContainer>{children}</PageContainer> : false}
-        </>;
+    render(): ReactNode {
+        const {emulatorFactory$, props: {children, siteApi: {currentPage}}, state: {emulatorActive}} = this;
+
+        const renderPage = !emulatorActive || (currentPage !== AppPage.HOME);
+
+        return (
+            <EmulatorFactory$Context.Provider value={emulatorFactory$}>
+
+                {emulatorActive && <EmulatorContainer hideEmulator={renderPage}/>}
+                {renderPage && <PageContainer>{children}</PageContainer>}
+
+            </EmulatorFactory$Context.Provider>
+        );
     }
 }
 
 export const AppContainer = withCurrentAppState(
-    ComposedAppContainer,
+    withSiteApi(
+        ComposedAppContainer,
+    ),
 );

@@ -1,6 +1,6 @@
-import {createStyles, fade, StyleRules, Theme, WithStyles, withStyles} from '@material-ui/core';
+import {createStyles, fade, Theme, WithStyles, withStyles} from '@material-ui/core';
 import {withI18n} from '@shopify/react-i18n';
-import React, {Component} from 'react';
+import React, {Component, ReactNode} from 'react';
 import {withI18nBundle} from '../i18n';
 import i18nBundle from './emulator-bars.i18n.json';
 
@@ -10,15 +10,13 @@ export function withBarsI18n(): ReturnType<typeof withI18n> {
 }
 
 
-function styles(theme: Theme): StyleRules {
-    return createStyles({
-        root: {
-            display: 'flex',
-            alignItems: 'center',
-            backgroundColor: fade(theme.palette.background.default, 0.8),
-        },
-    });
-}
+const styles = (theme: Theme) => createStyles({
+    root: {
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: fade(theme.palette.background.default, 0.8),
+    },
+});
 
 export interface IEmulatorBarProps {
     readonly 'aria-label'?: string;
@@ -29,7 +27,7 @@ type TEmulatorBarProps = IEmulatorBarProps & WithStyles;
 
 class ComposedEmulatorBar extends Component<TEmulatorBarProps> {
 
-    render(): JSX.Element {
+    render(): ReactNode {
         const {children, classes, className, 'aria-label': ariaLabel} = this.props;
         return (
             <nav className={className ? `${className} ${classes.root}` : classes.root}

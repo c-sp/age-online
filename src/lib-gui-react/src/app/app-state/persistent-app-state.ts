@@ -40,13 +40,6 @@ export class PersistentAppState extends CurrentAppState implements IPersistentAp
     }
 
 
-    setCurrentPage(currentPage: IAppState['currentPage']): void {
-        if (currentPage !== this.appState.currentPage) {
-            this.updateState({currentPage});
-        }
-    }
-
-
     setPreferredLocale(preferredLocale: IAppState['preferredLocale']): void {
         this.store.setItem(KEY_PREFERRED_LOCALE, preferredLocale);
         if (preferredLocale !== this.appState.preferredLocale) {

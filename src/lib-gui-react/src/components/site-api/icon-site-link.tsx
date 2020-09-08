@@ -2,7 +2,7 @@ import {Badge, IconButton} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 import {Error, Home, SettingsOutlined, SettingsRounded, VideogameAsset} from '@material-ui/icons';
 import {WithI18nProps} from '@shopify/react-i18n';
-import React, {Component, ComponentType, CSSProperties} from 'react';
+import React, {Component, ComponentType, CSSProperties, ReactNode} from 'react';
 import {withI18nBundle} from '../i18n';
 import i18nBundle from './icon-site-link.i18n.json';
 import {AppPage} from './site-api';
@@ -23,7 +23,7 @@ function iconSiteLink(appPage: AppPage,
         withSiteApi(
             class IconSiteLink extends Component<TIconSiteLinkProps> {
 
-                render(): JSX.Element {
+                render(): ReactNode {
                     const {style, i18n, siteApi: {SiteLink}} = this.props;
                     return (
                         <SiteLink appPage={appPage}>

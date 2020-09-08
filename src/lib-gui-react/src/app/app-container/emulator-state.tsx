@@ -4,14 +4,15 @@ import {
     Button,
     createStyles,
     Dialog,
-    DialogActions, DialogContent,
+    DialogActions,
+    DialogContent,
     DialogContentText,
     withStyles,
     WithStyles,
 } from '@material-ui/core';
 import {SettingsOutlined} from '@material-ui/icons';
 import {WithI18nProps} from '@shopify/react-i18n';
-import React, {Component} from 'react';
+import React, {Component, ReactNode} from 'react';
 import {EmulatorState, withI18nBundle} from '../../components';
 import i18nBundle from './emulator-state.i18n.json';
 
@@ -69,7 +70,7 @@ type TEmulatorStateDetailsProps = IEmulatorStateDetailsProps & WithStyles & With
 
 class ComposedEmulatorStateDetails extends Component<TEmulatorStateDetailsProps> {
 
-    render(): JSX.Element {
+    render(): ReactNode {
         const {emulatorState, onConfirmError, classes, i18n} = this.props;
         switch (emulatorState.state) {
 

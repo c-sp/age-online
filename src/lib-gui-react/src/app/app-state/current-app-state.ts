@@ -2,7 +2,7 @@ import {Unsubscriber} from '@age-online/lib-common';
 import {Theme} from '@material-ui/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {filter, map, startWith} from 'rxjs/operators';
-import {AppPage, createTheme, EmulatorState, Locale, PreferredTheme} from '../../components';
+import {createTheme, EmulatorState, Locale, PreferredTheme} from '../../components';
 import {IAppState, ICurrentAppState, TAppStateKey} from './app-state';
 
 
@@ -35,7 +35,6 @@ export class CurrentAppState extends Unsubscriber implements ICurrentAppState {
             updatedKeys: ReadonlyArray<string>,
             updatedState: IAppState,
         ]>([[], {
-            currentPage: AppPage.HOME,
             preferredLocale: Locale.EN,
             preferredTheme: PreferredTheme.AUTO_DETECT,
             currentTheme: this.lightTheme,

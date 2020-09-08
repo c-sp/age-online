@@ -47,29 +47,27 @@ interface IRootLayoutState {
  */
 export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLayoutState> {
 
+    private readonly fontsPath: string;
     private readonly i18nManager: I18nManager;
     private readonly siteApi: GatsbySiteApi;
     private readonly persistentAppState: PersistentAppState;
-    private readonly fontsPath: string;
 
     constructor(props: TRootLayoutProps) {
         super(props);
 
         const {pageContext: {locale, page, pathPrefix}} = props;
-        const currentPage = appPageFromPath(page);
+
+        this.fontsPath = `${pathPrefix}/fonts`;
 
         const loc = getLocale(locale);
         this.i18nManager = new I18nManager(i18nDetails(loc));
-        this.siteApi = new GatsbySiteApi(loc);
+        this.siteApi = new GatsbySiteApi(loc, appPageFromPath(page));
 
         this.persistentAppState = new PersistentAppState({
             '#___gatsby, #___gatsby > div': {
                 height: '100%',
             }
         });
-        this.persistentAppState.setCurrentPage(currentPage);
-
-        this.fontsPath = `${pathPrefix}/fonts`;
 
         const {currentTheme} = this.persistentAppState.appState;
         this.state = {currentTheme};
@@ -91,21 +89,17 @@ export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLay
     }
 
     componentDidUpdate(): void {
-        const {persistentAppState, i18nManager, siteApi, props: {pageContext: {locale, page}}} = this;
+        const {i18nManager, siteApi, props: {pageContext: {locale}}} = this;
 
-        // Adjusting locale/currentPage here does not cause a re-render as we
+        // Adjusting locale here does not cause a RootLayout re-render as we
         // don't update props or state.
-        // => components wrapped with withI18nBundle() will be re-rendered,
-        //    but not RootLayout
-
+        // Components wrapped with withI18nBundle() will be re-rendered,
+        // but not RootLayout.
         const loc = getLocale(locale);
         if (loc !== i18nManager.details.locale) {
             siteApi.setCurrentLocale(loc);
             i18nManager.update(i18nDetails(loc));
         }
-
-        const currentPage = appPageFromPath(page);
-        persistentAppState.setCurrentPage(currentPage);
     }
 
 
@@ -122,6 +116,10 @@ export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLay
         const robotoCondensed2Path = `${fontsPath}/roboto-condensed/roboto-condensed-v18-latin-regular.woff2`;
 
         const fontAttributes = {as: "font", type: "font/woff2", crossOrigin: "anonymous"};
+
+        // We can update the page on every render() because the whole site is
+        // rendered anyway when switching pages.
+        siteApi.currentPage = appPageFromPath(props.pageContext.page);
 
         // Material UI's CssBaseline activates the font "Roboto" on <body>
         // and resets box-sizing as described in:

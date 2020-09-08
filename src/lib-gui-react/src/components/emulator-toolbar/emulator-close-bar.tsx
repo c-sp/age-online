@@ -1,7 +1,7 @@
 import {IconButton} from '@material-ui/core';
 import {Cancel} from '@material-ui/icons';
 import {WithI18nProps} from '@shopify/react-i18n';
-import React, {Component} from 'react';
+import React, {Component, ReactNode} from 'react';
 import {TOOLBAR_ICON_STYLE} from '../common';
 import {EmulatorBar, IEmulatorBarProps, withBarsI18n} from './emulator-bar';
 
@@ -14,7 +14,7 @@ type TEmulatorCloseBarProp = IEmulatorCloseBarProps & WithI18nProps;
 
 class ComposedEmulatorCloseBar extends Component<TEmulatorCloseBarProp> {
 
-    render(): JSX.Element {
+    render(): ReactNode {
         const {className, i18n, closeEmulator} = this.props;
         return (
             <EmulatorBar className={className}

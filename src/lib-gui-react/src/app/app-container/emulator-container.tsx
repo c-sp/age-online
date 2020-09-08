@@ -1,47 +1,40 @@
-import {assertElement, IContentSize, observeSize} from '@age-online/lib-common';
-import {IEmulation, newEmulationFactory} from '@age-online/lib-emulator';
-import {createStyles, StyleRules, Theme, WithStyles, withStyles} from '@material-ui/core';
-import React from 'react';
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import {IEmulation} from '@age-online/lib-emulator';
+import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core';
+import React, {ReactNode} from 'react';
+import {Observable, of} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
-import {
-    EmulatorCloseBar,
-    EmulatorState,
-    EmulatorToolbar,
-    ISiteApiProps,
-    TidyComponent,
-    withSiteApi,
-} from '../../components';
+import {Emulator, EmulatorCloseBar, EmulatorState, EmulatorToolbar, TidyComponent,} from '../../components';
 import {IPersistentAppStateProps, withPersistentAppState} from '../app-state';
-import {EmulatorStateDetails, TEmulatorState} from './emulation-state';
+import {EmulatorStateDetails, TEmulatorState} from './emulator-state';
+import {IEmulatorFactory$Props, withEmulatorFactory$} from './with-emulation-factory';
 
 
-function styles(theme: Theme): StyleRules {
-    return createStyles({
-        container: {
-            position: 'relative',
-            width: '100%',
-            height: '100%',
-            backgroundColor: theme.palette.background.paper,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        hide: {
-            display: 'none',
-        },
-        toolbar: {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-        },
-        closeBar: {
-            position: 'absolute',
-            top: 0,
-            right: 0,
-        },
-    });
-}
+const styles = (theme: Theme) => createStyles({
+    container: {
+        position: 'relative',
+        height: '100%',
+        backgroundColor: theme.palette.background.paper,
+    },
+    hint: {
+        // flex layout for centered loading-hint
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    hide: {
+        display: 'none',
+    },
+    toolbar: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+    },
+    closeBar: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+    },
+});
 
 
 export interface IEmulatorContainerProps {
@@ -53,12 +46,9 @@ interface IEmulatorContainerState {
     readonly emulatorState: TEmulatorState;
 }
 
-type TEmulatorContainerProps = IEmulatorContainerProps & IPersistentAppStateProps & ISiteApiProps & WithStyles;
+type TEmulatorContainerProps = IEmulatorContainerProps & IEmulatorFactory$Props & IPersistentAppStateProps & WithStyles;
 
 class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, IEmulatorContainerState> {
-
-    private readonly sizeSubject = new BehaviorSubject<IContentSize>({heightPx: 0, widthPx: 0});
-    private containerDiv: HTMLDivElement | null = null;
 
     constructor(props: TEmulatorContainerProps) {
         super(props);
@@ -72,11 +62,7 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
 
 
     componentDidMount(): void {
-        const {containerDiv, sizeSubject, props: {persistentAppState, siteApi: {ageWasmJsUrl, ageWasmUrl}}} = this;
-        const div = assertElement(containerDiv, 'app container <div>');
-
-        // TODO closing the emulator leads to wasm reload
-        const emulatorFactory = newEmulationFactory(ageWasmJsUrl, ageWasmUrl);
+        const {persistentAppState, emulatorFactory$} = this.props;
 
         this.unsubscribeOnUnmount(
             persistentAppState.appState$('romSource').pipe(
@@ -84,33 +70,40 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
                     if (!romSource) {
                         return of(null);
                     }
+                    // this will re-mount the emulator component for every new rom
                     this.setEmulatorState({state: EmulatorState.EMULATOR_LOADING});
-                    return emulatorFactory.newEmulation$(romSource);
+                    return emulatorFactory$.pipe(
+                        switchMap(emulatorFactory => emulatorFactory.newEmulation$(romSource)),
+                    );
                 }),
             ).subscribe(
-                emulation => this.setEmulatorState(emulation
-                    ? {state: EmulatorState.EMULATOR_RUNNING, emulation}
-                    : {state: EmulatorState.NO_EMULATOR}),
+                emulation => {
+                    this.setEmulatorState(emulation
+                        ? {state: EmulatorState.EMULATOR_RUNNING, emulation}
+                        : {state: EmulatorState.NO_EMULATOR});
+                },
                 error => this.setEmulatorState({state: EmulatorState.EMULATOR_ERROR, error}),
             ),
         );
         this.callOnUnmount(
-            observeSize(div, (contentSize) => sizeSubject.next(contentSize)),
-            () => sizeSubject.complete(),
             () => persistentAppState.setEmulatorState(EmulatorState.NO_EMULATOR),
         );
     }
 
 
-    render(): JSX.Element {
+    render(): ReactNode {
         const {props: {hideEmulator, classes, persistentAppState}, state: {showToolbar, emulatorState}} = this;
+        const {EMULATOR_RUNNING} = EmulatorState;
 
-        const toolbar = showToolbar || (emulatorState.state !== EmulatorState.EMULATOR_RUNNING);
-        const classNames = hideEmulator ? `${classes.container} ${classes.hide}` : classes.container;
+        const toolbar = showToolbar || (emulatorState.state !== EMULATOR_RUNNING);
+        const classNames = [
+            classes.container,
+            ...(emulatorState.state !== EMULATOR_RUNNING ? [classes.hint] : []),
+            ...(hideEmulator ? [classes.hide] : []),
+        ];
 
         return (
-            <div className={classNames}
-                 ref={(div) => this.containerDiv = div}
+            <div className={classNames.join(' ')}
                  onClick={ev => {
                      // toggle the toolbar only if this div was clicked,
                      // not if this event was propagated to this div
@@ -121,6 +114,9 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
 
                 {!hideEmulator && <EmulatorStateDetails emulatorState={emulatorState}
                                                         onConfirmError={() => persistentAppState.setRomSource(null)}/>}
+
+                {(emulatorState.state === EMULATOR_RUNNING) && <Emulator emulation={emulatorState.emulation}
+                                                                         pauseEmulation={hideEmulator}/>}
 
                 {toolbar && <>
                     <EmulatorToolbar className={classes.toolbar}
@@ -137,7 +133,7 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
 
 export const EmulatorContainer = withStyles(styles)(
     withPersistentAppState(
-        withSiteApi(
+        withEmulatorFactory$(
             ComposedEmulatorContainer,
         ),
     ),

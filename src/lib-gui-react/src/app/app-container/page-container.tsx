@@ -1,14 +1,15 @@
 import {assertElement, IContentSize, observeSize} from '@age-online/lib-common';
 import {createStyles, WithStyles, withStyles} from '@material-ui/core';
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {distinctUntilChanged, map} from 'rxjs/operators';
-import {IPageNavBarProps, PageNavBar, TidyComponent} from '../../components';
+import {ISiteApiProps, PageNavBar, TidyComponent, withSiteApi} from '../../components';
 import {IAppState, ICurrentAppState, ICurrentAppStateProps, withCurrentAppState} from '../app-state';
 
 
 interface IPageContainerState {
-    readonly navBarProps: IPageNavBarProps;
+    readonly verticalBar: boolean;
+    readonly emulatorState: IAppState['emulatorState'];
 }
 
 /**
@@ -22,11 +23,9 @@ function showVerticalNavBar(contentSize: IContentSize): boolean {
     return (widthPx > heightPx) && (heightPx < 415);
 }
 
-function calculateState(contentSize: IContentSize, {currentPage, emulatorState}: IAppState): IPageContainerState {
+function calculateState(contentSize: IContentSize, {emulatorState}: IAppState): IPageContainerState {
     const verticalBar = showVerticalNavBar(contentSize);
-    return {
-        navBarProps: {verticalBar, currentPage, emulatorState},
-    };
+    return {verticalBar, emulatorState};
 }
 
 function calculateState$(contentSizeSubject: BehaviorSubject<IContentSize>,
@@ -41,7 +40,7 @@ function calculateState$(contentSizeSubject: BehaviorSubject<IContentSize>,
 
     return combineLatest([
         contentSize$,
-        currentAppState.appState$('currentPage', 'emulatorState'),
+        currentAppState.appState$('emulatorState'),
     ]).pipe(
         map(([contentSize, appState]) => calculateState(contentSize, appState)),
     );
@@ -87,7 +86,7 @@ const styles = createStyles({
     },
 });
 
-type TPageContainerProps = ICurrentAppStateProps & WithStyles;
+type TPageContainerProps = ICurrentAppStateProps & ISiteApiProps & WithStyles;
 
 class ComposedPageContainer extends TidyComponent<TPageContainerProps, IPageContainerState> {
 
@@ -101,8 +100,8 @@ class ComposedPageContainer extends TidyComponent<TPageContainerProps, IPageCont
 
     componentDidMount(): void {
         const {containerDiv, sizeSubject, props: {currentAppState}} = this;
-        const div = assertElement(containerDiv, 'app container <div>');
 
+        const div = assertElement(containerDiv, 'page container <div>');
         this.callOnUnmount(
             observeSize(div, (contentSize) => sizeSubject.next(contentSize)),
             () => sizeSubject.complete(),
@@ -113,26 +112,30 @@ class ComposedPageContainer extends TidyComponent<TPageContainerProps, IPageCont
         );
     }
 
-    render(): JSX.Element {
-        const {props: {children, classes}, state: {navBarProps}} = this;
+    render(): ReactNode {
+        const {props: {children, classes, siteApi: {currentPage}}, state: {verticalBar, emulatorState}} = this;
 
-        const orientationCss = navBarProps.verticalBar ? classes.pageLandscape : classes.pagePortrait;
+        const orientationCss = verticalBar ? classes.pageLandscape : classes.pagePortrait;
         const classNames = `${classes.container} ${classes.page} ${orientationCss}`;
 
         return (
             <div className={classNames}
                  ref={(div) => this.containerDiv = div}>
 
-                <PageNavBar {...navBarProps}/>
-                <div>{children}</div>
+                <PageNavBar verticalBar={verticalBar}
+                            currentPage={currentPage}
+                            emulatorState={emulatorState}/>
 
+                <div>{children}</div>
             </div>
         );
     }
 }
 
 export const PageContainer = withStyles(styles)(
-    withCurrentAppState(
-        ComposedPageContainer,
+    withSiteApi(
+        withCurrentAppState(
+            ComposedPageContainer,
+        ),
     ),
 );

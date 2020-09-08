@@ -18,8 +18,8 @@ export class GatsbySiteApi implements ISiteApi {
     readonly ageWasmJsUrl = withPrefix('age-wasm/age_wasm.js');
     readonly ageWasmUrl = withPrefix('age-wasm/age_wasm.wasm');
 
-
-    constructor(private currentLocale: Locale) {
+    constructor(private currentLocale: Locale,
+                public currentPage: AppPage) {
     }
 
     setCurrentLocale(currentLocale: Locale): void {

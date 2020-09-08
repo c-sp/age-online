@@ -1,12 +1,10 @@
 import {TGameboyRomSource} from '@age-online/lib-emulator';
 import {Theme} from '@material-ui/core';
 import {Observable} from 'rxjs';
-import {AppPage, EmulatorState, Locale, PreferredTheme} from '../../components';
+import {EmulatorState, Locale, PreferredTheme} from '../../components';
 
 
 export interface IAppState {
-    readonly currentPage: AppPage;
-
     /**
      * The user's preferred locale is not necessarily equal to the current
      * locale (predefined by pathname).
@@ -41,8 +39,6 @@ export interface ICurrentAppState {
 
 
 export interface IPersistentAppState extends ICurrentAppState {
-    setCurrentPage(currentPage: IAppState['currentPage']): void;
-
     setPreferredLocale(locale: IAppState['preferredLocale']): void;
 
     setPreferredTheme(preferredTheme: IAppState['preferredTheme']): void;

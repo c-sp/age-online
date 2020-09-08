@@ -89,7 +89,7 @@ class ComposedHomePage extends Component<THomePageProps> {
                        aria-label={i18n.translate('link:repo')}
                        {...EXTERNAL_LINK_PROPS}>
 
-                        <IconButton color="primary">
+                        <IconButton aria-label={i18n.translate('link:repo')} color="primary">
                             <GitHub fontSize="large"/>
                         </IconButton>
                     </a>

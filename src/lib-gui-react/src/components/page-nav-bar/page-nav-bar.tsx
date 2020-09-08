@@ -1,7 +1,7 @@
 import {assertNever} from '@age-online/lib-common';
 import {createStyles, WithStyles, withStyles} from '@material-ui/core';
 import {WithI18nProps} from '@shopify/react-i18n';
-import React, {Component, ComponentType, CSSProperties} from 'react';
+import React, {Component, ComponentType, CSSProperties, ReactNode} from 'react';
 import {TOOLBAR_ICON_STYLE} from '../common';
 import {withI18nBundle} from '../i18n';
 import {
@@ -9,7 +9,8 @@ import {
     EmulatorErrorIconSiteLink,
     EmulatorLoadingIconSiteLink,
     EmulatorRunningIconSiteLink,
-    HomeIconSiteLink, IStyleProps,
+    HomeIconSiteLink,
+    IStyleProps,
     SettingsIconSiteLink,
 } from '../site-api';
 import i18nBundle from './page-nav-bar.i18n.json';
@@ -52,7 +53,7 @@ type TPageNavBarProps = IPageNavBarProps & WithStyles & WithI18nProps;
 
 class ComposedPageNavBar extends Component<TPageNavBarProps> {
 
-    render(): JSX.Element {
+    render(): ReactNode {
         const {classes, i18n, verticalBar} = this.props;
 
         const HomeIcon = this.HomeIcon();

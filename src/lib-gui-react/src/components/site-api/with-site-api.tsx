@@ -1,8 +1,10 @@
 import React, {ComponentType, createContext, ReactElement} from 'react';
-import {ISiteApi} from './site-api';
+import {AppPage, ISiteApi} from './site-api';
 
 
 class NoSiteApi implements ISiteApi {
+
+    readonly currentPage = AppPage.HOME;
 
     readonly SiteLink = function EmptyLink(): ReactElement {
         return <></>;

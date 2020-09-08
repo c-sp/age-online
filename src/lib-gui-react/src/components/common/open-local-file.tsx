@@ -25,6 +25,9 @@ export class OpenLocalFile extends Component<IOpenLocalFileProps> {
                        const {files} = ev.target;
                        if (files && files.length) {
                            openFile?.(files[0]);
+                           // reset the <input>'s value so that selecting the
+                           // same file again triggers another event
+                           ev.target.value = '';
                        }
                    }}/>
         </>;
