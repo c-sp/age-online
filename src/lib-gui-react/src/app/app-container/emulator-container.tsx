@@ -50,9 +50,19 @@ type TEmulatorContainerProps = IEmulatorContainerProps & IEmulatorFactory$Props 
 
 class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, IEmulatorContainerState> {
 
+    static getDerivedStateFromProps(nextProps: TEmulatorContainerProps,
+                                    prevState: IEmulatorContainerState): Partial<IEmulatorContainerState> | null {
+
+        return !nextProps.hideEmulator || !prevState.showToolbar
+            ? null
+            // hide the toolbar when navigating to another page
+            : {showToolbar: false};
+    }
+
+
     constructor(props: TEmulatorContainerProps) {
         super(props);
-        this.state = {showToolbar: true, emulatorState: {state: EmulatorState.NO_EMULATOR}};
+        this.state = {showToolbar: false, emulatorState: {state: EmulatorState.NO_EMULATOR}};
     }
 
     private setEmulatorState(emulatorState: TEmulatorState): void {
@@ -120,7 +130,10 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
 
                 {toolbar && <>
                     <EmulatorToolbar className={classes.toolbar}
-                                     openRomFile={localFile => persistentAppState.setRomSource({localFile})}/>
+                                     openRomFile={localFile => {
+                                         persistentAppState.setRomSource({localFile});
+                                         this.setState({showToolbar: false});
+                                     }}/>
 
                     <EmulatorCloseBar className={classes.closeBar}
                                       closeEmulator={() => persistentAppState.setRomSource(null)}/>

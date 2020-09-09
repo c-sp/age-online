@@ -1,46 +1,51 @@
-import {assertElement, IContentSize, observeSize} from '@age-online/lib-common';
+import {assertElement, cssClasses, IContentSize, observeSize} from '@age-online/lib-common';
 import {IEmulation} from '@age-online/lib-emulator';
 import {createStyles, fade, Theme, WithStyles, withStyles} from '@material-ui/core';
-import React from 'react';
-import {ReactNode} from 'react';
+import React, {ReactNode} from 'react';
 import {BehaviorSubject} from 'rxjs';
 import {TidyComponent} from '../common';
+import {emulatorState, emulatorState$, IEmulatorState} from './emulator-state';
 
 
 const styles = (theme: Theme) => createStyles({
     container: {
-        position: 'relative',
         height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         pointerEvents: 'none',
+        display: 'grid',
+    },
+    landscape: {
+        gridTemplateColumns: 'auto 1fr auto',
+        gridTemplateAreas: '"left-controls screen right-controls"',
+    },
+    portrait: {
+        gridTemplateColumns: '1fr 1fr',
+        gridTemplateRows: '1fr auto',
+        gridTemplateAreas: '"screen screen" "left-controls right-controls"',
+    },
+
+    screen: {
+        gridArea: 'screen',
+        border: '1px solid',
+    },
+    controls: {
+        alignSelf: 'end',
+        padding: theme.spacing(1),
+        pointerEvents: 'auto',
+        backgroundColor: fade(theme.palette.background.default, 0.8),
     },
     controlsLeft: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        padding: theme.spacing(1),
-        pointerEvents: 'auto',
-        backgroundColor: fade(theme.palette.background.default, 0.8),
+        gridArea: 'left-controls',
+        justifySelf: 'start',
     },
     controlsRight: {
-        position: 'absolute',
-        bottom: 0,
-        right: 0,
-        padding: theme.spacing(1),
-        pointerEvents: 'auto',
-        backgroundColor: fade(theme.palette.background.default, 0.8),
+        gridArea: 'right-controls',
+        justifySelf: 'end',
     },
 });
 
 export interface IEmulatorProps {
     readonly emulation: IEmulation;
     readonly pauseEmulation: boolean;
-}
-
-interface IEmulatorState {
-    readonly portrait: boolean;
 }
 
 type TEmulatorProps = IEmulatorProps & WithStyles;
@@ -52,7 +57,7 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
 
     constructor(props: TEmulatorProps) {
         super(props);
-        this.state = {portrait: true};
+        this.state = emulatorState(this.sizeSubject.value);
     }
 
     componentDidMount(): void {
@@ -64,31 +69,35 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
             () => sizeSubject.complete(),
         );
 
-        // TODO init emulation output
+        this.unsubscribeOnUnmount(
+            emulatorState$(sizeSubject.asObservable()).subscribe(state => this.setState(state)),
+        );
 
-        // this.unsubscribeOnUnmount(
-        //     this.props.currentAppState.appState$('preferredTheme').subscribe(
-        //         ({preferredTheme}) => this.setState({preferredTheme}),
-        //     ),
-        // );
+        this.initEmulation();
     }
 
-    componentDidUpdate() {
-        // only the pause-flag is updated without re-mounting
+    componentDidUpdate(prevProps: Readonly<TEmulatorProps>) {
+        if (prevProps.emulation !== this.props.emulation) {
+            this.initEmulation();
+        }
     }
 
     render(): ReactNode {
-        const {classes} = this.props;
-
+        const {props: {classes}, state: {portrait}} = this;
         return (
-            <div className={classes.container}
+            <div className={cssClasses(classes.container, portrait ? classes.portrait : classes.landscape)}
                  ref={(div) => this.containerDiv = div}>
 
-                <div className={classes.controlsLeft}>controls left</div>
-                <div className={classes.controlsRight}>controls right</div>
+                <div className={classes.screen}/>
+                <div className={`${classes.controls} ${classes.controlsLeft}`}>controls left</div>
+                <div className={`${classes.controls} ${classes.controlsRight}`}>controls right</div>
 
             </div>
         );
+    }
+
+    private initEmulation(): void {
+        // TODO init emulation output
     }
 }
 

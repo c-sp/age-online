@@ -5,3 +5,11 @@ export function assertElement<T extends HTMLElement>(element: T | null | undefin
     }
     return element;
 }
+
+
+export function cssClasses(...classNames: unknown[]): string {
+    return classNames
+        .filter(className => !!className)
+        .map(className => `${className}`)
+        .join(' ');
+}
