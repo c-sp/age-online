@@ -19,7 +19,7 @@ module.exports = (phase) => {
         }),
     };
 
-    if (process.env.ANALYZE === 'true') {
+    if (process.env.ANALYZE) {
         nextConfig = withBundleAnalyzer({enabled: true})(nextConfig);
     }
 
