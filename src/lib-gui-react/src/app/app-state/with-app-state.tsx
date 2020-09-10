@@ -17,7 +17,7 @@ export const AppStateContext = createContext<PersistentAppState>(new PersistentA
 export function withCurrentAppState<P>(WrappedComponent: ComponentType<P & ICurrentAppStateProps>): ComponentType<P> {
     return (props: P): ReactElement => (
         <AppStateContext.Consumer>{
-            (value): JSX.Element => <WrappedComponent currentAppState={value} {...props}/>
+            (value): ReactElement => <WrappedComponent currentAppState={value} {...props}/>
         }</AppStateContext.Consumer>
     );
 }
@@ -25,7 +25,7 @@ export function withCurrentAppState<P>(WrappedComponent: ComponentType<P & ICurr
 export function withPersistentAppState<P>(WrappedComponent: ComponentType<P & IPersistentAppStateProps>): ComponentType<P> {
     return (props: P): ReactElement => (
         <AppStateContext.Consumer>{
-            (value): JSX.Element => <WrappedComponent currentAppState={value} persistentAppState={value} {...props}/>
+            (value): ReactElement => <WrappedComponent currentAppState={value} persistentAppState={value} {...props}/>
         }</AppStateContext.Consumer>
     );
 }

@@ -17,16 +17,15 @@ export function createTheme(additionalGlobalCss?: object,
         overrides: {
             MuiCssBaseline: {
                 '@global': {
-                    html: {
+                    'html, body': {
                         // let <html> match the size of the Initial Containing Block
                         //  => on mobile devices it fills exactly the visible height,
                         //     whether or not the address bar is shown
-                        // (see also: https://developers.google.com/web/updates/2016/12/url-bar-resizing)
-                        position: 'fixed',
-                        height: '100%',
-                        width: '100%',
-                    },
-                    body: {
+                        //
+                        // see also:
+                        //      https://developers.google.com/web/updates/2016/12/url-bar-resizing
+                        //      https://bokand.github.io/demo/urlbarsize.html
+                        //
                         height: '100%',
                         width: '100%',
                     },

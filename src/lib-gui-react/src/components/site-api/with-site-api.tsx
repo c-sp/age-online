@@ -29,7 +29,7 @@ export function withSiteApi<P>(WrappedComponent: ComponentType<P & ISiteApiProps
     return function WithSiteApi(props: P): ReactElement {
         return (
             <SiteApiContext.Consumer>{
-                (value): JSX.Element => <WrappedComponent siteApi={value} {...props}/>
+                (value): ReactElement => <WrappedComponent siteApi={value} {...props}/>
             }</SiteApiContext.Consumer>
         );
     };

@@ -3,6 +3,7 @@
 #   - https://support.google.com/webmasters/answer/6062596?hl=en
 #
 
+# TODO generate sitemap for Next.js
 Sitemap: https://c-sp.github.io/age-online/sitemap.xml
 
 # allow all crawlers

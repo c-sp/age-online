@@ -46,22 +46,6 @@ module.exports = {
         // create a site map
         'gatsby-plugin-sitemap',
 
-        // create manifest & icons
-        {
-            resolve: 'gatsby-plugin-manifest',
-            options: {
-                /* eslint-disable camelcase */
-                name: 'gatsby-starter-default',
-                short_name: 'starter',
-                start_url: '/',
-                background_color: '#0080E0',
-                theme_color: '#0080E0',
-                display: 'minimal-ui',
-                icon: 'static/icon.svg',
-                /* eslint-enable camelcase */
-            },
-        },
-
         // this (optional) plugin enables Progressive Web App + Offline functionality
         // To learn more, visit: https://gatsby.dev/offline
         // 'gatsby-plugin-offline',

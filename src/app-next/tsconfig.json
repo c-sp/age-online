@@ -1,0 +1,22 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    // TODO this is just a reminder that our path mappings do not work
+    //      with Next.js at the moment
+    "paths": {},
+    // compiler options set by Next.js
+    "allowJs": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "jsx": "preserve"
+  },
+  // include/exclude set by Next.js
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

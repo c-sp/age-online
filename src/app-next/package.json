@@ -1,0 +1,42 @@
+{
+  "name": "@age-online/app-next",
+  "description": "AGE Online - Web App created with Next.js",
+  "author": "Christoph Sprenger",
+  "version": "0.0.1",
+  "private": true,
+  "sideEffects": false,
+  "browserslist": [
+    "last 2 Chrome version",
+    "last 2 Firefox version",
+    "last 2 Edge versions",
+    "last 2 Safari major versions",
+    "last 2 iOS major versions",
+    "Firefox ESR"
+  ],
+  "dependencies": {
+    "@age-online/lib-common": "0.0.1",
+    "@age-online/lib-emulator": "0.0.1",
+    "@age-online/lib-gui-react": "0.0.1",
+    "@age-online/lib-rom-storage": "0.0.1",
+    "@material-ui/core": "^4.11.0",
+    "@shopify/react-i18n": "^5.0.0",
+    "next": "^9.5.0",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-helmet": "^6.1.0"
+  },
+  "devDependencies": {
+    "@next/bundle-analyzer": "^9.5.0",
+    "@types/react-helmet": "^6.1.0",
+    "copyfiles": "^2.3.0",
+    "express": "^4.17.0"
+  },
+  "scripts": {
+    "analyze": "yarn clean && cross-env ANALYZE=do-it next build",
+    "build": "yarn clean && yarn copy-static-files && next build && next export -o dist/next-export",
+    "clean": "rimraf .next dist",
+    "copy-static-files": "rimraf public/[!.gitkeep]** && copyfiles -u 3 ../app-common/static/**/* public",
+    "develop": "yarn clean && next dev",
+    "serve": "node serve-static.js"
+  }
+}

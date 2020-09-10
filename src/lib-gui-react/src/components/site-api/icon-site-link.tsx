@@ -2,7 +2,7 @@ import {Badge, IconButton} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 import {Error, Home, SettingsOutlined, SettingsRounded, VideogameAsset} from '@material-ui/icons';
 import {WithI18nProps} from '@shopify/react-i18n';
-import React, {Component, ComponentType, CSSProperties, ReactNode} from 'react';
+import React, {Component, ComponentType, CSSProperties, ReactElement, ReactNode} from 'react';
 import {withI18nBundle} from '../i18n';
 import i18nBundle from './icon-site-link.i18n.json';
 import {AppPage} from './site-api';
@@ -40,7 +40,7 @@ function iconSiteLink(appPage: AppPage,
 }
 
 
-function EmulatorErrorIcon({style}: IStyleProps): JSX.Element {
+function EmulatorErrorIcon({style}: IStyleProps): ReactElement {
     return (
         <Badge badgeContent={<Error color="error" style={{opacity: 0.5}}/>}
                overlap="circle">
@@ -61,7 +61,7 @@ const useLoadingStyles = makeStyles({
     },
 });
 
-function EmulatorLoadingIcon({style}: IStyleProps): JSX.Element {
+function EmulatorLoadingIcon({style}: IStyleProps): ReactElement {
     const classes = useLoadingStyles();
     return (
         <Badge badgeContent={<SettingsOutlined className={classes.animatedIcon} color="disabled"/>}

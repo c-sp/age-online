@@ -12,6 +12,9 @@ node_modules
 # build artifacts
 src/app-gatsby/.cache
 src/app-gatsby/public
+src/app-gatsby/static/[!.gitkeep]*
+src/app-next/.next
+src/app-next/public/[!.gitkeep]*
 src/**/dist
 
 # miscellaneous files

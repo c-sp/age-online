@@ -1,5 +1,5 @@
 import {IEmulationFactory} from '@age-online/lib-emulator';
-import React, {ReactElement, ReactNode} from 'react';
+import React, {ReactNode} from 'react';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {AppPage, ISiteApiProps, TidyComponent, withSiteApi} from '../../components';
@@ -19,7 +19,7 @@ function calculateAppContainerState({romSource}: IAppState): IAppContainerState 
 
 
 export interface IAppContainerProps {
-    readonly children?: ReactElement;
+    readonly children?: ReactNode;
 }
 
 type TAppContainerProps = IAppContainerProps & ICurrentAppStateProps & ISiteApiProps;

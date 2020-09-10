@@ -1,9 +1,9 @@
 import {WithI18nProps} from '@shopify/react-i18n';
-import React from 'react';
+import React, {ReactElement} from 'react';
 import {Helmet, HelmetProps} from 'react-helmet';
 
 
-export function SEO({i18n}: WithI18nProps): JSX.Element {
+export function SEO({i18n}: WithI18nProps): ReactElement {
     const lang = i18n.locale;
 
     const title = i18n.translationKeyExists('seo:title')

@@ -14,7 +14,7 @@ export const EmulatorFactory$Context = createContext<Observable<IEmulationFactor
 export function withEmulatorFactory$<P>(WrappedComponent: ComponentType<P & IEmulatorFactory$Props>): ComponentType<P> {
     return (props: P): ReactElement => (
         <EmulatorFactory$Context.Consumer>{
-            (value): JSX.Element => <WrappedComponent emulatorFactory$={value} {...props}/>
+            (value): ReactElement => <WrappedComponent emulatorFactory$={value} {...props}/>
         }</EmulatorFactory$Context.Consumer>
     );
 }

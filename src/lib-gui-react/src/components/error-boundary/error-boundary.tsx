@@ -47,24 +47,23 @@ class ComposedErrorBoundary extends Component<TErrorBoundaryProps, IErrorBoundar
         return {error};
     }
 
-    static getDerivedStateFromProps({error}: IErrorBoundaryProps,
+    static getDerivedStateFromProps(nextProps: IErrorBoundaryProps,
                                     prevState: IErrorBoundaryState): IErrorBoundaryState | null {
         // don't overwrite any error
-        return (prevState.error === undefined) && (error !== undefined)
-            ? {error}
-            : null;
+        const error = prevState.error ?? nextProps.error;
+        return error ? {error} : null;
     }
 
     constructor(props: TErrorBoundaryProps) {
         super(props);
         const {error} = props;
-        this.state = error === undefined ? {} : {error};
+        this.state = {error};
     }
 
     render(): ReactNode {
         const {props: {classes, children, locale, showReloadButton}, state: {error}} = this;
 
-        if (error === undefined) {
+        if ((error === undefined) || (error === null)) {
             return children;
         }
 
