@@ -1,9 +1,8 @@
 {
   "extends": "../tsconfig",
   "compilerOptions": {
-    // TODO this is just a reminder that our path mappings do not work
-    //      with Next.js at the moment
-    "paths": {},
+    // TODO "toggle" path mappings: yes for "next dev", no for "next build"
+    // "paths": {},
     // compiler options set by Next.js
     "allowJs": true,
     "skipLibCheck": true,

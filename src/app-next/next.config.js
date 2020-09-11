@@ -1,5 +1,6 @@
 'use strict';
 
+const path = require('path');
 const withBundleAnalyzer = require('@next/bundle-analyzer');
 
 
@@ -7,6 +8,7 @@ module.exports = (phase) => {
     console.log(`creating Next.js config for phase "${phase}"`);
 
     let nextConfig = {
+        target: 'serverless',
         basePath: '/age-online',
         distDir: 'dist/next-build',
 
@@ -17,6 +19,26 @@ module.exports = (phase) => {
             ...i18nPathMap('en'),
             ...i18nPathMap('de'),
         }),
+
+        // Compile TypeScript code outside of this directory (see path mappings),
+        // based on:
+        // https://github.com/vercel/next.js/blob/canary/test/integration/typescript-workspaces-paths/packages/www/next.config.js
+        // TODO works only as long as there are no <lib>/dist/* files present
+        webpack: function (config, {defaultLoaders}) {
+            const resolvedBaseUrl = path.resolve(config.context, '../')
+            config.module.rules = [
+                ...config.module.rules,
+                {
+                    test: /\.(tsx|ts|js|mjs|jsx)$/,
+                    include: [resolvedBaseUrl],
+                    use: defaultLoaders.babel,
+                    exclude: (excludePath) => {
+                        return /node_modules/.test(excludePath)
+                    },
+                },
+            ]
+            return config
+        },
     };
 
     if (process.env.ANALYZE) {
@@ -34,11 +56,9 @@ function i18nPathMap(locale) {
             '/settings': {page: '/settings'},
         };
     }
+    // TODO why do we have to keep the [locale]/*.tsx files for this to work?
     return {
-        // the following caused inconsistent exported code where [locale].js was
-        // created and [locale]/index.js was requested by the .html:
-        // [`/${locale}/index`]: {page: '/[locale]/index', query: {locale}},
-        [`/${locale}`]: {page: '/[locale]', query: {locale}},
-        [`/${locale}/settings`]: {page: '/[locale]/settings', query: {locale}},
+        [`/${locale}`]: {page: '/'},
+        [`/${locale}/settings`]: {page: '/settings'},
     };
 }

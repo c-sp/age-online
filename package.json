@@ -36,7 +36,7 @@
     "develop:next": "yarn workspace @age-online/app-next develop",
     "serve:next": "yarn workspace @age-online/app-next serve",
     "//  CI  /////////////////////////////////////////////////////////////": "",
-    "ci:build": "yarn workspace @age-online/lib-common build && yarn workspace @age-online/lib-emulator build && yarn workspace @age-online/lib-gui-react build && yarn workspace @age-online/app-gatsby build",
+    "ci:build": "yarn workspace @age-online/lib-common build && yarn workspace @age-online/lib-emulator build && yarn workspace @age-online/lib-gui-react build && yarn workspace @age-online/app-common build && yarn workspace @age-online/app-gatsby build",
     "ci:test": "karma start src/karma.conf.js --single-run"
   }
 }

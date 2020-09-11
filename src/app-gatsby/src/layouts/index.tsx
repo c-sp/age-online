@@ -1,37 +1,16 @@
-import {
-    AppCommonHead,
-    AppContainer,
-    AppPage,
-    AppStateContext,
-    ErrorBoundary,
-    FALLBACK_LOCALE,
-    isAppPage,
-    isLocale,
-    Locale,
-    PersistentAppState,
-    SiteApiContext,
-    TidyComponent,
-} from '@age-online/lib-gui-react';
-import {CssBaseline, Theme, ThemeProvider} from '@material-ui/core';
-import {I18nContext, I18nDetails, I18nManager} from '@shopify/react-i18n';
-import {PageProps} from 'gatsby';
-import React, {ReactNode} from 'react';
-import {Helmet} from 'react-helmet';
+import {AppHelmet, appPageFromPathname, localeFromPathname} from '@age-online/app-common';
+import {AppContainer, SiteApiContext} from '@age-online/lib-gui-react';
+import {PageProps, withPrefix} from 'gatsby';
+import React, {Component, ReactNode} from 'react';
 import {GatsbySiteApi} from './gatsby-site-api';
 
 
 interface IPageContext {
-    readonly locale?: string;
     readonly page: string;
     readonly pathPrefix: string;
 }
 
 type TRootLayoutProps = PageProps<Record<string, unknown>, IPageContext>;
-
-interface IRootLayoutState {
-    readonly currentTheme: Theme;
-    readonly error?: unknown;
-}
 
 
 /**
@@ -46,129 +25,55 @@ interface IRootLayoutState {
  * @see https://gatsbyjs.org/docs/browser-apis/#wrapPageElement
  * @see https://gatsbyjs.org/docs/ssr-apis/#wrapPageElement
  */
-export default class RootLayout extends TidyComponent<TRootLayoutProps, IRootLayoutState> {
+export default class RootLayout extends Component<TRootLayoutProps> {
 
-    private readonly i18nManager: I18nManager;
+    private readonly globalCss = {
+        '#___gatsby, #___gatsby > div': {
+            height: '100%',
+        }
+    };
+    private readonly ageWasmJsUrl: string;
+    private readonly ageWasmUrl: string;
     private readonly siteApi: GatsbySiteApi;
-    private readonly persistentAppState: PersistentAppState;
 
     constructor(props: TRootLayoutProps) {
         super(props);
+        const {path} = props;
 
-        const {pageContext: {locale, page}} = props;
+        this.ageWasmJsUrl = withPrefix('/age-wasm/age_wasm.js');
+        this.ageWasmUrl = withPrefix('/age-wasm/age_wasm.wasm');
 
-        const loc = getLocale(locale);
-        this.i18nManager = new I18nManager(i18nDetails(loc));
-        this.siteApi = new GatsbySiteApi(loc, appPageFromPath(page));
-
-        this.persistentAppState = new PersistentAppState({
-            '#___gatsby, #___gatsby > div': {
-                height: '100%',
-            }
-        });
-
-        const {currentTheme} = this.persistentAppState.appState;
-        this.state = {currentTheme};
-    }
-
-
-    componentDidMount(): void {
-        const {persistentAppState} = this;
-        this.callOnUnmount(() => persistentAppState.cleanup());
-
-        // update ThemeProvider on theme change
-        this.unsubscribeOnUnmount(
-            persistentAppState.appState$('currentTheme').subscribe(({currentTheme}) => this.setState({currentTheme})),
-        );
-
-        // catch unhandled errors
-        window.onerror = (_message, _source, _lineno, _colno, error) => this.setState({error});
-        window.onunhandledrejection = ({reason}: PromiseRejectionEvent) => this.setState({error: reason as unknown});
+        this.siteApi = new GatsbySiteApi(localeFromPathname(path), appPageFromPathname(path));
     }
 
     componentDidUpdate(): void {
-        const {i18nManager, siteApi, props: {pageContext: {locale}}} = this;
+        const {siteApi, props: {path}} = this;
 
-        // Adjusting locale here does not cause a RootLayout re-render as we
-        // don't update props or state.
-        // Components wrapped with withI18nBundle() will be re-rendered,
-        // but not RootLayout.
-        const loc = getLocale(locale);
-        if (loc !== i18nManager.details.locale) {
-            siteApi.setCurrentLocale(loc);
-            i18nManager.update(i18nDetails(loc));
+        const locale = localeFromPathname(path);
+        if (locale !== siteApi.currentLocale) {
+            siteApi.currentLocale = locale;
         }
     }
 
-
     render(): ReactNode {
-        const {siteApi, persistentAppState, i18nManager, props, state: {currentTheme, error}} = this;
-        const {children, pageContext: {page, pathPrefix}} = props;
+        const {globalCss, ageWasmJsUrl, ageWasmUrl, siteApi, props} = this;
+        const {children, path, pageContext: {pathPrefix}} = props;
 
-        // We can update the page on every render() because the whole site is
-        // rendered anyway when switching pages.
-        siteApi.currentPage = appPageFromPath(page);
+        const locale = localeFromPathname(path);
+        const currentPage = appPageFromPathname(path);
 
-        // Material UI's CssBaseline activates the font "Roboto" on <body>
-        // and resets box-sizing as described in:
-        // https://css-tricks.com/box-sizing/#article-header-id-6
-        //
-        // Note that we must declare it within <ThemeProvider> to handle theme
-        // changes appropriately.
         return <>
-            <Helmet>
-                <AppCommonHead pathPrefix={pathPrefix}/>
-            </Helmet>
+            <AppHelmet basePath={pathPrefix}/>
 
-            <ThemeProvider theme={currentTheme}>
-                <CssBaseline/>
-
-                <ErrorBoundary error={error}
-                               locale={i18nManager.details.locale}
-                               showReloadButton={true}>
-
-                    <SiteApiContext.Provider value={siteApi}>
-                        <AppStateContext.Provider value={persistentAppState}>
-                            <I18nContext.Provider value={i18nManager}>
-
-                                <AppContainer>{children}</AppContainer>
-
-                            </I18nContext.Provider>
-                        </AppStateContext.Provider>
-                    </SiteApiContext.Provider>
-
-                </ErrorBoundary>
-
-            </ThemeProvider>
+            <SiteApiContext.Provider value={siteApi}>
+                <AppContainer locale={locale}
+                              currentPage={currentPage}
+                              ageWasmJsUrl={ageWasmJsUrl}
+                              ageWasmUrl={ageWasmUrl}
+                              globalCss={globalCss}>
+                    {children}
+                </AppContainer>
+            </SiteApiContext.Provider>
         </>;
     }
-}
-
-
-function i18nDetails(locale: Locale): I18nDetails {
-    return {
-        locale,
-        onError(err): void {
-            // let the translation/formatting causing the error return
-            // an empty string by not re-throwing the error
-            console.error('i18n error', err);
-        },
-    };
-}
-
-
-function getLocale(locale: string | undefined): Locale {
-    return isLocale(locale) ? locale : FALLBACK_LOCALE;
-}
-
-
-function appPageFromPath(path: string): AppPage {
-    // '/de/foo' => ['', 'en', 'foo'] => ['en', 'foo']
-    const pathParts = path.split('/').slice(1);
-
-    // ['en', 'foo'] => ['foo']
-    // ['xy', 'foo'] => ['xy', 'foo']
-    const appPageStr = `/${isLocale(pathParts[0]) ? pathParts.slice(1) : pathParts}`;
-
-    return isAppPage(appPageStr) ? appPageStr : AppPage.HOME;
 }

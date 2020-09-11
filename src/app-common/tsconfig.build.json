@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig",
+  "compilerOptions": {
+    "outDir": "dist/es6",
+    "paths": {}
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}

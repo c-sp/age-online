@@ -1,15 +1,23 @@
-import {AppCommonHead} from '@age-online/lib-gui-react';
 import {ServerStyleSheets} from '@material-ui/core';
 import Document, {DocumentContext, Head, Html, Main, NextScript} from 'next/document'
 import React from 'react';
+import {Helmet, HelmetData} from 'react-helmet';
+
+
+interface IAdditionalDocumentProps {
+    readonly helmet: HelmetData;
+}
 
 
 /**
  * Material UI SSR:
  * https://material-ui.com/guides/server-rendering/
- * https://github.com/mui-org/material-ui/blob/master/examples/nextjs/pages/_document.js
+ * https://github.com/mui-org/material-ui/blob/master/examples/nextjs
+ *
+ * React Helmet:
+ * https://github.com/vercel/next.js/blob/canary/examples/with-react-helmet
  */
-export default class AgeOnlineDocument extends Document {
+export default class AgeOnlineDocument extends Document<IAdditionalDocumentProps> {
 
     static async getInitialProps(ctx: DocumentContext) {
         // Resolution order
@@ -47,21 +55,36 @@ export default class AgeOnlineDocument extends Document {
 
         return {
             ...initialProps,
+            helmet: Helmet.renderStatic(),
             // Styles fragment is rendered after the app and page rendering finish.
             styles: [...React.Children.toArray(initialProps.styles), sheets.getStyleElement()],
         };
     }
 
 
-    render() {
-        const {assetPrefix} = this.props;
-        return (
-            <Html>
-                <Head>
-                    <AppCommonHead pathPrefix={assetPrefix}/>
-                </Head>
+    // should render on <html>
+    get helmetHtmlAttrComponents() {
+        return this.props.helmet.htmlAttributes.toComponent()
+    }
 
-                <body><Main/><NextScript/></body>
+    // should render on <body>
+    get helmetBodyAttrComponents() {
+        return this.props.helmet.bodyAttributes.toComponent()
+    }
+
+    // should render on <head>
+    get helmetHeadComponents() {
+        return Object.keys(this.props.helmet)
+            .filter((el) => el !== 'htmlAttributes' && el !== 'bodyAttributes')
+            .map((el) => (this.props.helmet as any)[el].toComponent())
+    }
+
+
+    render() {
+        return (
+            <Html {...this.helmetHtmlAttrComponents}>
+                <Head>{this.helmetHeadComponents}</Head>
+                <body {...this.helmetBodyAttrComponents}><Main/><NextScript/></body>
             </Html>
         );
     }

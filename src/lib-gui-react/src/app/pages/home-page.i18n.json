@@ -17,7 +17,7 @@
   },
   "page:commit": {
     "en": "deployed commit: {commitLink}{br}({commitDate}){br}branch: {branchLink}",
-    "de": "installierter Commit: {commitLink}{br}({commitDate}){br}Branch: {branchLink}"
+    "de": "aktiver Commit: {commitLink}{br}({commitDate}){br}Branch: {branchLink}"
   },
   "page:open-rom-file": {
     "en": "open rom file",

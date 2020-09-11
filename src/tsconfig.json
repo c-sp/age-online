@@ -28,6 +28,9 @@
     // https://github.com/microsoft/TypeScript/issues/26722#issuecomment-580975983
     "baseUrl": ".",
     "paths": {
+      "@age-online/app-common": [
+        "./app-common/src/index"
+      ],
       "@age-online/lib-common": [
         "./lib-common/src/index"
       ],

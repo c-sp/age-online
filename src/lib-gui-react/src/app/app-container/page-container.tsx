@@ -3,7 +3,7 @@ import {createStyles, WithStyles, withStyles} from '@material-ui/core';
 import React, {ReactNode} from 'react';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {distinctUntilChanged, map} from 'rxjs/operators';
-import {ISiteApiProps, PageNavBar, TidyComponent, withSiteApi} from '../../components';
+import {AppPage, PageNavBar, TidyComponent} from '../../components';
 import {IAppState, ICurrentAppState, ICurrentAppStateProps, withCurrentAppState} from '../app-state';
 
 
@@ -86,7 +86,11 @@ const styles = createStyles({
     },
 });
 
-type TPageContainerProps = ICurrentAppStateProps & ISiteApiProps & WithStyles;
+export interface IPageContainerProps {
+    readonly currentPage: AppPage;
+}
+
+type TPageContainerProps = IPageContainerProps & ICurrentAppStateProps & WithStyles;
 
 class ComposedPageContainer extends TidyComponent<TPageContainerProps, IPageContainerState> {
 
@@ -113,7 +117,7 @@ class ComposedPageContainer extends TidyComponent<TPageContainerProps, IPageCont
     }
 
     render(): ReactNode {
-        const {props: {children, classes, siteApi: {currentPage}}, state: {verticalBar, emulatorState}} = this;
+        const {props: {currentPage, classes, children}, state: {verticalBar, emulatorState}} = this;
 
         const orientationCss = verticalBar ? classes.pageLandscape : classes.pagePortrait;
         const classNames = `${classes.container} ${classes.page} ${orientationCss}`;
@@ -133,9 +137,7 @@ class ComposedPageContainer extends TidyComponent<TPageContainerProps, IPageCont
 }
 
 export const PageContainer = withStyles(styles)(
-    withSiteApi(
-        withCurrentAppState(
-            ComposedPageContainer,
-        ),
+    withCurrentAppState(
+        ComposedPageContainer,
     ),
 );

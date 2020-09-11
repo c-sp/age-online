@@ -1,8 +1,9 @@
 # AGE Online static files
 
-This package contains common AGE Online static files.
-They must be copied over to the directory the respective application expects
-static files
+This package contains common AGE Online web application code and files.
+
+Static files must be copied over to the directory the respective application
+expects static files
 (e.g. `<app>/static` for [Gatsby](https://www.gatsbyjs.com/),
 `<app>/public` for [Next.js](https://nextjs.org/)).
 

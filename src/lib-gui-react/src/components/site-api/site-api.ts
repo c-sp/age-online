@@ -15,7 +15,6 @@ export function isAppPage(value: unknown): value is AppPage {
 export interface ISiteLinkProps {
     readonly appPage: AppPage;
     readonly locale?: Locale;
-    readonly className?: string;
     readonly children?: ReactNode;
 }
 
@@ -31,15 +30,10 @@ export type TSiteLinkComponent = FunctionComponent<ISiteLinkProps>;
  */
 export interface ISiteApi {
 
-    readonly currentPage: AppPage;
-
     /**
      * Site link component based on the current locale
      */
     readonly SiteLink: TSiteLinkComponent;
-
-    readonly ageWasmJsUrl: string;
-    readonly ageWasmUrl: string;
 
     /**
      * Navigate to the specified page using the specified locale.
