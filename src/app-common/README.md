@@ -23,8 +23,6 @@ to generate Favicons for different platforms from [icon.svg](icon.svg).
 * **Favicon Generator Options:**
     * **Path:**
       use `/age-online/` as path.
-    * **Version/Refresh:**
-      append a version query string to generated icon urls.
     * **App name:**
       use "AGE Online" as app name.
 
