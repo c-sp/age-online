@@ -32,7 +32,7 @@
     "analyze": "yarn clean && cross-env ANALYZE=do-it next build",
     "build": "yarn clean && yarn copy-static-files && next build && next export -o dist/next-export",
     "clean": "rimraf .next dist public/[!.gitkeep]**",
-    "copy-static-files": "copyfiles -u 3 ../app-common/static/**/* public",
+    "copy-static-files": "copyfiles -u 3 \"../app-common/static/**/*\" public",
     "develop": "yarn clean && yarn copy-static-files && next dev",
     "serve": "node serve-static.js"
   }

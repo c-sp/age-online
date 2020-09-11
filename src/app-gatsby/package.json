@@ -37,7 +37,7 @@
     "analyze": "cross-env ANALYZE=do-it yarn build",
     "build": "yarn clean && yarn copy-static-files && cross-env BROWSERSLIST_DISABLE_CACHE=true gatsby build --prefix-paths",
     "clean": "gatsby clean && rimraf static/[!.gitkeep]**",
-    "copy-static-files": "copyfiles -u 3 ../app-common/static/**/* static",
+    "copy-static-files": "copyfiles -u 3 \"../app-common/static/**/*\" static",
     "develop": "yarn clean && yarn copy-static-files && gatsby develop",
     "serve": "node serve-static.js"
   }
