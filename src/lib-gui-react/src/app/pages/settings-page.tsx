@@ -10,7 +10,7 @@ import {
     PreferredTheme,
     SEO,
     ThemeSelection,
-    TidyComponent,
+    TidyPureComponent,
     withI18nBundle,
     withSiteApi,
 } from '../../components';
@@ -36,7 +36,7 @@ const styles = (theme: Theme) => createStyles({
 
         // flag hint
         '& > :last-child': {
-            marginTop: theme.spacing(5),
+            marginTop: theme.spacing(7),
             textAlign: 'center',
         },
     },
@@ -48,7 +48,7 @@ interface ISettingsPageState {
 
 type TSettingsPageProps = WithStyles & WithI18nProps & ISiteApiProps & IPersistentAppStateProps;
 
-class ComposedSettingsPage extends TidyComponent<TSettingsPageProps, ISettingsPageState> {
+class ComposedSettingsPage extends TidyPureComponent<TSettingsPageProps, ISettingsPageState> {
 
     constructor(props: TSettingsPageProps) {
         super(props);

@@ -1,9 +1,10 @@
-import {AppHelmet, appPageFromPathname, localeFromPathname} from '@age-online/app-common';
+import {AppHelmet, appPageFromPathname, localeFromPathname, SiteApi} from '@age-online/app-common';
 import {AppContainer, SiteApiContext,} from '@age-online/lib-gui-react';
 import App from 'next/app';
 import {AppProps} from 'next/dist/pages/_app';
+import Link from 'next/link';
+import Router from 'next/router';
 import React, {ReactElement} from 'react';
-import {NextSiteApi} from '../common';
 
 
 export default class AgeOnlineApp extends App {
@@ -15,7 +16,7 @@ export default class AgeOnlineApp extends App {
     };
     private readonly ageWasmJsUrl: string;
     private readonly ageWasmUrl: string;
-    private readonly siteApi: NextSiteApi;
+    private readonly siteApi: SiteApi;
 
     constructor(props: AppProps) {
         super(props);
@@ -24,16 +25,11 @@ export default class AgeOnlineApp extends App {
         this.ageWasmJsUrl = `${basePath}/age-wasm/age_wasm.js`;
         this.ageWasmUrl = `${basePath}/age-wasm/age_wasm.wasm`;
 
-        this.siteApi = new NextSiteApi(localeFromPathname(asPath), appPageFromPathname(asPath));
-    }
-
-    componentDidUpdate(): void {
-        const {siteApi, props: {router: {asPath}}} = this;
-
-        const locale = localeFromPathname(asPath);
-        if (locale !== siteApi.currentLocale) {
-            siteApi.currentLocale = locale;
-        }
+        this.siteApi = new SiteApi(
+            localeFromPathname(asPath),
+            path => Router.push(path),
+            ({href, children}) => <Link href={href} prefetch={false}><a>{children}</a></Link>,
+        );
     }
 
     render(): ReactElement {
@@ -42,6 +38,7 @@ export default class AgeOnlineApp extends App {
 
         const locale = localeFromPathname(asPath);
         const currentPage = appPageFromPathname(asPath);
+        siteApi.currentLocale = locale;
 
         return <>
             <AppHelmet basePath={basePath}/>

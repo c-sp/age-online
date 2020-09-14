@@ -3,6 +3,18 @@
     "en": "emulator toolbar",
     "de": "Emulator Toolbar"
   },
+  "show-controls": {
+    "en": "show Gameboy controls",
+    "de": "Gameboy Steuerung anzeigen"
+  },
+  "show-controls-overlay": {
+    "en": "show Gameboy controls as overlay",
+    "de": "Gameboy Steuerung überdeckend anzeigen"
+  },
+  "hide-controls": {
+    "en": "hide Gameboy controls",
+    "de": "Gameboy Steuerung verbergen"
+  },
   "open-rom-file": {
     "en": "open rom file",
     "de": "Rom Datei öffnen"

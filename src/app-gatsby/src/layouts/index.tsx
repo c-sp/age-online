@@ -1,8 +1,7 @@
-import {AppHelmet, appPageFromPathname, localeFromPathname} from '@age-online/app-common';
+import {AppHelmet, appPageFromPathname, localeFromPathname, SiteApi} from '@age-online/app-common';
 import {AppContainer, SiteApiContext} from '@age-online/lib-gui-react';
-import {PageProps, withPrefix} from 'gatsby';
+import {Link, navigate, PageProps, withPrefix} from 'gatsby';
 import React, {Component, ReactNode} from 'react';
-import {GatsbySiteApi} from './gatsby-site-api';
 
 
 interface IPageContext {
@@ -34,7 +33,7 @@ export default class RootLayout extends Component<TRootLayoutProps> {
     };
     private readonly ageWasmJsUrl: string;
     private readonly ageWasmUrl: string;
-    private readonly siteApi: GatsbySiteApi;
+    private readonly siteApi: SiteApi;
 
     constructor(props: TRootLayoutProps) {
         super(props);
@@ -43,16 +42,11 @@ export default class RootLayout extends Component<TRootLayoutProps> {
         this.ageWasmJsUrl = withPrefix('/age-wasm/age_wasm.js');
         this.ageWasmUrl = withPrefix('/age-wasm/age_wasm.wasm');
 
-        this.siteApi = new GatsbySiteApi(localeFromPathname(path), appPageFromPathname(path));
-    }
-
-    componentDidUpdate(): void {
-        const {siteApi, props: {path}} = this;
-
-        const locale = localeFromPathname(path);
-        if (locale !== siteApi.currentLocale) {
-            siteApi.currentLocale = locale;
-        }
+        this.siteApi = new SiteApi(
+            localeFromPathname(path),
+            path => navigate(path),
+            ({href, children}) => <Link to={href}>{children}</Link>,
+        );
     }
 
     render(): ReactNode {
@@ -61,6 +55,7 @@ export default class RootLayout extends Component<TRootLayoutProps> {
 
         const locale = localeFromPathname(path);
         const currentPage = appPageFromPathname(path);
+        siteApi.currentLocale = locale;
 
         return <>
             <AppHelmet basePath={pathPrefix}/>

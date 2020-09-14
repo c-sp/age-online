@@ -3,7 +3,15 @@ import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core';
 import React, {ReactNode} from 'react';
 import {Observable, of} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
-import {Emulator, EmulatorCloseBar, EmulatorState, EmulatorToolbar, TidyComponent,} from '../../components';
+import {
+    Emulator,
+    EmulatorCloseBar,
+    EmulatorControls,
+    EmulatorState,
+    EmulatorToolbar,
+    nextEmulatorControls,
+    TidyPureComponent,
+} from '../../components';
 import {IPersistentAppStateProps, withPersistentAppState} from '../app-state';
 import {EmulatorStateDetails, TEmulatorState} from './emulator-state';
 import {IEmulatorFactory$Props, withEmulatorFactory$} from './with-emulation-factory';
@@ -44,11 +52,12 @@ export interface IEmulatorContainerProps {
 interface IEmulatorContainerState {
     readonly showToolbar: boolean;
     readonly emulatorState: TEmulatorState;
+    readonly emulatorControls: EmulatorControls;
 }
 
 type TEmulatorContainerProps = IEmulatorContainerProps & IEmulatorFactory$Props & IPersistentAppStateProps & WithStyles;
 
-class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, IEmulatorContainerState> {
+class ComposedEmulatorContainer extends TidyPureComponent<TEmulatorContainerProps, IEmulatorContainerState> {
 
     static getDerivedStateFromProps(nextProps: TEmulatorContainerProps,
                                     prevState: IEmulatorContainerState): Partial<IEmulatorContainerState> | null {
@@ -62,7 +71,13 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
 
     constructor(props: TEmulatorContainerProps) {
         super(props);
-        this.state = {showToolbar: false, emulatorState: {state: EmulatorState.NO_EMULATOR}};
+
+        const {emulatorControls} = props.currentAppState.appState;
+        this.state = {
+            showToolbar: false,
+            emulatorState: {state: EmulatorState.NO_EMULATOR},
+            emulatorControls,
+        };
     }
 
     private setEmulatorState(emulatorState: TEmulatorState): void {
@@ -94,6 +109,9 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
                 },
                 error => this.setEmulatorState({state: EmulatorState.EMULATOR_ERROR, error}),
             ),
+            persistentAppState.appState$('emulatorControls').subscribe(
+                ({emulatorControls}) => this.setState({emulatorControls}),
+            ),
         );
         this.callOnUnmount(
             () => persistentAppState.setEmulatorState(EmulatorState.NO_EMULATOR),
@@ -102,7 +120,10 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
 
 
     render(): ReactNode {
-        const {props: {hideEmulator, classes, persistentAppState}, state: {showToolbar, emulatorState}} = this;
+        const {
+            props: {hideEmulator, classes, persistentAppState},
+            state: {showToolbar, emulatorState, emulatorControls},
+        } = this;
         const {EMULATOR_RUNNING} = EmulatorState;
 
         const toolbar = showToolbar || (emulatorState.state !== EMULATOR_RUNNING);
@@ -126,10 +147,16 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
                                                         onConfirmError={() => persistentAppState.setRomSource(null)}/>}
 
                 {(emulatorState.state === EMULATOR_RUNNING) && <Emulator emulation={emulatorState.emulation}
-                                                                         pauseEmulation={hideEmulator}/>}
+                                                                         pauseEmulation={hideEmulator}
+                                                                         emulatorControls={emulatorControls}/>}
 
                 {toolbar && <>
                     <EmulatorToolbar className={classes.toolbar}
+                                     emulatorControls={emulatorControls}
+                                     cycleEmulatorControls={() => {
+                                         const emuControls = nextEmulatorControls(emulatorControls);
+                                         persistentAppState.setEmulatorControls(emuControls);
+                                     }}
                                      openRomFile={localFile => {
                                          persistentAppState.setRomSource({localFile});
                                          this.setState({showToolbar: false});

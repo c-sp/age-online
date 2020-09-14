@@ -1,4 +1,4 @@
-import {isPreferredTheme, PreferredTheme} from '../../components';
+import {EmulatorControls, isEmulatorControls, isPreferredTheme, PreferredTheme} from '../../components';
 import {IAppState, IPersistentAppState} from './app-state';
 import {CurrentAppState} from './current-app-state';
 import {LocalStorage} from './local-storage';
@@ -6,6 +6,7 @@ import {LocalStorage} from './local-storage';
 
 const KEY_PREFERRED_LOCALE = 'preferred-locale';
 const KEY_PREFERRED_THEME = 'preferred-theme';
+const KEY_EMULATOR_CONTROLS = 'emulator-controls';
 
 
 export class PersistentAppState extends CurrentAppState implements IPersistentAppState {
@@ -68,14 +69,23 @@ export class PersistentAppState extends CurrentAppState implements IPersistentAp
         this.updateState({romSource});
     }
 
-    setEmulatorState(emulatorState: IAppState["emulatorState"]): void {
+    setEmulatorState(emulatorState: IAppState['emulatorState']): void {
         this.updateState({emulatorState});
+    }
+
+    setEmulatorControls(emulatorControls: IAppState['emulatorControls']): void {
+        this.store.setItem(KEY_EMULATOR_CONTROLS, `${emulatorControls}`);
+        this.updateState({emulatorControls});
     }
 
 
     private readFromStore(): Partial<IAppState> {
         const prefTheme = this.store.getItem(KEY_PREFERRED_THEME);
         const preferredTheme = isPreferredTheme(prefTheme) ? prefTheme : PreferredTheme.AUTO_DETECT;
-        return {preferredTheme};
+
+        const emuControls = this.store.getItem(KEY_EMULATOR_CONTROLS);
+        const emulatorControls = isEmulatorControls(emuControls) ? emuControls : EmulatorControls.VISIBLE;
+
+        return {preferredTheme, emulatorControls};
     }
 }

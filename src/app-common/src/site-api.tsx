@@ -1,0 +1,63 @@
+import {
+    AppPage,
+    FALLBACK_LOCALE,
+    isAppPage,
+    ISiteApi,
+    ISiteLinkProps,
+    isLocale,
+    Locale,
+    TSiteLinkComponent,
+} from '@age-online/lib-gui-react';
+import React, {FunctionComponent, ReactElement} from 'react';
+
+
+export class SiteApi implements ISiteApi {
+
+    readonly SiteLink: TSiteLinkComponent;
+
+    constructor(public currentLocale: Locale,
+                private readonly navigateTo: (path: string) => void,
+                Link: FunctionComponent<{ href: string }>) {
+
+        this.SiteLink = (props: ISiteLinkProps): ReactElement => {
+            const {appPage, locale, children} = props;
+            // TODO this may not work, if the returned component is not part of a
+            //      component wrapped with withI18nBundle()
+            //      (this may get interesting when "interrupting" rendering the
+            //      component tree with a pure component)
+            return <Link href={this.localizePath(appPage, locale)}>{children}</Link>;
+        };
+    }
+
+    navigateLocalized(appPage: AppPage, locale?: Locale): void {
+        this.navigateTo(this.localizePath(appPage, locale));
+    }
+
+    private localizePath(path: string, locale?: Locale): string {
+        const checkedPath = path.startsWith('/') ? path : `/${path}`;
+        return `/${locale ?? this.currentLocale}${checkedPath}`;
+    }
+}
+
+
+export function localeFromPathname(pathname: string): Locale {
+    const [locale] = splitPathname(pathname);
+    return isLocale(locale) ? locale : FALLBACK_LOCALE;
+}
+
+export function appPageFromPathname(pathname: string): AppPage {
+    const pathParts = splitPathname(pathname);
+    // ['en', 'foo'] => ['foo']
+    // ['xy', 'foo'] => ['xy', 'foo']
+    const appPageStr = `/${isLocale(pathParts[0]) ? pathParts.slice(1) : pathParts}`;
+    return isAppPage(appPageStr) ? appPageStr : AppPage.HOME;
+}
+
+/**
+ * '/de/foo' => ['', 'de', 'foo'] => ['de', 'foo']
+ *
+ * '/foo' => ['', 'foo'] => ['foo']
+ */
+function splitPathname(pathname: string): string[] {
+    return pathname.split('/').slice(1);
+}

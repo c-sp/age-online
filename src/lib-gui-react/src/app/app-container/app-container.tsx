@@ -4,7 +4,7 @@ import {I18nContext, I18nDetails, I18nManager} from '@shopify/react-i18n';
 import React, {ReactNode} from 'react';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {AppPage, ErrorBoundary, Locale, TidyComponent} from '../../components';
+import {AppPage, ErrorBoundary, Locale, TidyPureComponent} from '../../components';
 import {AppStateContext, IAppState, PersistentAppState} from '../app-state';
 import {EmulatorContainer} from './emulator-container';
 import {PageContainer} from './page-container';
@@ -31,7 +31,7 @@ export interface IAppContainerProps {
     readonly children?: ReactNode;
 }
 
-export class AppContainer extends TidyComponent<IAppContainerProps, IAppContainerState> {
+export class AppContainer extends TidyPureComponent<IAppContainerProps, IAppContainerState> {
 
     private readonly i18nManager: I18nManager;
     private readonly persistentAppState: PersistentAppState;

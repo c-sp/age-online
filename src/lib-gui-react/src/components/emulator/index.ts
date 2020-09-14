@@ -1,2 +1,2 @@
 export * from './emulator';
-export * from './emulator-state';
+export * from './emulator-controls';

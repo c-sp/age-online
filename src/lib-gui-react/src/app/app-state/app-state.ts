@@ -1,7 +1,7 @@
 import {TGameboyRomSource} from '@age-online/lib-emulator';
 import {Theme} from '@material-ui/core';
 import {Observable} from 'rxjs';
-import {EmulatorState, Locale, PreferredTheme} from '../../components';
+import {EmulatorControls, EmulatorState, Locale, PreferredTheme} from '../../components';
 
 
 export interface IAppState {
@@ -26,6 +26,8 @@ export interface IAppState {
     readonly romSource: TGameboyRomSource | null;
 
     readonly emulatorState: EmulatorState;
+
+    readonly emulatorControls: EmulatorControls;
 }
 
 export type TAppStateKey = keyof IAppState;
@@ -46,4 +48,6 @@ export interface IPersistentAppState extends ICurrentAppState {
     setRomSource(romFile: IAppState['romSource']): void;
 
     setEmulatorState(emulatorState: IAppState['emulatorState']): void;
+
+    setEmulatorControls(emulatorControls: IAppState['emulatorControls']): void;
 }
