@@ -1,7 +1,7 @@
 {
-  "bar-label": {
-    "en": "emulator toolbar",
-    "de": "Emulator Toolbar"
+  "open-rom-file": {
+    "en": "open rom file",
+    "de": "Rom Datei öffnen"
   },
   "show-controls": {
     "en": "show Gameboy controls",
@@ -14,13 +14,5 @@
   "hide-controls": {
     "en": "hide Gameboy controls",
     "de": "Gameboy Steuerung verbergen"
-  },
-  "open-rom-file": {
-    "en": "open rom file",
-    "de": "Rom Datei öffnen"
-  },
-  "close-emulator": {
-    "en": "stop emulator",
-    "de": "Emulator beenden"
   }
 }

@@ -1,3 +1,4 @@
+import {cssClasses} from '@age-online/lib-common';
 import {IEmulation} from '@age-online/lib-emulator';
 import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core';
 import React, {ReactNode} from 'react';
@@ -6,11 +7,12 @@ import {switchMap} from 'rxjs/operators';
 import {
     Emulator,
     EmulatorCloseBar,
-    EmulatorControls,
+    DisplayControls,
+    EmulatorStartStopBar,
     EmulatorState,
     EmulatorToolbar,
-    nextEmulatorControls,
-    TidyPureComponent,
+    cycleDisplayControls,
+    TidyComponent,
 } from '../../components';
 import {IPersistentAppStateProps, withPersistentAppState} from '../app-state';
 import {EmulatorStateDetails, TEmulatorState} from './emulator-state';
@@ -32,15 +34,25 @@ const styles = (theme: Theme) => createStyles({
     hide: {
         display: 'none',
     },
-    toolbar: {
+    bar: {
         position: 'absolute',
+        opacity: 0.75,
+    },
+    toolbar: {
         top: 0,
         left: 0,
+        borderBottomRightRadius: theme.spacing(2),
     },
     closeBar: {
-        position: 'absolute',
         top: 0,
         right: 0,
+        borderBottomLeftRadius: theme.spacing(2),
+    },
+    startStopBar: {
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        borderRadius: '50%',
     },
 });
 
@@ -50,33 +62,35 @@ export interface IEmulatorContainerProps {
 }
 
 interface IEmulatorContainerState {
-    readonly showToolbar: boolean;
+    readonly pauseEmulation: boolean;
+    readonly showBars: boolean;
     readonly emulatorState: TEmulatorState;
-    readonly emulatorControls: EmulatorControls;
+    readonly displayControls: DisplayControls;
 }
 
 type TEmulatorContainerProps = IEmulatorContainerProps & IEmulatorFactory$Props & IPersistentAppStateProps & WithStyles;
 
-class ComposedEmulatorContainer extends TidyPureComponent<TEmulatorContainerProps, IEmulatorContainerState> {
+class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, IEmulatorContainerState> {
 
     static getDerivedStateFromProps(nextProps: TEmulatorContainerProps,
                                     prevState: IEmulatorContainerState): Partial<IEmulatorContainerState> | null {
 
-        return !nextProps.hideEmulator || !prevState.showToolbar
+        return !nextProps.hideEmulator || !prevState.showBars
             ? null
             // hide the toolbar when navigating to another page
-            : {showToolbar: false};
+            : {showBars: false};
     }
 
 
     constructor(props: TEmulatorContainerProps) {
         super(props);
 
-        const {emulatorControls} = props.currentAppState.appState;
+        const {displayControls} = props.currentAppState.appState;
         this.state = {
-            showToolbar: false,
+            pauseEmulation: false,
+            showBars: false,
             emulatorState: {state: EmulatorState.NO_EMULATOR},
-            emulatorControls,
+            displayControls,
         };
     }
 
@@ -104,13 +118,16 @@ class ComposedEmulatorContainer extends TidyPureComponent<TEmulatorContainerProp
             ).subscribe(
                 emulation => {
                     this.setEmulatorState(emulation
-                        ? {state: EmulatorState.EMULATOR_RUNNING, emulation}
+                        ? {state: EmulatorState.EMULATOR_READY, emulation}
                         : {state: EmulatorState.NO_EMULATOR});
                 },
-                error => this.setEmulatorState({state: EmulatorState.EMULATOR_ERROR, error}),
+                error => {
+                    console.error(error);
+                    this.setEmulatorState({state: EmulatorState.EMULATOR_ERROR, error});
+                },
             ),
-            persistentAppState.appState$('emulatorControls').subscribe(
-                ({emulatorControls}) => this.setState({emulatorControls}),
+            persistentAppState.appState$('displayControls').subscribe(
+                ({displayControls}) => this.setState({displayControls}),
             ),
         );
         this.callOnUnmount(
@@ -122,49 +139,59 @@ class ComposedEmulatorContainer extends TidyPureComponent<TEmulatorContainerProp
     render(): ReactNode {
         const {
             props: {hideEmulator, classes, persistentAppState},
-            state: {showToolbar, emulatorState, emulatorControls},
+            state: {pauseEmulation, showBars, emulatorState, displayControls},
         } = this;
-        const {EMULATOR_RUNNING} = EmulatorState;
 
-        const toolbar = showToolbar || (emulatorState.state !== EMULATOR_RUNNING);
-        const classNames = [
+        const {EMULATOR_READY} = EmulatorState;
+        const pauseEmu = hideEmulator || pauseEmulation;
+
+        const toolbar = showBars || (emulatorState.state !== EMULATOR_READY);
+        const classNames = cssClasses(
             classes.container,
-            ...(emulatorState.state !== EMULATOR_RUNNING ? [classes.hint] : []),
-            ...(hideEmulator ? [classes.hide] : []),
-        ];
+            emulatorState.state !== EMULATOR_READY ? classes.hint : '',
+            hideEmulator ? classes.hide : '',
+        );
 
         return (
-            <div className={classNames.join(' ')}
+            <div className={classNames}
                  onClick={ev => {
                      // toggle the toolbar only if this div was clicked,
                      // not if this event was propagated to this div
                      if (ev.currentTarget === ev.target) {
-                         this.setState({showToolbar: !showToolbar});
+                         this.setState({showBars: !showBars});
                      }
                  }}>
 
                 {!hideEmulator && <EmulatorStateDetails emulatorState={emulatorState}
                                                         onConfirmError={() => persistentAppState.setRomSource(null)}/>}
 
-                {(emulatorState.state === EMULATOR_RUNNING) && <Emulator emulation={emulatorState.emulation}
-                                                                         pauseEmulation={hideEmulator}
-                                                                         emulatorControls={emulatorControls}/>}
+                {(emulatorState.state === EMULATOR_READY) && <Emulator emulation={emulatorState.emulation}
+                                                                       pauseEmulation={pauseEmu}
+                                                                       displayControls={displayControls}/>}
 
                 {toolbar && <>
-                    <EmulatorToolbar className={classes.toolbar}
-                                     emulatorControls={emulatorControls}
-                                     cycleEmulatorControls={() => {
-                                         const emuControls = nextEmulatorControls(emulatorControls);
-                                         persistentAppState.setEmulatorControls(emuControls);
+                    <EmulatorToolbar className={cssClasses(classes.toolbar, classes.bar)}
+                                     displayControls={displayControls}
+                                     cycleDisplayControls={() => {
+                                         const emuControls = cycleDisplayControls(displayControls);
+                                         persistentAppState.setDisplayControls(emuControls);
                                      }}
                                      openRomFile={localFile => {
                                          persistentAppState.setRomSource({localFile});
-                                         this.setState({showToolbar: false});
+                                         this.setState({showBars: false});
                                      }}/>
 
-                    <EmulatorCloseBar className={classes.closeBar}
+                    <EmulatorCloseBar className={cssClasses(classes.closeBar, classes.bar)}
                                       closeEmulator={() => persistentAppState.setRomSource(null)}/>
                 </>}
+
+                {toolbar && (emulatorState.state === EMULATOR_READY) && (
+                    <EmulatorStartStopBar className={cssClasses(classes.startStopBar, classes.bar)}
+                                          emulationPaused={pauseEmu}
+                                          startStopEmulator={
+                                              () => this.setState({pauseEmulation: !pauseEmulation})
+                                          }/>
+                )}
 
             </div>
         );

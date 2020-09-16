@@ -1,0 +1,10 @@
+{
+  "pause-emulation": {
+    "en": "pause emulation",
+    "de": "Emulation pausieren"
+  },
+  "continue-emulation": {
+    "en": "continue emulation",
+    "de": "Emulation fortsetzen"
+  }
+}

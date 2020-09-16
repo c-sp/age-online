@@ -2,8 +2,9 @@ import {assertElement, cssClasses, IContentSize, observeSize} from '@age-online/
 import {IEmulation} from '@age-online/lib-emulator';
 import {createStyles, fade, Theme, WithStyles, withStyles} from '@material-ui/core';
 import React, {CSSProperties, ReactNode} from 'react';
-import {TidyPureComponent} from '../common';
-import {EmulatorControls} from './emulator-controls';
+import {TidyComponent} from '../common';
+import {DisplayControls} from './display-controls';
+import {EmulatorButtonControls} from "./emulator-button-controls";
 
 
 const styles = (theme: Theme) => createStyles({
@@ -32,7 +33,6 @@ const styles = (theme: Theme) => createStyles({
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        border: '1px solid',
     },
     controls: {
         alignSelf: 'end',
@@ -40,6 +40,14 @@ const styles = (theme: Theme) => createStyles({
         pointerEvents: 'auto',
         backgroundColor: fade(theme.palette.background.default, 0.8),
     },
+
+    controlsLeft: {
+        borderTopRightRadius: theme.spacing(2),
+    },
+    controlsRight: {
+        borderTopLeftRadius: theme.spacing(2),
+    },
+
     controlsLeftGrid: {
         gridArea: 'left-controls',
         justifySelf: 'start',
@@ -65,7 +73,7 @@ const styles = (theme: Theme) => createStyles({
 export interface IEmulatorProps {
     readonly emulation: IEmulation;
     readonly pauseEmulation: boolean;
-    readonly emulatorControls: EmulatorControls;
+    readonly displayControls: DisplayControls;
 }
 
 interface IEmulatorState {
@@ -75,7 +83,7 @@ interface IEmulatorState {
 
 type TEmulatorProps = IEmulatorProps & WithStyles;
 
-class ComposedEmulator extends TidyPureComponent<TEmulatorProps, IEmulatorState> {
+class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
 
     private containerDiv: HTMLDivElement | null = null;
     private screenDiv: HTMLDivElement | null = null;
@@ -88,7 +96,10 @@ class ComposedEmulator extends TidyPureComponent<TEmulatorProps, IEmulatorState>
 
 
     componentDidMount(): void {
-        const {containerDiv, screenDiv} = this;
+        const {containerDiv, screenDiv, props: {emulation, pauseEmulation}} = this;
+
+        this.initEmulation();
+        emulation.pauseEmulation = pauseEmulation;
 
         this.callOnUnmount(
             observeSize(
@@ -116,27 +127,33 @@ class ComposedEmulator extends TidyPureComponent<TEmulatorProps, IEmulatorState>
                     this.setState({canvasSize});
                 },
             ),
-            () => cancelAnimationFrame(this.animationRequestId),
+            () => this.props.emulation.stopEmulation(),
         );
-
-        this.initEmulation();
-        this.requestAnimation();
     }
 
     componentDidUpdate(prevProps: Readonly<TEmulatorProps>) {
-        if (prevProps.emulation !== this.props.emulation) {
+        const {emulation, pauseEmulation} = this.props;
+        emulation.pauseEmulation = pauseEmulation;
+
+        if (prevProps.emulation !== emulation) {
+            prevProps.emulation.stopEmulation();
             this.initEmulation();
         }
     }
 
+    private initEmulation(): void {
+        const {canvas, props: {emulation}} = this;
+        emulation.startEmulation(assertElement(canvas, 'emulator <canvas>'));
+    }
+
 
     render(): ReactNode {
-        const {props: {emulatorControls, classes}, state: {portrait, canvasSize: {widthPx, heightPx}}} = this;
+        const {props: {displayControls, classes}, state: {portrait, canvasSize: {widthPx, heightPx}}} = this;
 
-        const showControls = emulatorControls !== EmulatorControls.HIDDEN;
-        const overlayControls = emulatorControls === EmulatorControls.VISIBLE_OVERLAY;
-        const cssControlsLeft = cssClasses(classes.controls, overlayControls ? classes.controlsLeftOverlay : classes.controlsLeftGrid)
-        const cssControlsRight = cssClasses(classes.controls, overlayControls ? classes.controlsRightOverlay : classes.controlsRightGrid)
+        const showControls = displayControls !== DisplayControls.HIDDEN;
+        const overlayControls = displayControls === DisplayControls.VISIBLE_OVERLAY;
+        const cssControlsLeft = cssClasses(classes.controls, classes.controlsLeft, overlayControls ? classes.controlsLeftOverlay : classes.controlsLeftGrid)
+        const cssControlsRight = cssClasses(classes.controls, classes.controlsRight, overlayControls ? classes.controlsRightOverlay : classes.controlsRightGrid)
 
         const canvasStyle: CSSProperties = {
             width: `${widthPx}px`,
@@ -156,36 +173,10 @@ class ComposedEmulator extends TidyPureComponent<TEmulatorProps, IEmulatorState>
                 </div>
 
                 {showControls && <div className={cssControlsLeft}>controls left</div>}
-                {showControls && <div className={cssControlsRight}>controls right</div>}
+                {showControls && <EmulatorButtonControls className={cssControlsRight}/>}
 
             </div>
         );
-    }
-
-    private initEmulation(): void {
-        const {canvas, props: {emulation}} = this;
-        emulation.initializeOutput(assertElement(canvas, 'emulator <canvas>'));
-    }
-
-
-    private lastAnimationTime = 0;
-    private animationRequestId = 0;
-
-    private requestAnimation(): void {
-        // TODO move to emulation?
-        this.animationRequestId = requestAnimationFrame(timestamp => this.emulate(timestamp));
-    }
-
-    private emulate(timestamp: number): void {
-        const {lastAnimationTime, props: {emulation}} = this;
-
-        if (lastAnimationTime) {
-            const elapsed = timestamp - lastAnimationTime;
-            emulation.runEmulation(elapsed, 48000);
-        }
-
-        this.lastAnimationTime = timestamp;
-        this.requestAnimation();
     }
 }
 

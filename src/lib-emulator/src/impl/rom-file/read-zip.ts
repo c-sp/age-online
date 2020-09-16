@@ -1,6 +1,6 @@
 import JSZip from 'jszip';
 import {from, Observable} from 'rxjs';
-import {InvalidRomFileError} from '../../api';
+import {NoZippedRomFoundError} from '../../api';
 
 
 export function extractRomFromZip$(file: ArrayBuffer): Observable<ArrayBuffer> {
@@ -19,7 +19,7 @@ async function extractRomFromZip(file: ArrayBuffer): Promise<ArrayBuffer> {
     // get a list of all rom files within that archive
     const files = jsZip.file(/.*(\.gb)|(\.gbc)|(\.cgb)$/i);
     if (!files || !files.length) {
-        throw new InvalidRomFileError();
+        throw new NoZippedRomFoundError();
     }
 
     // for deterministic rom file loading we sort the files

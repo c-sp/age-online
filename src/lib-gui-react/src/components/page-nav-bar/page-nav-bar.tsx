@@ -39,7 +39,7 @@ const ICON_STYLE_INACTIVE: CSSProperties = {
 export enum EmulatorState {
     NO_EMULATOR = 'no-emulator',
     EMULATOR_LOADING = 'emulator-loading',
-    EMULATOR_RUNNING = 'emulator-running',
+    EMULATOR_READY = 'emulator-ready',
     EMULATOR_ERROR = 'emulator-error',
 }
 
@@ -84,7 +84,7 @@ class ComposedPageNavBar extends Component<TPageNavBarProps> {
             case EmulatorState.EMULATOR_ERROR:
                 return EmulatorErrorIconSiteLink;
 
-            case EmulatorState.EMULATOR_RUNNING:
+            case EmulatorState.EMULATOR_READY:
                 return EmulatorRunningIconSiteLink;
 
             default:

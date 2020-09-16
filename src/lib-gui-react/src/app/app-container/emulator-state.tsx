@@ -1,5 +1,12 @@
 import {assertNever} from '@age-online/lib-common';
-import {IEmulation, RomFileLoadingError, WasmFetchError, WasmInitError} from '@age-online/lib-emulator';
+import {
+    IEmulation,
+    InvalidRomFileError,
+    NoZippedRomFoundError,
+    RomFileLoadingError,
+    WasmFetchError,
+    WasmInitError,
+} from '@age-online/lib-emulator';
 import {
     Button,
     createStyles,
@@ -7,6 +14,7 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
+    Typography,
     withStyles,
     WithStyles,
 } from '@material-ui/core';
@@ -31,7 +39,7 @@ export interface IStateEmulatorError {
 }
 
 export interface IStateEmulatorRunning {
-    readonly state: EmulatorState.EMULATOR_RUNNING;
+    readonly state: EmulatorState.EMULATOR_READY;
     readonly emulation: IEmulation;
 }
 
@@ -48,15 +56,18 @@ const styles = createStyles({
         from: {transform: 'rotate(0deg)'},
         to: {transform: 'rotate(360deg)'},
     },
-    settings: {
+    loading: {
         opacity: 0.3,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
     },
-    settingsIcon: {
+    loadingIcon: {
         fontSize: '150px',
         animation: '2s ease-in-out 0s infinite $animateIcon',
+    },
+    invalidRomReason: {
+        opacity: 0.5,
     },
 });
 
@@ -75,13 +86,13 @@ class ComposedEmulatorStateDetails extends Component<TEmulatorStateDetailsProps>
         switch (emulatorState.state) {
 
             case EmulatorState.NO_EMULATOR:
-            case EmulatorState.EMULATOR_RUNNING:
+            case EmulatorState.EMULATOR_READY:
                 return <></>;
 
             case EmulatorState.EMULATOR_LOADING:
                 return (
-                    <div className={classes.settings}>
-                        <SettingsOutlined className={classes.settingsIcon}/>
+                    <div className={classes.loading}>
+                        <SettingsOutlined className={classes.loadingIcon}/>
                         <span>{i18n.translate('loading')}</span>
                     </div>
                 );
@@ -95,6 +106,13 @@ class ComposedEmulatorStateDetails extends Component<TEmulatorStateDetailsProps>
                         <DialogContent>
                             <DialogContentText>
                                 {i18n.translate(errorTextId(emulatorState.error))}
+                                {emulatorState.error instanceof InvalidRomFileError && (
+                                    <Typography className={classes.invalidRomReason}
+                                                component="p"
+                                                variant="caption">
+                                        ({emulatorState.error.message})
+                                    </Typography>
+                                )}
                             </DialogContentText>
                         </DialogContent>
 
@@ -126,6 +144,12 @@ function errorTextId(error: unknown): string {
     }
     if (error instanceof RomFileLoadingError) {
         return 'error-text:rom-file-loading';
+    }
+    if (error instanceof NoZippedRomFoundError) {
+        return 'error-text:no-zipped-rom-found';
+    }
+    if (error instanceof InvalidRomFileError) {
+        return 'error-text:invalid-rom-file';
     }
     return 'error-text';
 }

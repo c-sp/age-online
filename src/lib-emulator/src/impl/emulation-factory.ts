@@ -1,3 +1,4 @@
+import {ErrorWithCause} from '@age-online/lib-common';
 import {combineLatest, from, Observable} from 'rxjs';
 import {fromFetch} from 'rxjs/fetch';
 import {catchError, map, shareReplay, switchMap, take} from 'rxjs/operators';
@@ -65,6 +66,9 @@ export class EmulationFactory implements IEmulationFactory {
             this.ageWasmInstance$,
             readRomFile$(romFile).pipe(
                 catchError(err => {
+                    if (err instanceof ErrorWithCause) {
+                        throw err;
+                    }
                     throw new RomFileLoadingError(err);
                 }),
             ),

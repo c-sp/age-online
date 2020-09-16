@@ -17,26 +17,13 @@ export interface IEmulation {
 
     readonly romFile: IGameboyRom;
 
-    /**
-     * Initialize emulation output:
-     *  - prepare audio output
-     *  - prepare video output for on the specified {@link HTMLCanvasElement}
-     */
-    initializeOutput(canvas: HTMLCanvasElement): void;
+    pauseEmulation: boolean;
 
-    /**
-     * Run the emulation for the specified number of milliseconds.
-     *
-     * If {@link initializeOutput} has not been called yet,
-     * the emulation will run but skip any output.
-     */
-    runEmulation(msToEmulate: number, audioSampleRate: number): boolean;
+    startEmulation(canvas: HTMLCanvasElement): void;
+
+    stopEmulation(): void;
 
     buttonDown(button: GameboyButton): void;
 
     buttonUp(button: GameboyButton): void;
-
-    // TODO get video buffer
-
-    // TODO get audio buffer
 }

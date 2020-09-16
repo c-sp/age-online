@@ -25,10 +25,17 @@ export class RomFileLoadingError extends ErrorWithCause {
     }
 }
 
-export class InvalidRomFileError extends ErrorWithCause {
+export class NoZippedRomFoundError extends ErrorWithCause {
 
     constructor(cause?: Error) {
-        super('no valid rom file', cause);
+        super('no rom file found in zip archive', cause);
+    }
+}
+
+export class InvalidRomFileError extends ErrorWithCause {
+
+    constructor(reason: string, cause?: Error) {
+        super(reason, cause);
     }
 }
 

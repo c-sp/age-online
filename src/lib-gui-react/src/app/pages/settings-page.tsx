@@ -10,7 +10,7 @@ import {
     PreferredTheme,
     SEO,
     ThemeSelection,
-    TidyPureComponent,
+    TidyComponent,
     withI18nBundle,
     withSiteApi,
 } from '../../components';
@@ -25,7 +25,7 @@ const HREF_FLATICON = 'https://www.flaticon.com/packs/countrys-flags';
 const styles = (theme: Theme) => createStyles({
     main: {
         minHeight: '100%', // extend <Paper> style to the page's bottom
-        padding: theme.spacing(4),
+        padding: theme.spacing(2),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -48,7 +48,7 @@ interface ISettingsPageState {
 
 type TSettingsPageProps = WithStyles & WithI18nProps & ISiteApiProps & IPersistentAppStateProps;
 
-class ComposedSettingsPage extends TidyPureComponent<TSettingsPageProps, ISettingsPageState> {
+class ComposedSettingsPage extends TidyComponent<TSettingsPageProps, ISettingsPageState> {
 
     constructor(props: TSettingsPageProps) {
         super(props);

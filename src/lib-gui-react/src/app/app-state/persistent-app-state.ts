@@ -1,4 +1,4 @@
-import {EmulatorControls, isEmulatorControls, isPreferredTheme, PreferredTheme} from '../../components';
+import {DisplayControls, isDisplayControls, isPreferredTheme, PreferredTheme} from '../../components';
 import {IAppState, IPersistentAppState} from './app-state';
 import {CurrentAppState} from './current-app-state';
 import {LocalStorage} from './local-storage';
@@ -6,7 +6,7 @@ import {LocalStorage} from './local-storage';
 
 const KEY_PREFERRED_LOCALE = 'preferred-locale';
 const KEY_PREFERRED_THEME = 'preferred-theme';
-const KEY_EMULATOR_CONTROLS = 'emulator-controls';
+const KEY_DISPLAY_CONTROLS = 'display-controls';
 
 
 export class PersistentAppState extends CurrentAppState implements IPersistentAppState {
@@ -73,9 +73,9 @@ export class PersistentAppState extends CurrentAppState implements IPersistentAp
         this.updateState({emulatorState});
     }
 
-    setEmulatorControls(emulatorControls: IAppState['emulatorControls']): void {
-        this.store.setItem(KEY_EMULATOR_CONTROLS, `${emulatorControls}`);
-        this.updateState({emulatorControls});
+    setDisplayControls(displayControls: IAppState['displayControls']): void {
+        this.store.setItem(KEY_DISPLAY_CONTROLS, `${displayControls}`);
+        this.updateState({displayControls: displayControls});
     }
 
 
@@ -83,9 +83,9 @@ export class PersistentAppState extends CurrentAppState implements IPersistentAp
         const prefTheme = this.store.getItem(KEY_PREFERRED_THEME);
         const preferredTheme = isPreferredTheme(prefTheme) ? prefTheme : PreferredTheme.AUTO_DETECT;
 
-        const emuControls = this.store.getItem(KEY_EMULATOR_CONTROLS);
-        const emulatorControls = isEmulatorControls(emuControls) ? emuControls : EmulatorControls.VISIBLE;
+        const emuControls = this.store.getItem(KEY_DISPLAY_CONTROLS);
+        const displayControls = isDisplayControls(emuControls) ? emuControls : DisplayControls.VISIBLE_OVERLAY;
 
-        return {preferredTheme, emulatorControls};
+        return {preferredTheme, displayControls: displayControls};
     }
 }

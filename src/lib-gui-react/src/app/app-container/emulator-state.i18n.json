@@ -20,7 +20,15 @@
     "de": "WebAssembly Initialisierung fehlgeschlagen."
   },
   "error-text:rom-file-loading": {
-    "en": "Could not load rom file.",
-    "de": "Rom Datei konnte nicht geladen werden."
+    "en": "Could not load Gameboy rom file.",
+    "de": "Gameboy Rom Datei konnte nicht geladen werden."
+  },
+  "error-text:no-zipped-rom-found": {
+    "en": "Zip archive does not contain any Gameboy rom file.",
+    "de": "Das Zip-Archiv enthält keine Gameboy Rom Datei."
+  },
+  "error-text:invalid-rom-file": {
+    "en": "This is no valid Gameboy rom file.",
+    "de": "Dies ist keine gültige Gameboy Rom Datei."
   }
 }

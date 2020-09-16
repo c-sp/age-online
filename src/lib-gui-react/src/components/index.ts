@@ -1,6 +1,6 @@
 export * from './common';
 export * from './emulator';
-export * from './emulator-toolbar';
+export * from './emulator-bars';
 export * from './error-boundary';
 export * from './i18n';
 export * from './icons';

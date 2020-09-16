@@ -11,8 +11,13 @@ export class OpenLocalRomFile extends Component<IOpenLocalRomFileProps> {
 
     render(): ReactNode {
         const {children, openRomFile} = this.props;
+
+        // accept=".gb, .gbc, .cgb, .zip":
+        // iOS Safari does not support accepting files by extension and instead
+        // allows no file to be selected at all ...
+
         return (
-            <OpenLocalFile accept=".gb, .gbc, .zip" openFile={file => openRomFile?.(file)}>
+            <OpenLocalFile openFile={file => openRomFile?.(file)}>
                 {children}
             </OpenLocalFile>
         );

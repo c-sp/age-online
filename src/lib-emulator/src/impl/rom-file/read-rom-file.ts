@@ -1,9 +1,22 @@
 import {Observable} from 'rxjs';
 import {catchError, map, switchMap} from 'rxjs/operators';
-import {IGameboyRom, RomCgbFunctions, RomFileLoadingError, RomMBC, TGameboyRomSource} from '../../api';
+import {
+    IGameboyRom,
+    InvalidRomFileError,
+    RomCgbFunctions,
+    RomFileLoadingError,
+    RomMBC,
+    TGameboyRomSource,
+} from '../../api';
 import {readBlob$} from './read-blob';
 import {readUrl$} from './read-url';
 import {extractRomFromZip$} from './read-zip';
+
+
+const CART_MBC = 0x147;
+const CART_ROM_SIZE = 0x148;
+const CART_RAM_SIZE = 0x149;
+const CART_HEADER_CHECKSUM = 0x14D;
 
 
 export function readRomFile$(romFile: TGameboyRomSource): Observable<IGameboyRom> {
@@ -30,13 +43,22 @@ export function readRomFile$(romFile: TGameboyRomSource): Observable<IGameboyRom
 function checkGameboyRom(romFile: ArrayBuffer): IGameboyRom {
     const romData = new Uint8Array(romFile);
     const romBanks = readRomBanks(romData);
+
+    const headerChecksum = romData[CART_HEADER_CHECKSUM];
+    const headerChecksumComputed = computeHeaderChecksum(romData);
+
+    if (headerChecksum !== headerChecksumComputed) {
+        const reason = `header checksum mismatch: found ${headerChecksum}, expected ${headerChecksumComputed}`;
+        throw new InvalidRomFileError(reason);
+    }
+
     return {
         romTitle: readRomTitle(romData),
         japanese: readJapanese(romData),
         cgbFunctions: readCgbFunctions(romData),
         sgbFunctions: readSgbFunctions(romData),
-        headerChecksum: romData[0x14D],
-        headerChecksumComputed: computeHeaderChecksum(romData),
+        headerChecksum,
+        headerChecksumComputed,
         mbc: readRomMBC(romData),
         romBanks,
         romBytes: romBanks * 16 * 1024,
@@ -77,7 +99,10 @@ function readSgbFunctions(romData: Uint8Array): boolean {
 
 
 function readRomMBC(romData: Uint8Array): RomMBC {
-    switch (romData[0x147]) {
+    switch (romData[CART_MBC]) {
+
+        case 0x00:
+            return RomMBC.ROM_ONLY;
 
         case 0x01:
         case 0x02:
@@ -130,9 +155,8 @@ function readRomMBC(romData: Uint8Array): RomMBC {
         case 0xFF:
             return RomMBC.HUC1;
 
-        case 0x00:
         default:
-            return RomMBC.ROM_ONLY;
+            throw new InvalidRomFileError(`unsupported MBC type: ${romData[CART_MBC]}`);
     }
 }
 
@@ -149,12 +173,12 @@ function hasBattery(romData: Uint8Array): boolean {
         0x1E, // MBC5+RUMBLE+RAM+BATTERY
         0x22, // MBC7+SENSOR+RUMBLE+RAM+BATTERY
         0xFF, // HuC1+RAM+BATTERY
-    ].includes(romData[0x147]);
+    ].includes(romData[CART_MBC]);
 }
 
 
 function readRomBanks(romData: Uint8Array): number {
-    switch (romData[0x148]) {
+    switch (romData[CART_ROM_SIZE]) {
 
         case 0x00:
             return 2;
@@ -193,13 +217,16 @@ function readRomBanks(romData: Uint8Array): number {
             return 96;
 
         default:
-            return 0;
+            throw new InvalidRomFileError(`unsupported rom size: ${romData[CART_ROM_SIZE]}`);
     }
 }
 
 
 function readRamBytes(romData: Uint8Array): number {
-    switch (romData[0x149]) {
+    switch (romData[CART_RAM_SIZE]) {
+
+        case 0x00:
+            return 0;
 
         case 0x01:
             return 2 * 1024;
@@ -217,7 +244,7 @@ function readRamBytes(romData: Uint8Array): number {
             return 8 * 8 * 1024;
 
         default:
-            return 0;
+            throw new InvalidRomFileError(`unsupported ram size: ${romData[CART_RAM_SIZE]}`);
     }
 }
 
@@ -229,7 +256,7 @@ function readJapanese(romData: Uint8Array): boolean {
 
 function computeHeaderChecksum(romData: Uint8Array): number {
     return romData
-            .slice(0x134, 0x14D) // 0x134 - 0x14C (including)
+            .slice(0x134, CART_HEADER_CHECKSUM) // 0x134 - 0x14C (including)
             .reduce(
                 (checksum, byte) => checksum - byte - 1,
                 0, // don't use the first byte as initial value

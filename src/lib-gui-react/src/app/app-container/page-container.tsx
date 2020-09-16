@@ -1,7 +1,7 @@
 import {assertElement, observeSize} from '@age-online/lib-common';
 import {createStyles, WithStyles, withStyles} from '@material-ui/core';
 import React, {ReactNode} from 'react';
-import {AppPage, EmulatorState, PageNavBar, TidyPureComponent} from '../../components';
+import {AppPage, EmulatorState, PageNavBar, TidyComponent} from '../../components';
 import {IAppState, ICurrentAppStateProps, withCurrentAppState} from '../app-state';
 
 
@@ -56,7 +56,7 @@ export interface IPageContainerProps {
 
 type TPageContainerProps = IPageContainerProps & ICurrentAppStateProps & WithStyles;
 
-class ComposedPageContainer extends TidyPureComponent<TPageContainerProps, IPageContainerState> {
+class ComposedPageContainer extends TidyComponent<TPageContainerProps, IPageContainerState> {
 
     private containerDiv: HTMLDivElement | null = null;
 

@@ -20,8 +20,8 @@
     "de": "aktiver Commit: {commitLink}{br}({commitDate}){br}Branch: {branchLink}"
   },
   "page:open-rom-file": {
-    "en": "open rom file",
-    "de": "Rom Datei öffnen"
+    "en": "open rom file{br}(.gb .cgb .gbc .zip)",
+    "de": "Rom Datei öffnen{br}(.gb .cgb .gbc .zip)"
   },
   "link:repo": {
     "en": "AGE Online on GitHub",

@@ -19,7 +19,7 @@ import i18nBundle from './home-page.i18n.json';
 const styles = (theme: Theme) => createStyles({
     main: {
         minHeight: '100%', // extend <Paper> style to the page's bottom
-        padding: theme.spacing(4),
+        padding: theme.spacing(2),
         textAlign: 'center',
 
         '& > :nth-child(1)': {
@@ -30,7 +30,7 @@ const styles = (theme: Theme) => createStyles({
         },
 
         '& > :nth-child(n+3)': {
-            marginTop: theme.spacing(4),
+            marginTop: theme.spacing(3),
         },
 
         '& > :last-child': {
@@ -79,7 +79,7 @@ class ComposedHomePage extends Component<THomePageProps> {
                     <OpenLocalRomFile openRomFile={localFile => persistentAppState.setRomSource({localFile})}>
                         <StyledButton color="primary" component="span">
                             <Cartridge style={{fontSize: '100px'}}/>
-                            <span>{i18n.translate('page:open-rom-file')}</span>
+                            <span>{i18n.translate('page:open-rom-file', COMMON_I18N_REPLACEMENTS)}</span>
                         </StyledButton>
                     </OpenLocalRomFile>
                 </div>
