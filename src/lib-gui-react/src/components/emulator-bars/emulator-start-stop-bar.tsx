@@ -2,13 +2,12 @@ import {IconButton} from '@material-ui/core';
 import {PauseCircleFilled, PlayCircleFilled} from '@material-ui/icons';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {Component, ReactNode} from 'react';
-import {EmulatorOverlay} from "../common";
 import i18nBundle from './emulator-start-stop-bars.i18n.json';
 import {withI18nBundle} from "../i18n";
 
 
 const ICON_STYLE = {
-    fontSize: '80px',
+    fontSize: '60px',
 };
 
 
@@ -26,7 +25,7 @@ class ComposedEmulatorStartStopBar extends Component<TEmulatorStartStopBarProps>
     render(): ReactNode {
         const {className, i18n, emulationPaused, startStopEmulator} = this.props;
         return (
-            <EmulatorOverlay className={className}>
+            <div className={className}>
 
                 {!emulationPaused && (
                     <IconButton aria-label={i18n.translate('pause-emulation')}
@@ -42,7 +41,7 @@ class ComposedEmulatorStartStopBar extends Component<TEmulatorStartStopBarProps>
                     </IconButton>
                 )}
 
-            </EmulatorOverlay>
+            </div>
         );
     }
 }

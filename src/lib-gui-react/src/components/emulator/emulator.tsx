@@ -1,10 +1,12 @@
 import {assertElement, cssClasses, IContentSize, observeSize} from '@age-online/lib-common';
 import {IEmulation} from '@age-online/lib-emulator';
-import {createStyles, fade, Theme, WithStyles, withStyles} from '@material-ui/core';
+import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core';
 import React, {CSSProperties, ReactNode} from 'react';
-import {TidyComponent} from '../common';
+import {overlayBackgroundColor, TidyComponent} from '../common';
 import {DisplayControls} from './display-controls';
 import {EmulatorButtonControls} from "./emulator-button-controls";
+import {EmulatorCrossControls} from "./emulator-cross-controls";
+import {gbButton, IGbButtons} from "./gb-buttons";
 
 
 const styles = (theme: Theme) => createStyles({
@@ -38,7 +40,8 @@ const styles = (theme: Theme) => createStyles({
         alignSelf: 'end',
         padding: theme.spacing(1),
         pointerEvents: 'auto',
-        backgroundColor: fade(theme.palette.background.default, 0.8),
+        backgroundColor: overlayBackgroundColor(theme),
+        opacity: 0.8,
     },
 
     controlsLeft: {
@@ -76,7 +79,7 @@ export interface IEmulatorProps {
     readonly displayControls: DisplayControls;
 }
 
-interface IEmulatorState {
+interface IEmulatorState extends IGbButtons {
     readonly portrait: boolean;
     readonly canvasSize: IContentSize;
 }
@@ -91,7 +94,18 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
 
     constructor(props: TEmulatorProps) {
         super(props);
-        this.state = {portrait: true, canvasSize: {widthPx: 1, heightPx: 1}};
+        this.state = {
+            portrait: true,
+            canvasSize: {widthPx: 1, heightPx: 1},
+            gbRight: false,
+            gbDown: false,
+            gbLeft: false,
+            gbUp: false,
+            gbB: false,
+            gbA: false,
+            gbSelect: false,
+            gbStart: false,
+        };
     }
 
 
@@ -149,6 +163,7 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
 
     render(): ReactNode {
         const {props: {displayControls, classes}, state: {portrait, canvasSize: {widthPx, heightPx}}} = this;
+        const {gbRight, gbDown, gbLeft, gbUp, gbB, gbA, gbSelect, gbStart} = this.state;
 
         const showControls = displayControls !== DisplayControls.HIDDEN;
         const overlayControls = displayControls === DisplayControls.VISIBLE_OVERLAY;
@@ -172,14 +187,42 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
                             ref={(canvas) => this.canvas = canvas}/>
                 </div>
 
-                {showControls && <div className={cssControlsLeft}>controls left</div>}
-                {showControls && <EmulatorButtonControls className={cssControlsRight}/>}
+                {showControls
+                && <EmulatorCrossControls className={cssControlsLeft}
+                                          crossDown={dir => this.gbButtonDown(dir)}
+                                          crossUp={dir => this.gbButtonUp(dir)}
+                                          pressingRight={gbRight}
+                                          pressingDown={gbDown}
+                                          pressingLeft={gbLeft}
+                                          pressingUp={gbUp}/>}
+
+                {showControls
+                && <EmulatorButtonControls className={cssControlsRight}
+                                           buttonDown={btn => this.gbButtonDown(btn)}
+                                           buttonUp={btn => this.gbButtonUp(btn)}
+                                           pressingB={gbB}
+                                           pressingA={gbA}
+                                           pressingSelect={gbSelect}
+                                           pressingStart={gbStart}/>}
 
             </div>
         );
     }
-}
 
+    private gbButtonDown(button: keyof IGbButtons): void {
+        if (!this.state[button]) {
+            this.setState({[button]: true} as any);
+            this.props.emulation.buttonDown(gbButton(button));
+        }
+    }
+
+    private gbButtonUp(button: keyof IGbButtons): void {
+        if (this.state[button]) {
+            this.setState({[button]: false} as any);
+            this.props.emulation.buttonUp(gbButton(button));
+        }
+    }
+}
 
 export const Emulator = withStyles(styles)(
     ComposedEmulator,

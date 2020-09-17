@@ -2,7 +2,7 @@ import {createStyles, IconButton, WithStyles, withStyles} from '@material-ui/cor
 import {WithI18nProps} from '@shopify/react-i18n';
 import {GoogleController, GoogleControllerOff} from 'mdi-material-ui';
 import React, {Component, ReactNode} from 'react';
-import {EmulatorOverlay, OpenLocalRomFile, TOOLBAR_ICON_STYLE} from '../common';
+import {OpenLocalRomFile, TOOLBAR_ICON_STYLE} from '../common';
 import {DisplayControls} from '../emulator';
 import {Cartridge} from '../icons';
 import {SettingsIconSiteLink} from '../site-api';
@@ -12,7 +12,7 @@ import {cssClasses} from "@age-online/lib-common";
 
 
 const styles = createStyles({
-    toolbar: {
+    root: {
         display: 'flex',
         alignItems: 'center',
     },
@@ -35,7 +35,7 @@ class ComposedEmulatorToolbar extends Component<TEmulatorToolbarProps> {
     render(): ReactNode {
         const {classes, className, i18n, openRomFile, displayControls, cycleDisplayControls} = this.props;
         return (
-            <EmulatorOverlay className={cssClasses(className, classes.toolbar)}>
+            <div className={cssClasses(className, classes.root)}>
 
                 <OpenLocalRomFile openRomFile={file => openRomFile?.(file)}>
                     <IconButton component="span" aria-label={i18n.translate('open-rom-file')}>
@@ -72,7 +72,7 @@ class ComposedEmulatorToolbar extends Component<TEmulatorToolbarProps> {
 
                 <SettingsIconSiteLink style={TOOLBAR_ICON_STYLE}/>
 
-            </EmulatorOverlay>
+            </div>
         );
     }
 }

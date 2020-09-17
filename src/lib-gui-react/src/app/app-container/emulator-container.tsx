@@ -5,13 +5,14 @@ import React, {ReactNode} from 'react';
 import {Observable, of} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {
+    cycleDisplayControls,
+    DisplayControls,
     Emulator,
     EmulatorCloseBar,
-    DisplayControls,
     EmulatorStartStopBar,
     EmulatorState,
     EmulatorToolbar,
-    cycleDisplayControls,
+    overlayBackgroundColor,
     TidyComponent,
 } from '../../components';
 import {IPersistentAppStateProps, withPersistentAppState} from '../app-state';
@@ -36,7 +37,8 @@ const styles = (theme: Theme) => createStyles({
     },
     bar: {
         position: 'absolute',
-        opacity: 0.75,
+        backgroundColor: overlayBackgroundColor(theme),
+        opacity: 0.8,
     },
     toolbar: {
         top: 0,

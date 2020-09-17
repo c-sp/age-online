@@ -27,9 +27,16 @@ type TRootLayoutProps = PageProps<Record<string, unknown>, IPageContext>;
 export default class RootLayout extends Component<TRootLayoutProps> {
 
     private readonly globalCss = {
-        '#___gatsby, #___gatsby > div': {
+        '#___gatsby': {
+            // mobile browsers:
+            // let the element shrink/grow when showing/hiding the url bar
+            position: 'fixed',
             height: '100%',
-        }
+            width: '100%',
+        },
+        '#___gatsby > div': {
+            height: '100%',
+        },
     };
     private readonly ageWasmJsUrl: string;
     private readonly ageWasmUrl: string;

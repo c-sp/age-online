@@ -1,4 +1,3 @@
-export * from './emulator-overlay';
 export * from './open-local-file';
 export * from './open-local-rom-file';
 export * from './seo';

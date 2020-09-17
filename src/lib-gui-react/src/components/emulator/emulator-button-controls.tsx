@@ -1,9 +1,12 @@
 import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core';
-import React, {PureComponent, ReactNode} from 'react';
-import {EmulatorOverlay} from '../common';
-import {cssClasses} from "@age-online/lib-common";
-import {ControlEventHandler} from "./control-event-handler";
+import React, {ReactNode} from 'react';
+import {TidyComponent} from '../common';
+import {assertElement, cssClasses} from "@age-online/lib-common";
+import {elementTouched, TouchEventHandler} from "./touch-event-handler";
+import {IGbButtons} from "./gb-buttons";
 
+
+const CSS_CLASS_PRESSED = 'pressed';
 
 const styles = (theme: Theme) => createStyles({
     container: {
@@ -13,6 +16,7 @@ const styles = (theme: Theme) => createStyles({
         // https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action
         // https://developers.google.com/web/updates/2017/01/scrolling-intervention
         touchAction: 'none',
+
         // no selectable text
         userSelect: 'none',
 
@@ -27,25 +31,27 @@ const styles = (theme: Theme) => createStyles({
             alignItems: 'center',
             justifyContent: 'center',
             height: theme.spacing(5),
-            width: theme.spacing(5),
             color: theme.palette.primary.main,
         },
         '& > :first-child': {
+            width: theme.spacing(6),
             border: '3px solid',
-            borderTopLeftRadius: '50%',
-            borderBottomLeftRadius: '50%',
+            borderTopLeftRadius: '40%',
+            borderBottomLeftRadius: '40%',
         },
         '& > :nth-child(2)': {
-            borderTop: '1px solid',
-            borderBottom: '1px solid',
+            width: theme.spacing(3),
+            borderTop: '1px dotted',
+            borderBottom: '1px dotted',
         },
         '& > :last-child': {
+            width: theme.spacing(6),
             border: '3px solid',
-            borderTopRightRadius: '50%',
-            borderBottomRightRadius: '50%',
+            borderTopRightRadius: '40%',
+            borderBottomRightRadius: '40%',
         },
 
-        '& .pressed': {
+        [`& .${CSS_CLASS_PRESSED}`]: {
             color: theme.palette.primary.contrastText,
             backgroundColor: theme.palette.primary.main,
         }
@@ -55,58 +61,103 @@ const styles = (theme: Theme) => createStyles({
 
 export interface IButtonControlsProps {
     readonly className?: string;
-    readonly pressingA?: boolean;
+    readonly buttonDown?: (button: keyof IGbButtons) => void;
+    readonly buttonUp?: (button: keyof IGbButtons) => void;
     readonly pressingB?: boolean;
-    readonly pressingStart?: boolean;
+    readonly pressingA?: boolean;
     readonly pressingSelect?: boolean;
+    readonly pressingStart?: boolean;
 }
 
 type TButtonControlsProps = IButtonControlsProps & WithStyles;
 
-class ComposedEmulatorButtonControls extends PureComponent<TButtonControlsProps> {
+class ComposedEmulatorButtonControls extends TidyComponent<TButtonControlsProps> {
 
-    private readonly seStEventHandler = new ControlEventHandler((points, elem) => {
-        const startPressed = points.some(p => p.elementX >= elem.clientWidth / 3);
-        const selectPressed = points.some(p => p.elementX < elem.clientWidth * 2 / 3);
-        console.log('### start', startPressed, 'select', selectPressed);
-    });
+    private elemContainer?: HTMLElement | null;
+
+    private elemB?: HTMLElement | null;
+    private elemBA?: HTMLElement | null;
+    private elemA?: HTMLElement | null;
+
+    private elemSe?: HTMLElement | null;
+    private elemSeSt?: HTMLElement | null;
+    private elemSt?: HTMLElement | null;
+
+    componentDidMount() {
+        const eventHandler = new TouchEventHandler(
+            assertElement(this.elemContainer),
+            points => {
+                const {elemB, elemBA, elemA, elemSe, elemSeSt, elemSt} = this;
+
+                const ba = elementTouched(assertElement(elemBA), points);
+                const b = ba || elementTouched(assertElement(elemB), points);
+                const a = ba || elementTouched(assertElement(elemA), points);
+
+                const seSt = elementTouched(assertElement(elemSeSt), points);
+                const se = seSt || elementTouched(assertElement(elemSe), points);
+                const st = seSt || elementTouched(assertElement(elemSt), points);
+
+                const {buttonDown, buttonUp, pressingB, pressingA, pressingSelect, pressingStart} = this.props;
+
+                if (b !== !!pressingB) {
+                    (b ? buttonDown : buttonUp)?.("gbB");
+                    this.setState({pressingB: b});
+                }
+                if (a !== !!pressingA) {
+                    (a ? buttonDown : buttonUp)?.("gbA");
+                    this.setState({pressingA: a});
+                }
+                if (se !== !!pressingSelect) {
+                    (se ? buttonDown : buttonUp)?.("gbSelect");
+                    this.setState({pressingSelect: se});
+                }
+                if (st !== !!pressingStart) {
+                    (st ? buttonDown : buttonUp)?.("gbStart");
+                    this.setState({pressingStart: st});
+                }
+            },
+        );
+
+        this.callOnUnmount(() => eventHandler.removeListeners());
+    }
 
     render(): ReactNode {
-        const {seStEventHandler, props: {classes, className, pressingA, pressingB, pressingStart, pressingSelect}} = this;
+        const {props: {classes, className, pressingA, pressingB, pressingStart, pressingSelect}} = this;
         return (
-            <EmulatorOverlay className={cssClasses(classes.container, className)}>
+            <div className={cssClasses(classes.container, className)}
+                 ref={elem => this.elemContainer = elem}>
 
-                <div className={classes.buttons}
-                     onMouseDown={ev => seStEventHandler.onMouse(ev)}
-                     onMouseLeave={ev => seStEventHandler.onMouse(ev)}
-                     onMouseMove={ev => seStEventHandler.onMouse(ev)}
-                     onMouseUp={ev => seStEventHandler.onMouse(ev)}
-                     onTouchCancel={ev => seStEventHandler.onTouch(ev)}
-                     onTouchEnd={ev => seStEventHandler.onTouch(ev)}
-                     onTouchMove={ev => seStEventHandler.onTouch(ev)}
-                     onTouchStart={ev => seStEventHandler.onTouch(ev)}>
+                <div className={classes.buttons}>
+                    <div className={pressedCss(pressingSelect)}
+                         ref={elem => this.elemSe = elem}>SE</div>
 
-                    <div className={pressedCss(pressingSelect)}>SE</div>
-                    <div className={pressedCss(pressingStart && pressingSelect)}>&#8203;</div>
-                    <div className={pressedCss(pressingStart)}>ST</div>
+                    <div className={pressedCss(pressingStart && pressingSelect)}
+                         ref={elem => this.elemSeSt = elem}>&#8203;</div>
+
+                    <div className={pressedCss(pressingStart)}
+                         ref={elem => this.elemSt = elem}>ST</div>
                 </div>
 
                 <div className={classes.buttons}>
-                    <div className={pressedCss(pressingB)}>B</div>
-                    <div className={pressedCss(pressingA && pressingB)}>&#8203;</div>
-                    <div className={pressedCss(pressingA)}>A</div>
+                    <div className={pressedCss(pressingB)}
+                         ref={elem => this.elemB = elem}>B</div>
+
+                    <div className={pressedCss(pressingA && pressingB)}
+                         ref={elem => this.elemBA = elem}>&#8203;</div>
+
+                    <div className={pressedCss(pressingA)}
+                         ref={elem => this.elemA = elem}>A</div>
                 </div>
 
-            </EmulatorOverlay>
+            </div>
         );
+
+        function pressedCss(flag: unknown): string {
+            return !!flag ? CSS_CLASS_PRESSED : '';
+        }
     }
 }
 
 export const EmulatorButtonControls = withStyles(styles)(
     ComposedEmulatorButtonControls,
 );
-
-
-function pressedCss(flag: unknown): string {
-    return !!flag ? 'pressed' : '';
-}

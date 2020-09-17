@@ -1,3 +1,5 @@
+import {fade, Theme} from "@material-ui/core";
+
 /**
  * properties to be used for external links
  */
@@ -14,3 +16,8 @@ export const EXTERNAL_LINK_PROPS = {
 export const TOOLBAR_ICON_STYLE = {
     fontSize: '40px',
 };
+
+
+export function overlayBackgroundColor(theme: Theme): string {
+    return fade(theme.palette.background.default, 0.8);
+}
