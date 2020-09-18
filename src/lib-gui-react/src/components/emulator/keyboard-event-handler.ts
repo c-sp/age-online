@@ -1,4 +1,4 @@
-import {IButtonsDown} from '@age-online/lib-gui-react';
+import {IButtonsDown} from './buttons-down';
 
 
 export class KeyboardEventHandler {
