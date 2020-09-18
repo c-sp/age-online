@@ -3,7 +3,7 @@ import {PauseCircleFilled, PlayCircleFilled} from '@material-ui/icons';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {Component, ReactNode} from 'react';
 import i18nBundle from './emulator-start-stop-bars.i18n.json';
-import {withI18nBundle} from "../i18n";
+import {withI18nBundle} from '../i18n';
 
 
 const ICON_STYLE = {

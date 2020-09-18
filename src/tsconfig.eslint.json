@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+    "types": [
+      // make jasmine types known to eslint to prevent a bunch of
+      // "no-unsafe-call" errors for describe(), it() and expect()
+      "jasmine"
+    ]
+  },
+  "exclude": []
+}

@@ -46,10 +46,12 @@ export function localeFromPathname(pathname: string): Locale {
 }
 
 export function appPageFromPathname(pathname: string): AppPage {
-    const pathParts = splitPathname(pathname);
     // ['en', 'foo'] => ['foo']
     // ['xy', 'foo'] => ['xy', 'foo']
-    const appPageStr = `/${isLocale(pathParts[0]) ? pathParts.slice(1) : pathParts}`;
+    const pathParts = splitPathname(pathname);
+    const pagePath = isLocale(pathParts[0]) ? pathParts.slice(1) : pathParts;
+
+    const appPageStr = `/${pagePath[0]}`;
     return isAppPage(appPageStr) ? appPageStr : AppPage.HOME;
 }
 

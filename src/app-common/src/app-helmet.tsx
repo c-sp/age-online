@@ -7,7 +7,7 @@ export interface IAppCommonHeadProps {
 }
 
 export function AppHelmet({basePath}: IAppCommonHeadProps): ReactElement {
-    const prefix = basePath || '';
+    const prefix = basePath ?? '';
 
     const robotoPath = `${prefix}/fonts/roboto/roboto-v20-latin-regular.woff`;
     const roboto2Path = `${prefix}/fonts/roboto/roboto-v20-latin-regular.woff2`;
@@ -15,7 +15,7 @@ export function AppHelmet({basePath}: IAppCommonHeadProps): ReactElement {
     const robotoCondensedPath = `${prefix}/fonts/roboto-condensed/roboto-condensed-v18-latin-regular.woff`;
     const robotoCondensed2Path = `${prefix}/fonts/roboto-condensed/roboto-condensed-v18-latin-regular.woff2`;
 
-    const fontAttributes = {as: "font", type: "font/woff2", crossOrigin: "anonymous"};
+    const fontAttributes = {as: 'font', type: 'font/woff2', crossOrigin: 'anonymous'};
 
     return (
         <Helmet>

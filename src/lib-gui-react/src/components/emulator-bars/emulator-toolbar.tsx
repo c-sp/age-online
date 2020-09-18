@@ -7,8 +7,8 @@ import {DisplayControls} from '../emulator';
 import {Cartridge} from '../icons';
 import {SettingsIconSiteLink} from '../site-api';
 import i18nBundle from './emulator-toolbars.i18n.json';
-import {withI18nBundle} from "../i18n";
-import {cssClasses} from "@age-online/lib-common";
+import {withI18nBundle} from '../i18n';
+import {cssClasses} from '@age-online/lib-common';
 
 
 const styles = createStyles({

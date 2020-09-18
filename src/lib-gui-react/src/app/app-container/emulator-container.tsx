@@ -123,7 +123,7 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
                         ? {state: EmulatorState.EMULATOR_READY, emulation}
                         : {state: EmulatorState.NO_EMULATOR});
                 },
-                error => {
+                (error: unknown) => {
                     console.error(error);
                     this.setEmulatorState({state: EmulatorState.EMULATOR_ERROR, error});
                 },

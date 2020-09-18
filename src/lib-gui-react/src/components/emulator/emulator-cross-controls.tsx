@@ -1,9 +1,9 @@
 import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core';
 import React, {ReactNode} from 'react';
 import {TidyComponent} from '../common';
-import {assertElement, cssClasses} from "@age-online/lib-common";
-import {elementTouched, TouchEventHandler} from "./touch-event-handler";
-import {IGbButtons} from "./gb-buttons";
+import {assertElement, cssClasses} from '@age-online/lib-common';
+import {elementTouched, TouchEventHandler} from './touch-event-handler';
+import {IButtonsDown, noButtonsDown} from './buttons-down';
 
 
 const CSS_CLASS_PRESSED = 'pressed';
@@ -95,8 +95,8 @@ const styles = (theme: Theme) => createStyles({
 
 export interface ICrossControlsProps {
     readonly className?: string;
-    readonly crossDown?: (button: keyof IGbButtons) => void;
-    readonly crossUp?: (button: keyof IGbButtons) => void;
+    readonly crossDown?: (button: keyof IButtonsDown) => void;
+    readonly crossUp?: (button: keyof IButtonsDown) => void;
     readonly pressingRight?: boolean;
     readonly pressingDown?: boolean;
     readonly pressingLeft?: boolean;
@@ -120,11 +120,16 @@ class ComposedEmulatorCrossControls extends TidyComponent<TCrossControlsProps> {
     private elemDown?: HTMLElement | null;
     private elemDownRight?: HTMLElement | null;
 
+    private readonly buttonsDown = noButtonsDown();
+
     componentDidMount() {
         const eventHandler = new TouchEventHandler(
             assertElement(this.elemContainer),
             points => {
-                const {elemUpLeft, elemUp, elemUpRight, elemLeft, elemRight, elemDownLeft, elemDown, elemDownRight} = this;
+                const {
+                    elemUpLeft, elemUp, elemUpRight, elemLeft, elemRight, elemDownLeft, elemDown, elemDownRight,
+                    buttonsDown, props: {crossDown, crossUp},
+                } = this;
 
                 const ul = elementTouched(assertElement(elemUpLeft), points);
                 const ur = elementTouched(assertElement(elemUpRight), points);
@@ -136,23 +141,16 @@ class ComposedEmulatorCrossControls extends TidyComponent<TCrossControlsProps> {
                 const l = ul || dl || elementTouched(assertElement(elemLeft), points);
                 const u = ul || ur || elementTouched(assertElement(elemUp), points);
 
-                const {crossDown, crossUp, pressingRight, pressingDown, pressingLeft, pressingUp} = this.props;
+                checkButton('gbRight', r);
+                checkButton('gbDown', d);
+                checkButton('gbLeft', l);
+                checkButton('gbUp', u);
 
-                if (r !== !!pressingRight) {
-                    (r ? crossDown : crossUp)?.("gbRight");
-                    this.setState({pressingRight: r});
-                }
-                if (d !== !!pressingDown) {
-                    (d ? crossDown : crossUp)?.("gbDown");
-                    this.setState({pressingDown: d});
-                }
-                if (l !== !!pressingLeft) {
-                    (l ? crossDown : crossUp)?.("gbLeft");
-                    this.setState({pressingLeft: l});
-                }
-                if (u !== !!pressingUp) {
-                    (u ? crossDown : crossUp)?.("gbUp");
-                    this.setState({pressingUp: u});
+                function checkButton(button: keyof IButtonsDown, buttonState: boolean): void {
+                    if (buttonState !== buttonsDown[button]) {
+                        buttonsDown[button] = buttonState;
+                        (buttonState ? crossDown : crossUp)?.(button);
+                    }
                 }
             },
         );
@@ -198,7 +196,7 @@ class ComposedEmulatorCrossControls extends TidyComponent<TCrossControlsProps> {
         );
 
         function pressedCss(flag: unknown): string {
-            return !!flag ? CSS_CLASS_PRESSED : '';
+            return flag ? CSS_CLASS_PRESSED : '';
         }
     }
 }

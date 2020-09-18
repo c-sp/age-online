@@ -3,7 +3,7 @@ import {Component} from 'react';
 import {SubscriptionLike} from 'rxjs';
 
 
-export class TidyComponent<P = {}, S = {}> extends Component<P, S> {
+export class TidyComponent<P = object, S = object> extends Component<P, S> {
 
     private readonly unsubscriber = new Unsubscriber();
 

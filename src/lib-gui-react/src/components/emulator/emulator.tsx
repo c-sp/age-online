@@ -4,9 +4,10 @@ import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core';
 import React, {CSSProperties, ReactNode} from 'react';
 import {overlayBackgroundColor, TidyComponent} from '../common';
 import {DisplayControls} from './display-controls';
-import {EmulatorButtonControls} from "./emulator-button-controls";
-import {EmulatorCrossControls} from "./emulator-cross-controls";
-import {gbButton, IGbButtons} from "./gb-buttons";
+import {EmulatorButtonControls} from './emulator-button-controls';
+import {EmulatorCrossControls} from './emulator-cross-controls';
+import {gameboyButton, IButtonsDown, noButtonsDown} from './buttons-down';
+import {KeyboardEventHandler} from './keyboard-event-handler';
 
 
 const styles = (theme: Theme) => createStyles({
@@ -79,7 +80,7 @@ export interface IEmulatorProps {
     readonly displayControls: DisplayControls;
 }
 
-interface IEmulatorState extends IGbButtons {
+interface IEmulatorState extends IButtonsDown {
     readonly portrait: boolean;
     readonly canvasSize: IContentSize;
 }
@@ -92,28 +93,30 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
     private screenDiv: HTMLDivElement | null = null;
     private canvas: HTMLCanvasElement | null = null;
 
+    private readonly touchButtons = noButtonsDown();
+    private readonly keyboardButtons = noButtonsDown();
+    private keyboardEventHandler?: KeyboardEventHandler;
+
     constructor(props: TEmulatorProps) {
         super(props);
         this.state = {
+            ...noButtonsDown(),
             portrait: true,
             canvasSize: {widthPx: 1, heightPx: 1},
-            gbRight: false,
-            gbDown: false,
-            gbLeft: false,
-            gbUp: false,
-            gbB: false,
-            gbA: false,
-            gbSelect: false,
-            gbStart: false,
         };
     }
 
 
     componentDidMount(): void {
-        const {containerDiv, screenDiv, props: {emulation, pauseEmulation}} = this;
+        const {containerDiv, screenDiv, keyboardButtons, props: {emulation, pauseEmulation}} = this;
 
         this.initEmulation();
         emulation.pauseEmulation = pauseEmulation;
+
+        this.keyboardEventHandler = new KeyboardEventHandler(
+            button => this.buttonDown(button, keyboardButtons),
+            button => this.buttonUp(button, keyboardButtons),
+        );
 
         this.callOnUnmount(
             observeSize(
@@ -142,11 +145,12 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
                 },
             ),
             () => this.props.emulation.stopEmulation(),
+            () => this.keyboardEventHandler?.removeEventListeners(),
         );
     }
 
     componentDidUpdate(prevProps: Readonly<TEmulatorProps>) {
-        const {emulation, pauseEmulation} = this.props;
+        const {props: {emulation, pauseEmulation}} = this;
         emulation.pauseEmulation = pauseEmulation;
 
         if (prevProps.emulation !== emulation) {
@@ -162,8 +166,8 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
 
 
     render(): ReactNode {
-        const {props: {displayControls, classes}, state: {portrait, canvasSize: {widthPx, heightPx}}} = this;
-        const {gbRight, gbDown, gbLeft, gbUp, gbB, gbA, gbSelect, gbStart} = this.state;
+        const {touchButtons, props: {displayControls, classes}} = this;
+        const {gbRight, gbDown, gbLeft, gbUp, gbB, gbA, gbSelect, gbStart, portrait, canvasSize: {widthPx, heightPx}} = this.state;
 
         const showControls = displayControls !== DisplayControls.HIDDEN;
         const overlayControls = displayControls === DisplayControls.VISIBLE_OVERLAY;
@@ -189,37 +193,55 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
 
                 {showControls
                 && <EmulatorCrossControls className={cssControlsLeft}
-                                          crossDown={dir => this.gbButtonDown(dir)}
-                                          crossUp={dir => this.gbButtonUp(dir)}
+                                          crossDown={dir => this.buttonDown(dir, touchButtons)}
+                                          crossUp={dir => this.buttonUp(dir, touchButtons)}
                                           pressingRight={gbRight}
                                           pressingDown={gbDown}
                                           pressingLeft={gbLeft}
                                           pressingUp={gbUp}/>}
-
                 {showControls
                 && <EmulatorButtonControls className={cssControlsRight}
-                                           buttonDown={btn => this.gbButtonDown(btn)}
-                                           buttonUp={btn => this.gbButtonUp(btn)}
+                                           buttonDown={btn => this.buttonDown(btn, touchButtons)}
+                                           buttonUp={btn => this.buttonUp(btn, touchButtons)}
                                            pressingB={gbB}
                                            pressingA={gbA}
                                            pressingSelect={gbSelect}
                                            pressingStart={gbStart}/>}
-
             </div>
         );
     }
 
-    private gbButtonDown(button: keyof IGbButtons): void {
-        if (!this.state[button]) {
-            this.setState({[button]: true} as any);
-            this.props.emulation.buttonDown(gbButton(button));
+    private buttonDown(button: keyof IButtonsDown,
+                       buttons: IButtonsDown): void {
+
+        if (!buttons[button]) {
+            buttons[button] = true;
+            this.checkCombinedButtonState(button);
         }
     }
 
-    private gbButtonUp(button: keyof IGbButtons): void {
-        if (this.state[button]) {
-            this.setState({[button]: false} as any);
-            this.props.emulation.buttonUp(gbButton(button));
+    private buttonUp(button: keyof IButtonsDown,
+                     buttons: IButtonsDown): void {
+
+        if (buttons[button]) {
+            buttons[button] = false;
+            this.checkCombinedButtonState(button);
+        }
+    }
+
+    private checkCombinedButtonState(button: keyof IButtonsDown): void {
+        const {touchButtons, keyboardButtons, state} = this;
+
+        const buttonDown = touchButtons[button] || keyboardButtons[button];
+        if (buttonDown !== state[button]) {
+            this.setState({[button]: buttonDown} as any);
+
+            const gbButton = gameboyButton(button);
+            if (buttonDown) {
+                this.props.emulation.buttonDown(gbButton);
+            } else {
+                this.props.emulation.buttonUp(gbButton);
+            }
         }
     }
 }

@@ -51,7 +51,7 @@ export default class RootLayout extends Component<TRootLayoutProps> {
 
         this.siteApi = new SiteApi(
             localeFromPathname(path),
-            path => navigate(path),
+            path => void navigate(path),
             ({href, children}) => <Link to={href}>{children}</Link>,
         );
     }

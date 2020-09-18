@@ -4,7 +4,7 @@ import {WithI18nProps} from '@shopify/react-i18n';
 import React, {Component, ReactNode} from 'react';
 import {TOOLBAR_ICON_STYLE} from '../common';
 import i18nBundle from './emulator-close-bars.i18n.json';
-import {withI18nBundle} from "../i18n";
+import {withI18nBundle} from '../i18n';
 
 
 export interface IEmulatorCloseBarProps {

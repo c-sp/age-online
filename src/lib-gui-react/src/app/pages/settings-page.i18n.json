@@ -11,6 +11,30 @@
     "en": "Settings",
     "de": "Einstellungen"
   },
+  "keyboard:arrow-right": {
+    "en": "arrow right",
+    "de": "Pfeil nach rechts"
+  },
+  "keyboard:arrow-down": {
+    "en": "arrow down",
+    "de": "Pfeil nach unten"
+  },
+  "keyboard:arrow-left": {
+    "en": "arrow left",
+    "de": "Pfeil nach links"
+  },
+  "keyboard:arrow-up": {
+    "en": "arrow up",
+    "de": "Pfeil nach oben"
+  },
+  "keyboard:space": {
+    "en": "space",
+    "de": "Leertaste"
+  },
+  "keyboard:enter": {
+    "en": "enter",
+    "de": "Enter"
+  },
   "flag-hint": {
     "en": "Flag icons made by {LinkFreepik} from {LinkFlaticon}.",
     "de": "Flaggen-Icons erstellt von {LinkFreepik} von {LinkFlaticon}."

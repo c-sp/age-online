@@ -1,9 +1,9 @@
 import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core';
 import React, {ReactNode} from 'react';
 import {TidyComponent} from '../common';
-import {assertElement, cssClasses} from "@age-online/lib-common";
-import {elementTouched, TouchEventHandler} from "./touch-event-handler";
-import {IGbButtons} from "./gb-buttons";
+import {assertElement, cssClasses} from '@age-online/lib-common';
+import {elementTouched, TouchEventHandler} from './touch-event-handler';
+import {IButtonsDown, noButtonsDown} from './buttons-down';
 
 
 const CSS_CLASS_PRESSED = 'pressed';
@@ -61,8 +61,8 @@ const styles = (theme: Theme) => createStyles({
 
 export interface IButtonControlsProps {
     readonly className?: string;
-    readonly buttonDown?: (button: keyof IGbButtons) => void;
-    readonly buttonUp?: (button: keyof IGbButtons) => void;
+    readonly buttonDown?: (button: keyof IButtonsDown) => void;
+    readonly buttonUp?: (button: keyof IButtonsDown) => void;
     readonly pressingB?: boolean;
     readonly pressingA?: boolean;
     readonly pressingSelect?: boolean;
@@ -83,11 +83,16 @@ class ComposedEmulatorButtonControls extends TidyComponent<TButtonControlsProps>
     private elemSeSt?: HTMLElement | null;
     private elemSt?: HTMLElement | null;
 
+    private readonly buttonsDown = noButtonsDown();
+
     componentDidMount() {
         const eventHandler = new TouchEventHandler(
             assertElement(this.elemContainer),
             points => {
-                const {elemB, elemBA, elemA, elemSe, elemSeSt, elemSt} = this;
+                const {
+                    elemB, elemBA, elemA, elemSe, elemSeSt, elemSt,
+                    buttonsDown, props: {buttonDown, buttonUp},
+                } = this;
 
                 const ba = elementTouched(assertElement(elemBA), points);
                 const b = ba || elementTouched(assertElement(elemB), points);
@@ -97,23 +102,16 @@ class ComposedEmulatorButtonControls extends TidyComponent<TButtonControlsProps>
                 const se = seSt || elementTouched(assertElement(elemSe), points);
                 const st = seSt || elementTouched(assertElement(elemSt), points);
 
-                const {buttonDown, buttonUp, pressingB, pressingA, pressingSelect, pressingStart} = this.props;
+                checkButton('gbB', b);
+                checkButton('gbA', a);
+                checkButton('gbSelect', se);
+                checkButton('gbStart', st);
 
-                if (b !== !!pressingB) {
-                    (b ? buttonDown : buttonUp)?.("gbB");
-                    this.setState({pressingB: b});
-                }
-                if (a !== !!pressingA) {
-                    (a ? buttonDown : buttonUp)?.("gbA");
-                    this.setState({pressingA: a});
-                }
-                if (se !== !!pressingSelect) {
-                    (se ? buttonDown : buttonUp)?.("gbSelect");
-                    this.setState({pressingSelect: se});
-                }
-                if (st !== !!pressingStart) {
-                    (st ? buttonDown : buttonUp)?.("gbStart");
-                    this.setState({pressingStart: st});
+                function checkButton(button: keyof IButtonsDown, buttonState: boolean): void {
+                    if (buttonState !== buttonsDown[button]) {
+                        buttonsDown[button] = buttonState;
+                        (buttonState ? buttonDown : buttonUp)?.(button);
+                    }
                 }
             },
         );
@@ -129,13 +127,13 @@ class ComposedEmulatorButtonControls extends TidyComponent<TButtonControlsProps>
 
                 <div className={classes.buttons}>
                     <div className={pressedCss(pressingSelect)}
-                         ref={elem => this.elemSe = elem}>SE</div>
+                         ref={elem => this.elemSe = elem}>select</div>
 
                     <div className={pressedCss(pressingStart && pressingSelect)}
                          ref={elem => this.elemSeSt = elem}>&#8203;</div>
 
                     <div className={pressedCss(pressingStart)}
-                         ref={elem => this.elemSt = elem}>ST</div>
+                         ref={elem => this.elemSt = elem}>start</div>
                 </div>
 
                 <div className={classes.buttons}>
@@ -153,7 +151,7 @@ class ComposedEmulatorButtonControls extends TidyComponent<TButtonControlsProps>
         );
 
         function pressedCss(flag: unknown): string {
-            return !!flag ? CSS_CLASS_PRESSED : '';
+            return flag ? CSS_CLASS_PRESSED : '';
         }
     }
 }

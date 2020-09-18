@@ -1,4 +1,4 @@
-import {fade, Theme} from "@material-ui/core";
+import {fade, Theme} from '@material-ui/core';
 
 /**
  * properties to be used for external links

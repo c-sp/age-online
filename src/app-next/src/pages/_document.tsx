@@ -1,6 +1,6 @@
 import {ServerStyleSheets} from '@material-ui/core';
-import Document, {DocumentContext, Head, Html, Main, NextScript} from 'next/document'
-import React from 'react';
+import Document, {DocumentContext, DocumentInitialProps, Head, Html, Main, NextScript} from 'next/document'
+import React, {HTMLAttributes} from 'react';
 import {Helmet, HelmetData} from 'react-helmet';
 
 
@@ -19,7 +19,7 @@ interface IAdditionalDocumentProps {
  */
 export default class AgeOnlineDocument extends Document<IAdditionalDocumentProps> {
 
-    static async getInitialProps(ctx: DocumentContext) {
+    static async getInitialProps(ctx: DocumentContext): Promise<IAdditionalDocumentProps & DocumentInitialProps> {
         // Resolution order
         //
         // On the server:
@@ -63,12 +63,12 @@ export default class AgeOnlineDocument extends Document<IAdditionalDocumentProps
 
 
     // should render on <html>
-    get helmetHtmlAttrComponents() {
+    get helmetHtmlAttrComponents(): HTMLAttributes<HTMLHtmlElement> {
         return this.props.helmet.htmlAttributes.toComponent()
     }
 
     // should render on <body>
-    get helmetBodyAttrComponents() {
+    get helmetBodyAttrComponents(): HTMLAttributes<HTMLBodyElement> {
         return this.props.helmet.bodyAttributes.toComponent()
     }
 
@@ -80,7 +80,7 @@ export default class AgeOnlineDocument extends Document<IAdditionalDocumentProps
     }
 
 
-    render() {
+    render(): JSX.Element {
         return (
             <Html {...this.helmetHtmlAttrComponents}>
                 <Head>{this.helmetHeadComponents}</Head>

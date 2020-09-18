@@ -16,6 +16,7 @@ import {
 } from '../../components';
 import {IPersistentAppStateProps, withPersistentAppState} from '../app-state';
 import i18nBundle from './settings-page.i18n.json';
+import {GamepadRoundDown, GamepadRoundLeft, GamepadRoundRight, GamepadRoundUp} from 'mdi-material-ui';
 
 
 const HREF_FREEPIK = 'https://www.flaticon.com/authors/freepik';
@@ -39,6 +40,40 @@ const styles = (theme: Theme) => createStyles({
             marginTop: theme.spacing(7),
             textAlign: 'center',
         },
+    },
+
+    keyboardMappings: {
+        paddingTop: theme.spacing(2),
+        display: 'grid',
+        gridTemplateColumns: 'auto auto auto auto',
+        gridGap: theme.spacing(0.5),
+        alignItems: 'center',
+
+        '& svg': {
+            // remove descenders, see also:
+            // https://stackoverflow.com/a/5804278
+            display: 'block',
+        },
+        '& > :nth-child(even)': {
+            justifySelf: 'left',
+        },
+        '& > :nth-child(odd)': {
+            justifySelf: 'right',
+        },
+        '& > :nth-child(4n + 3)': {
+            border: '2px solid',
+            textAlign: 'center',
+        },
+    },
+    roundButton: {
+        borderRadius: '50%',
+        width: theme.spacing(3),
+        height: theme.spacing(3),
+    },
+    wideButton: {
+        borderRadius: theme.spacing(1),
+        width: theme.spacing(6),
+        height: theme.spacing(3),
     },
 });
 
@@ -83,6 +118,28 @@ class ComposedSettingsPage extends TidyComponent<TSettingsPageProps, ISettingsPa
                                 preferTheme={(themePreference: PreferredTheme) => {
                                     persistentAppState.setPreferredTheme(themePreference);
                                 }}/>
+
+                <div className={classes.keyboardMappings}>
+                    <div><GamepadRoundRight/></div>
+                    <div>{i18n.translate('keyboard:arrow-right')}</div>
+                    <div className={classes.roundButton}>B</div>
+                    <div>X</div>
+
+                    <div><GamepadRoundDown/></div>
+                    <div>{i18n.translate('keyboard:arrow-down')}</div>
+                    <div className={classes.roundButton}>A</div>
+                    <div>C</div>
+
+                    <div><GamepadRoundLeft/></div>
+                    <div>{i18n.translate('keyboard:arrow-left')}</div>
+                    <div className={classes.wideButton}>start</div>
+                    <div>{i18n.translate('keyboard:space')}</div>
+
+                    <div><GamepadRoundUp/></div>
+                    <div>{i18n.translate('keyboard:arrow-up')}</div>
+                    <div className={classes.wideButton}>select</div>
+                    <div>{i18n.translate('keyboard:enter')}</div>
+                </div>
 
                 <Typography component={'div'}
                             color="textSecondary"

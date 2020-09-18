@@ -1,8 +1,8 @@
-import {GameboyButton} from "@age-online/lib-emulator";
-import {assertNever} from "@age-online/lib-common";
+import {GameboyButton} from '@age-online/lib-emulator';
+import {assertNever} from '@age-online/lib-common';
 
 
-export interface IGbButtons {
+export interface IButtonsDown {
     gbRight: boolean;
     gbDown: boolean;
     gbLeft: boolean;
@@ -13,8 +13,21 @@ export interface IGbButtons {
     gbStart: boolean;
 }
 
+export function noButtonsDown(): IButtonsDown {
+    return {
+        gbRight: false,
+        gbDown: false,
+        gbLeft: false,
+        gbUp: false,
+        gbB: false,
+        gbA: false,
+        gbSelect: false,
+        gbStart: false,
+    };
+}
 
-export function gbButton(key: keyof IGbButtons): GameboyButton {
+
+export function gameboyButton(key: keyof IButtonsDown): GameboyButton {
     switch (key) {
         case 'gbRight':
             return GameboyButton.GB_BUTTON_RIGHT;

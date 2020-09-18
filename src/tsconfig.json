@@ -67,14 +67,15 @@
     // transform JSX to JS
     "jsx": "react",
 
-    // compile to es2018 compatible JavaScript (es2018 for object spread),
-    // support: https://kangax.github.io/compat-table/es2016plus/
-    // (similar configuration in .eslintrc.js)
-    "target": "es2018",
+    // Compile to es2020 compatible JavaScript and rely on Babel to create
+    // code compatible to the "browserslist" configuration
+    // (see app-* package.json files).
+    // JavaScript browser support: https://kangax.github.io/compat-table/es2016plus/
+    "target": "es2020",
 
     // this is a client-only repo (no server code) => include dom library
     "lib": [
-      "es2018",
+      "es2020",
       "dom"
     ]
   },
