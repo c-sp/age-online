@@ -54,8 +54,8 @@ export function createTheme(additionalGlobalCss?: object,
 
     const {typography} = theme;
     variant.forEach(v => {
-        const typo = typography[v];
-        typography[v] = {
+        const typo = typography[v] as object;
+        (typography as any)[v] = {
             ...typo,
             [theme.breakpoints.down('xs')]: {
                 fontFamily: fontFamilyCondensed,
