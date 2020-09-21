@@ -1,7 +1,7 @@
 import {ServerStyleSheets} from '@material-ui/core';
-import Document, {DocumentContext, DocumentInitialProps, Head, Html, Main, NextScript} from 'next/document'
-import React, {HTMLAttributes} from 'react';
-import {Helmet, HelmetData} from 'react-helmet';
+import Document, {DocumentContext, DocumentInitialProps, Head, Html, Main, NextScript} from 'next/document';
+import React, {Component, HTMLAttributes} from 'react';
+import {Helmet, HelmetData, HelmetDatum} from 'react-helmet';
 
 
 interface IAdditionalDocumentProps {
@@ -46,10 +46,9 @@ export default class AgeOnlineDocument extends Document<IAdditionalDocumentProps
         const sheets = new ServerStyleSheets();
         const originalRenderPage = ctx.renderPage;
 
-        ctx.renderPage = () =>
-            originalRenderPage({
-                enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
-            });
+        ctx.renderPage = () => originalRenderPage({
+            enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
+        });
 
         const initialProps = await Document.getInitialProps(ctx);
 
@@ -64,19 +63,20 @@ export default class AgeOnlineDocument extends Document<IAdditionalDocumentProps
 
     // should render on <html>
     get helmetHtmlAttrComponents(): HTMLAttributes<HTMLHtmlElement> {
-        return this.props.helmet.htmlAttributes.toComponent()
+        return this.props.helmet.htmlAttributes.toComponent();
     }
 
     // should render on <body>
     get helmetBodyAttrComponents(): HTMLAttributes<HTMLBodyElement> {
-        return this.props.helmet.bodyAttributes.toComponent()
+        return this.props.helmet.bodyAttributes.toComponent();
     }
 
     // should render on <head>
-    get helmetHeadComponents() {
-        return Object.keys(this.props.helmet)
-            .filter((el) => el !== 'htmlAttributes' && el !== 'bodyAttributes')
-            .map((el) => (this.props.helmet as any)[el].toComponent())
+    get helmetHeadComponents(): Component[] {
+        return Object
+            .values(this.props.helmet)
+            .filter((el): el is HelmetDatum => el !== 'htmlAttributes' && el !== 'bodyAttributes')
+            .map(el => el.toComponent());
     }
 
 

@@ -1,0 +1,15 @@
+{
+  "name": "@age-online/eslint-config",
+  "description": "AGE Online - ESLint configuration",
+  "author": "Christoph Sprenger",
+  "version": "0.0.1",
+  "private": true,
+  "peerDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.1.0",
+    "@typescript-eslint/parser": "^4.1.0",
+    "eslint": "^7.9.0",
+    "eslint-plugin-filenames": "^1.3.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-react": "^7.20.0"
+  }
+}

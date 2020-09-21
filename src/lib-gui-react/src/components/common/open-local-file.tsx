@@ -23,7 +23,7 @@ export class OpenLocalFile extends Component<IOpenLocalFileProps> {
                    accept={accept}
                    onChange={(ev) => {
                        const {files} = ev.target;
-                       if (files && files.length) {
+                       if (files?.length) {
                            openFile?.(files[0]);
                            // reset the <input>'s value so that selecting the
                            // same file again triggers another event

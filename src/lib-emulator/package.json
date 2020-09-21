@@ -9,6 +9,7 @@
   "module": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
   "dependencies": {
+    "@age-online/lib-common": "0.0.1",
     "jszip": "^3.5.0",
     "rxjs": "^6.6.0",
     "tslib": "^2.0.0"

@@ -87,7 +87,7 @@ class ComposedSettingsPage extends TidyComponent<TSettingsPageProps, ISettingsPa
 
     constructor(props: TSettingsPageProps) {
         super(props);
-        const {preferredTheme} = props.currentAppState.appState
+        const {preferredTheme} = props.currentAppState.appState;
         this.state = {preferredTheme};
     }
 

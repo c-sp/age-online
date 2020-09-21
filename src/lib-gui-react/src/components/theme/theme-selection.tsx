@@ -104,7 +104,7 @@ function toSliderValue(themePreference: PreferredTheme): number {
     }
 }
 
-function fromSliderValue(sliderValue: number | ReadonlyArray<number>): PreferredTheme {
+function fromSliderValue(sliderValue: number | readonly number[]): PreferredTheme {
     switch (sliderValue) {
         case 0:
             return PreferredTheme.LIGHT;
@@ -117,7 +117,7 @@ function fromSliderValue(sliderValue: number | ReadonlyArray<number>): Preferred
     }
 }
 
-function sliderMarks(i18n: I18n): Array<Mark> {
+function sliderMarks(i18n: I18n): Mark[] {
     return [
         {
             value: 0,

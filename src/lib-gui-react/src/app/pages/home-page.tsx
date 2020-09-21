@@ -46,15 +46,15 @@ const styles = (theme: Theme) => createStyles({
 
             '& > :last-child': {
                 textAlign: 'left',
-            }
-        }
+            },
+        },
     },
 });
 
 const StyledButton = withStyles({
     label: {
         flexDirection: 'column',
-    }
+    },
 })(Button) as typeof Button; // the cast is required to allow component="span" below
 
 type THomePageProps = WithStyles & WithI18nProps & IPersistentAppStateProps;
@@ -67,7 +67,28 @@ class ComposedHomePage extends Component<THomePageProps> {
         const hrefCommit = `https://github.com/c-sp/age-online/tree/${LastGitCommit.hash}`;
         const hrefBranch = `https://github.com/c-sp/age-online/tree/${LastGitCommit.branch}`;
 
-        const commitedOn = new Date(parseInt(LastGitCommit.committedOn) * 1000);
+        const commitedOn = new Date(parseInt(LastGitCommit.committedOn, 10) * 1000);
+        const commitReplacements = {
+            ...COMMON_I18N_REPLACEMENTS,
+
+            commitLink: <a href={hrefCommit}
+                           aria-label={i18n.translate('link:commit')}
+                           {...EXTERNAL_LINK_PROPS}>{LastGitCommit.shortHash}</a>,
+
+            commitDate: <span style={{whiteSpace: 'nowrap'}}>{i18n.formatDate(commitedOn, {
+                // https://tc39.es/ecma402/#datetimeformat-objects
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZoneName: 'short',
+            })}</span>,
+
+            branchLink: <a href={hrefBranch}
+                           aria-label={i18n.translate('link:branch')}
+                           {...EXTERNAL_LINK_PROPS}>{LastGitCommit.branch}</a>,
+        };
 
         return (
             <Paper component={'main'} className={classes.main} elevation={0}>
@@ -95,29 +116,7 @@ class ComposedHomePage extends Component<THomePageProps> {
                     </a>
 
                     <Typography component={'div'}
-                                variant="caption">{
-                        i18n.translate('page:commit', {
-                            ...COMMON_I18N_REPLACEMENTS,
-
-                            commitLink: <a href={hrefCommit}
-                                           aria-label={i18n.translate('link:commit')}
-                                           {...EXTERNAL_LINK_PROPS}>{LastGitCommit.shortHash}</a>,
-
-                            commitDate: <span style={{whiteSpace: 'nowrap'}}>{i18n.formatDate(commitedOn, {
-                                // https://tc39.es/ecma402/#datetimeformat-objects
-                                year: 'numeric',
-                                month: '2-digit',
-                                day: '2-digit',
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                timeZoneName: 'short',
-                            })}</span>,
-
-                            branchLink: <a href={hrefBranch}
-                                           aria-label={i18n.translate('link:branch')}
-                                           {...EXTERNAL_LINK_PROPS}>{LastGitCommit.branch}</a>,
-                        })
-                    }</Typography>
+                                variant="caption">{i18n.translate('page:commit', commitReplacements)}</Typography>
                 </div>
 
             </Paper>

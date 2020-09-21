@@ -22,7 +22,7 @@ const StylesFormControlLabel = withStyles({
     root: {
         marginLeft: 0,
         marginRight: 0,
-    }
+    },
 })(FormControlLabel);
 
 
@@ -38,7 +38,7 @@ class ComposedLocaleSelection extends Component<ILocaleSelectionProps> {
         const {props} = this;
         const {color, onSelect, selectedLocale} = props;
 
-        const svgDe = <FlagDE fontSize="large"/>
+        const svgDe = <FlagDE fontSize="large"/>;
         const svgEn = <FlagUS fontSize="large"/>;
 
         return <RadioGroup value={selectedLocale}

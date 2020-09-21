@@ -11,10 +11,10 @@ export interface IEmulatorFactory$Props {
 
 export const EmulatorFactory$Context = createContext<Observable<IEmulationFactory>>(NEVER);
 
-export function withEmulatorFactory$<P>(WrappedComponent: ComponentType<P & IEmulatorFactory$Props>): ComponentType<P> {
+export function withEmulatorFactory$<P>(Wrapped: ComponentType<P & IEmulatorFactory$Props>): ComponentType<P> {
     return (props: P): ReactElement => (
         <EmulatorFactory$Context.Consumer>{
-            (value): ReactElement => <WrappedComponent emulatorFactory$={value} {...props}/>
+            (value): ReactElement => <Wrapped emulatorFactory$={value} {...props}/>
         }</EmulatorFactory$Context.Consumer>
     );
 }
@@ -38,8 +38,8 @@ async function newEmulatorFactory(ageWasmJsUrl: string,
     }
 }
 
-export function emulatorFactory$(ageWasmJsUrl: string,
-                                 ageWasmUrl: string): Observable<IEmulationFactory> {
+export function emulationFactory$(ageWasmJsUrl: string,
+                                  ageWasmUrl: string): Observable<IEmulationFactory> {
 
     return of({}).pipe(
         switchMap(() => from(newEmulatorFactory(ageWasmJsUrl, ageWasmUrl))),

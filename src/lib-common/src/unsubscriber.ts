@@ -23,17 +23,17 @@ class CallOnce implements SubscriptionLike {
 
 export class Unsubscriber {
 
-    private subscriptions = new Array<SubscriptionLike>();
+    private subscriptions: SubscriptionLike[] = [];
 
     get subscriptionsLength(): number {
         return this.subscriptions.length;
     }
 
-    callOnCleanup(...functions: ReadonlyArray<() => unknown>): this {
+    callOnCleanup(...functions: (() => unknown)[]): this {
         return this.trackSubscriptions(...functions.map((fn) => new CallOnce(fn)));
     }
 
-    trackSubscriptions(...subscriptions: ReadonlyArray<SubscriptionLike>): this {
+    trackSubscriptions(...subscriptions: readonly SubscriptionLike[]): this {
         this.subscriptions = this.subscriptions.concat(...subscriptions);
         return this;
     }

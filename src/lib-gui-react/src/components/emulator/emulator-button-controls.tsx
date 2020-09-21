@@ -54,7 +54,7 @@ const styles = (theme: Theme) => createStyles({
         [`& .${CSS_CLASS_PRESSED}`]: {
             color: theme.palette.primary.contrastText,
             backgroundColor: theme.palette.primary.main,
-        }
+        },
     },
 });
 
@@ -123,28 +123,28 @@ class ComposedEmulatorButtonControls extends TidyComponent<TButtonControlsProps>
         const {props: {classes, className, pressingA, pressingB, pressingStart, pressingSelect}} = this;
         return (
             <div className={cssClasses(classes.container, className)}
-                 ref={elem => this.elemContainer = elem}>
+                 ref={elem => void (this.elemContainer = elem)}>
 
                 <div className={classes.buttons}>
                     <div className={pressedCss(pressingSelect)}
-                         ref={elem => this.elemSe = elem}>select</div>
+                         ref={elem => void (this.elemSe = elem)}>select</div>
 
                     <div className={pressedCss(pressingStart && pressingSelect)}
-                         ref={elem => this.elemSeSt = elem}>&#8203;</div>
+                         ref={elem => void (this.elemSeSt = elem)}>&#8203;</div>
 
                     <div className={pressedCss(pressingStart)}
-                         ref={elem => this.elemSt = elem}>start</div>
+                         ref={elem => void (this.elemSt = elem)}>start</div>
                 </div>
 
                 <div className={classes.buttons}>
                     <div className={pressedCss(pressingB)}
-                         ref={elem => this.elemB = elem}>B</div>
+                         ref={elem => void (this.elemB = elem)}>B</div>
 
                     <div className={pressedCss(pressingA && pressingB)}
-                         ref={elem => this.elemBA = elem}>&#8203;</div>
+                         ref={elem => void (this.elemBA = elem)}>&#8203;</div>
 
                     <div className={pressedCss(pressingA)}
-                         ref={elem => this.elemA = elem}>A</div>
+                         ref={elem => void (this.elemA = elem)}>A</div>
                 </div>
 
             </div>

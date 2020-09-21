@@ -5,7 +5,7 @@ export interface ITouchPoint {
 
 
 export function elementTouched(element: HTMLElement,
-                               touchPoints: ReadonlyArray<ITouchPoint>): boolean {
+                               touchPoints: readonly ITouchPoint[]): boolean {
 
     const {top, left, width, height} = element.getBoundingClientRect();
 
@@ -53,11 +53,14 @@ export class TouchEventHandler {
 
     private mouseIsDown = false;
 
-    private readonly touchListener = (ev: TouchEvent) => this.onTouchEvent(ev);
-    private readonly mouseListener = (ev: MouseEvent) => this.onMouseEvent(ev);
+    private readonly touchListener: (ev: TouchEvent) => void;
+    private readonly mouseListener: (ev: MouseEvent) => void;
 
     constructor(private readonly element: HTMLElement,
-                private readonly touchPointsCallback: (points: ReadonlyArray<ITouchPoint>) => void) {
+                private readonly touchPointsCallback: (points: readonly ITouchPoint[]) => void) {
+
+        this.touchListener = (ev: TouchEvent) => this.onTouchEvent(ev);
+        this.mouseListener = (ev: MouseEvent) => this.onMouseEvent(ev);
 
         element.addEventListener('touchstart', this.touchListener);
         element.addEventListener('touchmove', this.touchListener);

@@ -1,5 +1,3 @@
-'use strict';
-
 const isDev = process.env.NODE_ENV === 'development';
 
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');

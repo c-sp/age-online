@@ -1,5 +1,3 @@
-'use strict';
-
 const path = require('path');
 const withBundleAnalyzer = require('@next/bundle-analyzer');
 
@@ -24,7 +22,7 @@ module.exports = (phase) => {
         // based on:
         // https://github.com/vercel/next.js/blob/canary/test/integration/typescript-workspaces-paths/packages/www/next.config.js
         // TODO works only as long as there are no <lib>/dist/* files present
-        webpack: function(config, {defaultLoaders}) {
+        webpack(config, {defaultLoaders}) {
             const resolvedBaseUrl = path.resolve(config.context, '../');
             config.module.rules = [
                 ...config.module.rules,

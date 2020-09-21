@@ -33,10 +33,6 @@ export class NoZippedRomFoundError extends ErrorWithCause {
 }
 
 export class InvalidRomFileError extends ErrorWithCause {
-
-    constructor(reason: string, cause?: Error) {
-        super(reason, cause);
-    }
 }
 
 

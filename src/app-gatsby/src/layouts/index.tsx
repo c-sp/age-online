@@ -30,6 +30,7 @@ export default class RootLayout extends Component<TRootLayoutProps> {
         '#___gatsby': {
             // mobile browsers:
             // let the element shrink/grow when showing/hiding the url bar
+            // TODO does not always work (e.g. iOS Safari landscape mode)
             position: 'fixed',
             height: '100%',
             width: '100%',
@@ -51,7 +52,7 @@ export default class RootLayout extends Component<TRootLayoutProps> {
 
         this.siteApi = new SiteApi(
             localeFromPathname(path),
-            path => void navigate(path),
+            toPath => void navigate(toPath),
             ({href, children}) => <Link to={href}>{children}</Link>,
         );
     }

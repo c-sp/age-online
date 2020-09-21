@@ -17,7 +17,7 @@ async function extractRomFromZip(file: ArrayBuffer): Promise<ArrayBuffer> {
     }
 
     // get a list of all rom files within that archive
-    const files = jsZip.file(/.*(\.gb)|(\.gbc)|(\.cgb)$/i);
+    const files = jsZip.file(/.*(\.gb)|(\.gbc)|(\.cgb)$/ui);
     if (!files || !files.length) {
         throw new NoZippedRomFoundError();
     }

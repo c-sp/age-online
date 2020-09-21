@@ -38,23 +38,30 @@ export function createTheme(additionalGlobalCss?: object,
     const theme = responsiveFontSizes(createMuiTheme(options));
 
     // set global <a> style
-    const globalCss = theme.overrides!.MuiCssBaseline!['@global']!;
+    const globalCss = theme.overrides?.MuiCssBaseline?.['@global'] ?? {};
     globalCss.a = {
         color: theme.palette.primary.main,
         textDecoration: 'none',
     };
 
     // responsive font family
-    const typography = theme.typography as any;
-    ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle1', 'subtitle2', 'body1', 'body2', 'button', 'caption', 'overline']
-        .forEach(
-            variant => typography[variant] = {
-                ...typography[variant],
-                [theme.breakpoints.down('xs')]: {
-                    fontFamily: fontFamilyCondensed,
-                },
+    const variant: (keyof Theme['typography'])[] = [
+        'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+        'subtitle1', 'subtitle2',
+        'body1', 'body2',
+        'button', 'caption', 'overline',
+    ];
+
+    const {typography} = theme;
+    variant.forEach(v => {
+        const typo = typography[v];
+        typography[v] = {
+            ...typo,
+            [theme.breakpoints.down('xs')]: {
+                fontFamily: fontFamilyCondensed,
             },
-        );
+        };
+    });
 
     return theme;
 }

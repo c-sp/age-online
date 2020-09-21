@@ -12,7 +12,7 @@ export class CurrentAppState extends Unsubscriber implements ICurrentAppState {
     protected readonly darkTheme: Theme;
 
     private readonly appStateSubject: BehaviorSubject<[
-        updatedKeys: ReadonlyArray<string>,
+        updatedKeys: readonly string [],
         updatedState: IAppState,
     ]>;
 
@@ -32,7 +32,7 @@ export class CurrentAppState extends Unsubscriber implements ICurrentAppState {
         });
 
         this.appStateSubject = new BehaviorSubject<[
-            updatedKeys: ReadonlyArray<string>,
+            updatedKeys: readonly string [],
             updatedState: IAppState,
         ]>([[], {
             preferredLocale: Locale.EN,
@@ -49,7 +49,7 @@ export class CurrentAppState extends Unsubscriber implements ICurrentAppState {
         return this.appStateSubject.value[1];
     }
 
-    appState$(...relevantAppStateKeys: ReadonlyArray<TAppStateKey>): Observable<IAppState> {
+    appState$(...relevantAppStateKeys: readonly TAppStateKey[]): Observable<IAppState> {
         const {appStateSubject} = this;
         const keySet = new Set<string>(relevantAppStateKeys);
 

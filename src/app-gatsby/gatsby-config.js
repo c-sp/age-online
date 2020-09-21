@@ -1,6 +1,3 @@
-'use strict';
-
-
 const sourceMapsPlugin = process.env.NODE_ENV === 'development'
     ? []
     : ['gatsby-plugin-no-sourcemaps']; // turn off source maps for prod

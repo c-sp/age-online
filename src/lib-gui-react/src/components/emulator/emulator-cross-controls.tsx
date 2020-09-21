@@ -36,7 +36,7 @@ const styles = (theme: Theme) => createStyles({
         [`& .${CSS_CLASS_PRESSED}`]: {
             color: theme.palette.primary.contrastText,
             backgroundColor: theme.palette.primary.main,
-        }
+        },
     },
     upLeft: {
         gridArea: 'up-left',
@@ -162,33 +162,33 @@ class ComposedEmulatorCrossControls extends TidyComponent<TCrossControlsProps> {
         const {props: {classes, className, pressingRight, pressingDown, pressingLeft, pressingUp}} = this;
         return (
             <div className={cssClasses(classes.container, className)}
-                 ref={elem => this.elemContainer = elem}>
+                 ref={elem => void (this.elemContainer = elem)}>
 
                 <div className={classes.cross}>
 
                     <div className={cssClasses(classes.upLeft, pressedCss(pressingLeft && pressingUp))}
-                         ref={elem => this.elemUpLeft = elem}>&#8203;</div>
+                         ref={elem => void (this.elemUpLeft = elem)}>&#8203;</div>
 
                     <div className={cssClasses(classes.up, pressedCss(pressingUp))}
-                         ref={elem => this.elemUp = elem}>&#8203;</div>
+                         ref={elem => void (this.elemUp = elem)}>&#8203;</div>
 
                     <div className={cssClasses(classes.upRight, pressedCss(pressingRight && pressingUp))}
-                         ref={elem => this.elemUpRight = elem}>&#8203;</div>
+                         ref={elem => void (this.elemUpRight = elem)}>&#8203;</div>
 
                     <div className={cssClasses(classes.left, pressedCss(pressingLeft))}
-                         ref={elem => this.elemLeft = elem}>&#8203;</div>
+                         ref={elem => void (this.elemLeft = elem)}>&#8203;</div>
 
                     <div className={cssClasses(classes.right, pressedCss(pressingRight))}
-                         ref={elem => this.elemRight = elem}>&#8203;</div>
+                         ref={elem => void (this.elemRight = elem)}>&#8203;</div>
 
                     <div className={cssClasses(classes.downLeft, pressedCss(pressingLeft && pressingDown))}
-                         ref={elem => this.elemDownLeft = elem}>&#8203;</div>
+                         ref={elem => void (this.elemDownLeft = elem)}>&#8203;</div>
 
                     <div className={cssClasses(classes.down, pressedCss(pressingDown))}
-                         ref={elem => this.elemDown = elem}>&#8203;</div>
+                         ref={elem => void (this.elemDown = elem)}>&#8203;</div>
 
                     <div className={cssClasses(classes.downRight, pressedCss(pressingRight && pressingDown))}
-                         ref={elem => this.elemDownRight = elem}>&#8203;</div>
+                         ref={elem => void (this.elemDownRight = elem)}>&#8203;</div>
 
                 </div>
 

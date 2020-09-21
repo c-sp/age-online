@@ -34,7 +34,7 @@ function iconSiteLink(appPage: AppPage,
                     );
                 }
 
-            }
+            },
         ),
     );
 }

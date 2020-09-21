@@ -106,32 +106,35 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
         const {persistentAppState, emulatorFactory$} = this.props;
 
         this.unsubscribeOnUnmount(
-            persistentAppState.appState$('romSource').pipe(
-                switchMap(({romSource}): Observable<IEmulation | null> => {
-                    if (!romSource) {
-                        return of(null);
-                    }
-                    // this will re-mount the emulator component for every new rom
-                    this.setEmulatorState({state: EmulatorState.EMULATOR_LOADING});
-                    return emulatorFactory$.pipe(
-                        switchMap(emulatorFactory => emulatorFactory.newEmulation$(romSource)),
-                    );
-                }),
-            ).subscribe(
-                emulation => {
-                    this.setEmulatorState(emulation
-                        ? {state: EmulatorState.EMULATOR_READY, emulation}
-                        : {state: EmulatorState.NO_EMULATOR});
-                },
-                (error: unknown) => {
-                    console.error(error);
-                    this.setEmulatorState({state: EmulatorState.EMULATOR_ERROR, error});
-                },
-            ),
-            persistentAppState.appState$('displayControls').subscribe(
-                ({displayControls}) => this.setState({displayControls}),
-            ),
+            persistentAppState
+                .appState$('romSource')
+                .pipe(
+                    switchMap(({romSource}): Observable<IEmulation | null> => {
+                        if (!romSource) {
+                            return of(null);
+                        }
+                        // re-mount the emulator component for every new rom
+                        this.setEmulatorState({state: EmulatorState.EMULATOR_LOADING});
+                        return emulatorFactory$.pipe(
+                            switchMap(emulatorFactory => emulatorFactory.newEmulation$(romSource)),
+                        );
+                    }),
+                )
+                .subscribe(
+                    emulation => {
+                        this.setEmulatorState(emulation
+                            ? {state: EmulatorState.EMULATOR_READY, emulation}
+                            : {state: EmulatorState.NO_EMULATOR});
+                    },
+                    (error: unknown) => this.setEmulatorState({state: EmulatorState.EMULATOR_ERROR, error}),
+                ),
+            persistentAppState
+                .appState$('displayControls')
+                .subscribe(
+                    ({displayControls}) => this.setState({displayControls}),
+                ),
         );
+
         this.callOnUnmount(
             () => persistentAppState.setEmulatorState(EmulatorState.NO_EMULATOR),
         );
@@ -150,7 +153,7 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
         const toolbar = showBars || (emulatorState.state !== EMULATOR_READY);
         const classNames = cssClasses(
             classes.container,
-            emulatorState.state !== EMULATOR_READY ? classes.hint : '',
+            emulatorState.state === EMULATOR_READY ? '' : classes.hint,
             hideEmulator ? classes.hide : '',
         );
 

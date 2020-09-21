@@ -8,7 +8,7 @@ import {AppPage, ErrorBoundary, Locale, TidyComponent} from '../../components';
 import {AppStateContext, IAppState, PersistentAppState} from '../app-state';
 import {EmulatorContainer} from './emulator-container';
 import {PageContainer} from './page-container';
-import {emulatorFactory$, EmulatorFactory$Context} from './with-emulation-factory';
+import {emulationFactory$, EmulatorFactory$Context} from './with-emulation-factory';
 
 
 interface IAppContainerState {
@@ -35,7 +35,7 @@ export class AppContainer extends TidyComponent<IAppContainerProps, IAppContaine
 
     private readonly i18nManager: I18nManager;
     private readonly persistentAppState: PersistentAppState;
-    private readonly emulatorFactory$: Observable<IEmulationFactory>;
+    private readonly emuFactory$: Observable<IEmulationFactory>;
 
     constructor(props: IAppContainerProps) {
         super(props);
@@ -43,7 +43,7 @@ export class AppContainer extends TidyComponent<IAppContainerProps, IAppContaine
 
         this.i18nManager = new I18nManager(i18nDetails(locale));
         this.persistentAppState = new PersistentAppState(globalCss);
-        this.emulatorFactory$ = emulatorFactory$(ageWasmJsUrl, ageWasmUrl);
+        this.emuFactory$ = emulationFactory$(ageWasmJsUrl, ageWasmUrl);
 
         this.state = calculateAppContainerState(this.persistentAppState.appState);
     }
@@ -73,7 +73,7 @@ export class AppContainer extends TidyComponent<IAppContainerProps, IAppContaine
 
 
     render(): ReactNode {
-        const {i18nManager, persistentAppState, emulatorFactory$, props, state} = this;
+        const {i18nManager, persistentAppState, emuFactory$, props, state} = this;
         const {currentPage, children} = props;
         const {emulatorActive, currentTheme, error} = state;
 
@@ -96,7 +96,7 @@ export class AppContainer extends TidyComponent<IAppContainerProps, IAppContaine
                     <AppStateContext.Provider value={persistentAppState}>
                         <I18nContext.Provider value={i18nManager}>
 
-                            <EmulatorFactory$Context.Provider value={emulatorFactory$}>
+                            <EmulatorFactory$Context.Provider value={emuFactory$}>
 
                                 {emulatorActive && <EmulatorContainer hideEmulator={renderPage}/>}
                                 {renderPage && <PageContainer currentPage={currentPage}>{children}</PageContainer>}

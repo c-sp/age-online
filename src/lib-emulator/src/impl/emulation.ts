@@ -64,8 +64,8 @@ export class Emulation implements IEmulation {
             if (cyclesToEmulate > 0) {
                 const newFrame = wasmInstance._gb_emulate(cyclesToEmulate, 48000);
                 if (newFrame) {
-                    const screenBufferOfs = wasmInstance._gb_get_screen_front_buffer();
-                    const screenBytes = new Uint8ClampedArray(wasmInstance.HEAPU8.buffer, screenBufferOfs, 160 * 144 * 4);
+                    const bufferOfs = wasmInstance._gb_get_screen_front_buffer();
+                    const screenBytes = new Uint8ClampedArray(wasmInstance.HEAPU8.buffer, bufferOfs, 160 * 144 * 4);
                     renderer?.newFrame(screenBytes);
                 }
             }

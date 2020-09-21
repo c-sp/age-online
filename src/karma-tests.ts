@@ -9,7 +9,7 @@ export {};
 
 declare const require: {
     readonly context: (path: string, deep?: boolean, filter?: RegExp) => {
-        readonly keys: () => Array<string>;
+        readonly keys: () => string[];
         <T>(id: string): T;
     };
 };

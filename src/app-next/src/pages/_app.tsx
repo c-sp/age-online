@@ -13,10 +13,11 @@ export default class AgeOnlineApp extends App {
         '#__next': {
             // mobile browsers:
             // let the element shrink/grow when showing/hiding the url bar
+            // TODO does not always work (e.g. iOS Safari landscape mode)
             position: 'fixed',
             height: '100%',
             width: '100%',
-        }
+        },
     };
     private readonly ageWasmJsUrl: string;
     private readonly ageWasmUrl: string;

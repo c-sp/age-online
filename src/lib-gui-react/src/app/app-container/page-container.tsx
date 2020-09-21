@@ -98,7 +98,7 @@ class ComposedPageContainer extends TidyComponent<TPageContainerProps, IPageCont
 
         return (
             <div className={classNames}
-                 ref={(div) => this.containerDiv = div}>
+                 ref={(div) => void (this.containerDiv = div)}>
 
                 <PageNavBar verticalBar={verticalBar}
                             currentPage={currentPage}

@@ -56,7 +56,7 @@ class ComposedPageNavBar extends Component<TPageNavBarProps> {
     render(): ReactNode {
         const {classes, i18n, verticalBar} = this.props;
 
-        const HomeIcon = this.HomeIcon();
+        const HomeIcon = this.homeIcon();
         const classNames = `${classes.root} ${verticalBar ? classes.vertical : classes.horizontal}`;
 
         return (
@@ -70,7 +70,7 @@ class ComposedPageNavBar extends Component<TPageNavBarProps> {
         );
     }
 
-    private HomeIcon(): ComponentType<IStyleProps> {
+    private homeIcon(): ComponentType<IStyleProps> {
         const {emulatorState} = this.props;
         switch (emulatorState) {
 

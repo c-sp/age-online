@@ -11,12 +11,12 @@ export class TidyComponent<P = object, S = object> extends Component<P, S> {
         this.unsubscriber.cleanup();
     }
 
-    callOnUnmount(...functions: ReadonlyArray<() => unknown>): this {
+    callOnUnmount(...functions: readonly (() => unknown)[]): this {
         this.unsubscriber.callOnCleanup(...functions);
         return this;
     }
 
-    unsubscribeOnUnmount(...subscriptions: ReadonlyArray<SubscriptionLike>): this {
+    unsubscribeOnUnmount(...subscriptions: readonly SubscriptionLike[]): this {
         this.unsubscriber.trackSubscriptions(...subscriptions);
         return this;
     }

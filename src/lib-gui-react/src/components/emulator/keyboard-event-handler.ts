@@ -3,11 +3,14 @@ import {IButtonsDown} from './buttons-down';
 
 export class KeyboardEventHandler {
 
-    private readonly keyDownListener = (ev: KeyboardEvent) => this.onKeyDown(ev);
-    private readonly keyUpListener = (ev: KeyboardEvent) => this.onKeyUp(ev);
+    private readonly keyDownListener: (ev: KeyboardEvent) => void;
+    private readonly keyUpListener: (ev: KeyboardEvent) => void;
 
     constructor(private readonly buttonDown: (button: keyof IButtonsDown) => void,
                 private readonly buttonUp: (button: keyof IButtonsDown) => void) {
+
+        this.keyDownListener = (ev: KeyboardEvent) => this.onKeyDown(ev);
+        this.keyUpListener = (ev: KeyboardEvent) => this.onKeyUp(ev);
 
         document.addEventListener('keydown', this.keyDownListener);
         document.addEventListener('keyup', this.keyUpListener);

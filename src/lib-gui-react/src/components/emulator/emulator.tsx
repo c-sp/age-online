@@ -130,12 +130,11 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
             observeSize(
                 assertElement(screenDiv, 'emulator screen <div>'),
                 ({widthPx, heightPx}) => {
-                    const canvasSize: IEmulatorState['canvasSize'] =
-                        (widthPx / heightPx > 160 / 144)
-                            // margin left & right
-                            ? {widthPx: Math.floor(heightPx * 160 / 144), heightPx}
-                            // margin top & bottom
-                            : {widthPx, heightPx: Math.floor(widthPx * 144 / 160)};
+                    const canvasSize: IEmulatorState['canvasSize'] = (widthPx / heightPx > 160 / 144)
+                        // margin left & right
+                        ? {widthPx: Math.floor(heightPx * 160 / 144), heightPx}
+                        // margin top & bottom
+                        : {widthPx, heightPx: Math.floor(widthPx * 144 / 160)};
 
                     if ((canvasSize.widthPx === this.state.canvasSize.widthPx)
                         && (canvasSize.heightPx === this.state.canvasSize.heightPx)) {
@@ -167,12 +166,22 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
 
     render(): ReactNode {
         const {touchButtons, props: {displayControls, classes}} = this;
-        const {gbRight, gbDown, gbLeft, gbUp, gbB, gbA, gbSelect, gbStart, portrait, canvasSize: {widthPx, heightPx}} = this.state;
+        const {
+            gbRight, gbDown, gbLeft, gbUp, gbB, gbA, gbSelect, gbStart,
+            portrait, canvasSize: {widthPx, heightPx},
+        } = this.state;
 
         const showControls = displayControls !== DisplayControls.HIDDEN;
+
         const overlayControls = displayControls === DisplayControls.VISIBLE_OVERLAY;
-        const cssControlsLeft = cssClasses(classes.controls, classes.controlsLeft, overlayControls ? classes.controlsLeftOverlay : classes.controlsLeftGrid)
-        const cssControlsRight = cssClasses(classes.controls, classes.controlsRight, overlayControls ? classes.controlsRightOverlay : classes.controlsRightGrid)
+        const cssControlsLeft = cssClasses(
+            classes.controls, classes.controlsLeft,
+            overlayControls ? classes.controlsLeftOverlay : classes.controlsLeftGrid,
+        );
+        const cssControlsRight = cssClasses(
+            classes.controls, classes.controlsRight,
+            overlayControls ? classes.controlsRightOverlay : classes.controlsRightGrid,
+        );
 
         const canvasStyle: CSSProperties = {
             width: `${widthPx}px`,
@@ -181,14 +190,14 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
 
         return (
             <div className={cssClasses(classes.container, portrait ? classes.portrait : classes.landscape)}
-                 ref={(div) => this.containerDiv = div}>
+                 ref={(div) => void (this.containerDiv = div)}>
 
                 <div className={classes.screen}
-                     ref={(div) => this.screenDiv = div}>
+                     ref={(div) => void (this.screenDiv = div)}>
 
                     <canvas className={classes.canvas}
                             style={canvasStyle}
-                            ref={(canvas) => this.canvas = canvas}/>
+                            ref={(canvas) => void (this.canvas = canvas)}/>
                 </div>
 
                 {showControls

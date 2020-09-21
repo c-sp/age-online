@@ -3,9 +3,9 @@ export function assertNever(value: never): never {
 }
 
 
-export function isArray<T>(value: unknown | ReadonlyArray<T>): value is ReadonlyArray<T>;
-export function isArray<T>(value: unknown | Array<T>): value is Array<T>;
-export function isArray<T>(value: unknown | Array<T>): value is Array<T> {
+export function isArray<T>(value: unknown | readonly T[]): value is readonly T[];
+export function isArray<T>(value: unknown | T[]): value is T[];
+export function isArray<T>(value: unknown | T[]): value is T[] {
     return Array.isArray(value);
 }
 

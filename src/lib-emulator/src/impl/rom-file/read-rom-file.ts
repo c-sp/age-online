@@ -11,6 +11,7 @@ import {
 import {readBlob$} from './read-blob';
 import {readUrl$} from './read-url';
 import {extractRomFromZip$} from './read-zip';
+import {bitwiseAnd} from '@age-online/lib-common';
 
 
 const CART_MBC = 0x147;
@@ -80,7 +81,7 @@ function readRomTitle(romData: Uint8Array): string {
 
 
 function readCgbFunctions(romData: Uint8Array): RomCgbFunctions {
-    switch (romData[0x143] & 0xC0) {
+    switch (bitwiseAnd(romData[0x143], 0xC0)) {
         case 0x80:
             return RomCgbFunctions.CGB_SUPPORTED;
 
@@ -255,11 +256,13 @@ function readJapanese(romData: Uint8Array): boolean {
 
 
 function computeHeaderChecksum(romData: Uint8Array): number {
-    return romData
+    return bitwiseAnd(
+        romData
             .slice(0x134, CART_HEADER_CHECKSUM) // 0x134 - 0x14C (including)
             .reduce(
                 (checksum, byte) => checksum - byte - 1,
                 0, // don't use the first byte as initial value
-            )
-        & 0xFF;
+            ),
+        0xFF,
+    );
 }

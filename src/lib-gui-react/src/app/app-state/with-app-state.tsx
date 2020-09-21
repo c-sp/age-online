@@ -14,18 +14,18 @@ export interface IPersistentAppStateProps extends ICurrentAppStateProps {
 
 export const AppStateContext = createContext<PersistentAppState>(new PersistentAppState());
 
-export function withCurrentAppState<P>(WrappedComponent: ComponentType<P & ICurrentAppStateProps>): ComponentType<P> {
+export function withCurrentAppState<P>(Wrapped: ComponentType<P & ICurrentAppStateProps>): ComponentType<P> {
     return (props: P): ReactElement => (
         <AppStateContext.Consumer>{
-            (value): ReactElement => <WrappedComponent currentAppState={value} {...props}/>
+            (value): ReactElement => <Wrapped currentAppState={value} {...props}/>
         }</AppStateContext.Consumer>
     );
 }
 
-export function withPersistentAppState<P>(WrappedComponent: ComponentType<P & IPersistentAppStateProps>): ComponentType<P> {
+export function withPersistentAppState<P>(Wrapped: ComponentType<P & IPersistentAppStateProps>): ComponentType<P> {
     return (props: P): ReactElement => (
         <AppStateContext.Consumer>{
-            (value): ReactElement => <WrappedComponent currentAppState={value} persistentAppState={value} {...props}/>
+            (value): ReactElement => <Wrapped currentAppState={value} persistentAppState={value} {...props}/>
         }</AppStateContext.Consumer>
     );
 }

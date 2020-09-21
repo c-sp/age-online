@@ -75,7 +75,7 @@ export class PersistentAppState extends CurrentAppState implements IPersistentAp
 
     setDisplayControls(displayControls: IAppState['displayControls']): void {
         this.store.setItem(KEY_DISPLAY_CONTROLS, `${displayControls}`);
-        this.updateState({displayControls: displayControls});
+        this.updateState({displayControls});
     }
 
 
@@ -86,6 +86,6 @@ export class PersistentAppState extends CurrentAppState implements IPersistentAp
         const emuControls = this.store.getItem(KEY_DISPLAY_CONTROLS);
         const displayControls = isDisplayControls(emuControls) ? emuControls : DisplayControls.VISIBLE_OVERLAY;
 
-        return {preferredTheme, displayControls: displayControls};
+        return {preferredTheme, displayControls};
     }
 }

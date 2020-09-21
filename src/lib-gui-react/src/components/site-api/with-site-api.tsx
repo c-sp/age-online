@@ -25,11 +25,11 @@ export interface ISiteApiProps {
     readonly siteApi: ISiteApi;
 }
 
-export function withSiteApi<P>(WrappedComponent: ComponentType<P & ISiteApiProps>): ComponentType<P> {
+export function withSiteApi<P>(Wrapped: ComponentType<P & ISiteApiProps>): ComponentType<P> {
     return function WithSiteApi(props: P): ReactElement {
         return (
             <SiteApiContext.Consumer>{
-                (value): ReactElement => <WrappedComponent siteApi={value} {...props}/>
+                (value): ReactElement => <Wrapped siteApi={value} {...props}/>
             }</SiteApiContext.Consumer>
         );
     };

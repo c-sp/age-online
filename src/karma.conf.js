@@ -1,6 +1,3 @@
-'use strict';
-
-
 module.exports = function karmaConfig(config) {
     config.set({
         browsers: ['ChromeHeadless', 'FirefoxHeadless'],

@@ -47,8 +47,7 @@ export type TEmulatorState =
     | IStateNoEmulator
     | IStateEmulatorLoading
     | IStateEmulatorError
-    | IStateEmulatorRunning
-    ;
+    | IStateEmulatorRunning;
 
 
 const styles = createStyles({

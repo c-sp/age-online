@@ -36,7 +36,7 @@ export type TAppStateKey = keyof IAppState;
 export interface ICurrentAppState {
     readonly appState: IAppState;
 
-    appState$(...relevantAppStateKeys: ReadonlyArray<TAppStateKey>): Observable<IAppState>;
+    appState$(...relevantAppStateKeys: readonly TAppStateKey[]): Observable<IAppState>;
 }
 
 
