@@ -18,7 +18,9 @@ export function errorInfo(error: unknown): string {
 
     // error.name and error.message may be included in error.stack on
     // some browsers (but not all browsers)
-    const errStr = stack ? `${msg}\n${stack}` : msg;
+    const errStr = stack
+        ? (stack.startsWith(msg) ? stack : `${msg}\n${stack}`)
+        : msg;
 
     const cause = error instanceof ErrorWithCause ? error.cause : undefined;
     return cause ? `${errStr}\ncaused by:\n${errorInfo(cause)}` : errStr;

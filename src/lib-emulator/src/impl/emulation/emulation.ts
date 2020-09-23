@@ -1,4 +1,4 @@
-import {GameboyButton, IEmulation, IGameboyRom} from '../api';
+import {GameboyButton, IEmulation, IGameboyRom} from '../../api';
 import {Renderer} from './renderer';
 import {IWasmInstance} from './wasm-instance';
 

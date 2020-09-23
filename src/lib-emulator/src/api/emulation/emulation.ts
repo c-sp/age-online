@@ -1,4 +1,4 @@
-import {IGameboyRom} from './rom-file';
+import {IGameboyRom} from '../rom';
 
 
 export enum GameboyButton {

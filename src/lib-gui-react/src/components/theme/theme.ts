@@ -52,16 +52,13 @@ export function createTheme(additionalGlobalCss?: object,
         'button', 'caption', 'overline',
     ];
 
-    const {typography} = theme;
-    variant.forEach(v => {
-        const typo = typography[v] as object;
-        (typography as any)[v] = {
-            ...typo,
-            [theme.breakpoints.down('xs')]: {
-                fontFamily: fontFamilyCondensed,
-            },
-        };
-    });
+    const typography = theme.typography as unknown as Record<string, object>;
+    variant.forEach(v => void (typography[v] = {
+        ...typography[v],
+        [theme.breakpoints.down('xs')]: {
+            fontFamily: fontFamilyCondensed,
+        },
+    }));
 
     return theme;
 }

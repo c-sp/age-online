@@ -1,5 +1,4 @@
-import {createStyles, Paper, Typography, WithStyles, withStyles} from '@material-ui/core';
-import {Theme} from '@material-ui/core/styles/createMuiTheme';
+import {createStyles, Paper, Theme, Typography, WithStyles, withStyles} from '@material-ui/core';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {ReactNode} from 'react';
 import {

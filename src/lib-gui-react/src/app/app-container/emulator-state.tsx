@@ -103,9 +103,9 @@ class ComposedEmulatorStateDetails extends Component<TEmulatorStateDetailsProps>
                             onClose={() => onConfirmError?.()}>
 
                         <DialogContent>
-                            <DialogContentText>
-                                {i18n.translate(errorTextId(emulatorState.error))}
-                                {emulatorState.error instanceof InvalidRomFileError && (
+                            <DialogContentText component="div">
+                                <p>{i18n.translate(errorTextId(emulatorState.error))}</p>
+                                {emulatorState.error instanceof Error && (
                                     <Typography className={classes.invalidRomReason}
                                                 component="p"
                                                 variant="caption">

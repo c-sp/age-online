@@ -1,5 +1,5 @@
 import {cssClasses} from '@age-online/lib-common';
-import {IEmulation} from '@age-online/lib-emulator';
+import {IEmulation, IEmulationFactory, IRomArchive} from '@age-online/lib-emulator';
 import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core';
 import React, {ReactNode} from 'react';
 import {Observable, of} from 'rxjs';
@@ -17,7 +17,6 @@ import {
 } from '../../components';
 import {IPersistentAppStateProps, withPersistentAppState} from '../app-state';
 import {EmulatorStateDetails, TEmulatorState} from './emulator-state';
-import {IEmulatorFactory$Props, withEmulatorFactory$} from './with-emulation-factory';
 
 
 const styles = (theme: Theme) => createStyles({
@@ -61,6 +60,8 @@ const styles = (theme: Theme) => createStyles({
 
 export interface IEmulatorContainerProps {
     readonly hideEmulator: boolean;
+    readonly emulationFactory$: Observable<IEmulationFactory>;
+    readonly romArchive$: Observable<IRomArchive>;
 }
 
 interface IEmulatorContainerState {
@@ -70,7 +71,7 @@ interface IEmulatorContainerState {
     readonly displayControls: DisplayControls;
 }
 
-type TEmulatorContainerProps = IEmulatorContainerProps & IEmulatorFactory$Props & IPersistentAppStateProps & WithStyles;
+type TEmulatorContainerProps = IEmulatorContainerProps & IPersistentAppStateProps & WithStyles;
 
 class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, IEmulatorContainerState> {
 
@@ -103,7 +104,7 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
 
 
     componentDidMount(): void {
-        const {persistentAppState, emulatorFactory$} = this.props;
+        const {persistentAppState, emulationFactory$} = this.props;
 
         this.unsubscribeOnUnmount(
             persistentAppState
@@ -115,8 +116,8 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
                         }
                         // re-mount the emulator component for every new rom
                         this.setEmulatorState({state: EmulatorState.EMULATOR_LOADING});
-                        return emulatorFactory$.pipe(
-                            switchMap(emulatorFactory => emulatorFactory.newEmulation$(romSource)),
+                        return emulationFactory$.pipe(
+                            switchMap(emulationFactory => emulationFactory.newEmulation$(romSource)),
                         );
                     }),
                 )
@@ -205,8 +206,6 @@ class ComposedEmulatorContainer extends TidyComponent<TEmulatorContainerProps, I
 
 export const EmulatorContainer = withStyles(styles)(
     withPersistentAppState(
-        withEmulatorFactory$(
-            ComposedEmulatorContainer,
-        ),
+        ComposedEmulatorContainer,
     ),
 );

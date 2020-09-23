@@ -1,4 +1,4 @@
-import {IEmulationFactory} from '@age-online/lib-emulator';
+import {IEmulationFactory, IRomArchive} from '@age-online/lib-emulator';
 import {CssBaseline, Theme, ThemeProvider} from '@material-ui/core';
 import {I18nContext, I18nDetails, I18nManager} from '@shopify/react-i18n';
 import React, {ReactNode} from 'react';
@@ -7,8 +7,8 @@ import {map} from 'rxjs/operators';
 import {AppPage, ErrorBoundary, Locale, TidyComponent} from '../../components';
 import {AppStateContext, IAppState, PersistentAppState} from '../app-state';
 import {EmulatorContainer} from './emulator-container';
+import {newEmulationFactory$, newRomArchive$} from './lib-emulator';
 import {PageContainer} from './page-container';
-import {emulationFactory$, EmulatorFactory$Context} from './with-emulation-factory';
 
 
 interface IAppContainerState {
@@ -35,7 +35,8 @@ export class AppContainer extends TidyComponent<IAppContainerProps, IAppContaine
 
     private readonly i18nManager: I18nManager;
     private readonly persistentAppState: PersistentAppState;
-    private readonly emuFactory$: Observable<IEmulationFactory>;
+    private readonly emulationFactory$: Observable<IEmulationFactory>;
+    private readonly romArchive$: Observable<IRomArchive>;
 
     constructor(props: IAppContainerProps) {
         super(props);
@@ -43,7 +44,8 @@ export class AppContainer extends TidyComponent<IAppContainerProps, IAppContaine
 
         this.i18nManager = new I18nManager(i18nDetails(locale));
         this.persistentAppState = new PersistentAppState(globalCss);
-        this.emuFactory$ = emulationFactory$(ageWasmJsUrl, ageWasmUrl);
+        this.emulationFactory$ = newEmulationFactory$(ageWasmJsUrl, ageWasmUrl);
+        this.romArchive$ = newRomArchive$('age-online-rom-archive');
 
         this.state = calculateAppContainerState(this.persistentAppState.appState);
     }
@@ -73,7 +75,7 @@ export class AppContainer extends TidyComponent<IAppContainerProps, IAppContaine
 
 
     render(): ReactNode {
-        const {i18nManager, persistentAppState, emuFactory$, props, state} = this;
+        const {i18nManager, persistentAppState, emulationFactory$, romArchive$, props, state} = this;
         const {currentPage, children} = props;
         const {emulatorActive, currentTheme, error} = state;
 
@@ -96,12 +98,11 @@ export class AppContainer extends TidyComponent<IAppContainerProps, IAppContaine
                     <AppStateContext.Provider value={persistentAppState}>
                         <I18nContext.Provider value={i18nManager}>
 
-                            <EmulatorFactory$Context.Provider value={emuFactory$}>
+                            {emulatorActive && <EmulatorContainer hideEmulator={renderPage}
+                                                                  emulationFactory$={emulationFactory$}
+                                                                  romArchive$={romArchive$}/>}
 
-                                {emulatorActive && <EmulatorContainer hideEmulator={renderPage}/>}
-                                {renderPage && <PageContainer currentPage={currentPage}>{children}</PageContainer>}
-
-                            </EmulatorFactory$Context.Provider>
+                            {renderPage && <PageContainer currentPage={currentPage}>{children}</PageContainer>}
 
                         </I18nContext.Provider>
                     </AppStateContext.Provider>

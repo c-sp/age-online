@@ -1,18 +1,10 @@
-import {ErrorWithCause} from '@age-online/lib-common';
 import {combineLatest, from, Observable} from 'rxjs';
 import {fromFetch} from 'rxjs/fetch';
 import {catchError, map, shareReplay, switchMap, take} from 'rxjs/operators';
-import {
-    IEmulation,
-    IEmulationFactory,
-    RomFileLoadingError,
-    TGameboyRomSource,
-    WasmFetchError,
-    WasmInitError,
-} from '../api';
+import {IEmulation, IEmulationFactory, TGameboyRomSource, WasmFetchError, WasmInitError} from '../../api';
 import {Emulation} from './emulation';
-import {readRomFile$} from './rom-file';
 import {IWasmInstance} from './wasm-instance';
+import {readRomFile$} from '../rom';
 
 
 export class EmulationFactory implements IEmulationFactory {
@@ -67,17 +59,10 @@ export class EmulationFactory implements IEmulationFactory {
     }
 
 
-    newEmulation$(romFile: TGameboyRomSource): Observable<IEmulation> {
+    newEmulation$(romSource: TGameboyRomSource): Observable<IEmulation> {
         return combineLatest([
             this.ageWasmInstance$,
-            readRomFile$(romFile).pipe(
-                catchError(err => {
-                    if (err instanceof ErrorWithCause) {
-                        throw err;
-                    }
-                    throw new RomFileLoadingError(err);
-                }),
-            ),
+            readRomFile$(romSource),
         ]).pipe(
             map(([wasmInstance, gameboyRom]) => new Emulation(wasmInstance, gameboyRom)),
         );

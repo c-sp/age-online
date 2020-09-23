@@ -39,9 +39,6 @@
       ],
       "@age-online/lib-gui-react": [
         "./lib-gui-react/src/index"
-      ],
-      "@age-online/lib-rom-storage": [
-        "./lib-rom-storage/src/index"
       ]
     },
 

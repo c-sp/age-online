@@ -11,7 +11,7 @@ import {
 import {readBlob$} from './read-blob';
 import {readUrl$} from './read-url';
 import {extractRomFromZip$} from './read-zip';
-import {bitwiseAnd} from '@age-online/lib-common';
+import {bitwiseAnd, ErrorWithCause} from '@age-online/lib-common';
 
 
 const CART_MBC = 0x147;
@@ -26,17 +26,20 @@ export function readRomFile$(romFile: TGameboyRomSource): Observable<IGameboyRom
         : readUrl$(romFile.romFileUrl);
 
     return readFile$.pipe(
-        // wrap any file reading error into a RomFileLoadingError
-        catchError(err => {
-            throw new RomFileLoadingError(err);
-        }),
-
         // check if this is a zip archive and (if yes) try to extract any
         // Gameboy rom file from it
         switchMap(file => extractRomFromZip$(file)),
 
         // check the rom file
         map(checkGameboyRom),
+
+        // wrap any file reading error into a RomFileLoadingError
+        catchError(err => {
+            if (err instanceof ErrorWithCause) {
+                throw err;
+            }
+            throw new RomFileLoadingError(err);
+        }),
     );
 }
 

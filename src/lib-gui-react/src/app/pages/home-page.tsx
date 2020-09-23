@@ -1,6 +1,5 @@
 import {LastGitCommit} from '@age-online/lib-common';
-import {Button, createStyles, IconButton, Paper, Typography, WithStyles, withStyles} from '@material-ui/core';
-import {Theme} from '@material-ui/core/styles/createMuiTheme';
+import {Button, createStyles, IconButton, Paper, Theme, Typography, WithStyles, withStyles} from '@material-ui/core';
 import {GitHub} from '@material-ui/icons';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {Component, ReactNode} from 'react';

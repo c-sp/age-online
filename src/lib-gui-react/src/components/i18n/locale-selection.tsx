@@ -1,5 +1,4 @@
-import {RadioGroup, withStyles} from '@material-ui/core';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import {FormControlLabel, RadioGroup, withStyles} from '@material-ui/core';
 import Radio from '@material-ui/core/Radio';
 import React, {Component, ReactNode} from 'react';
 import {FlagDE, FlagUS} from '../icons';
