@@ -1,5 +1,5 @@
 import {AppHelmet, appPageFromPathname, localeFromPathname, SiteApi} from '@age-online/app-common';
-import {AppContainer, SiteApiContext} from '@age-online/lib-gui-react';
+import {AppContainer, SiteApiContext} from '@age-online/lib-react-pages';
 import {Link, navigate, PageProps, withPrefix} from 'gatsby';
 import React, {Component, ReactNode} from 'react';
 

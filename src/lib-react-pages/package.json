@@ -1,0 +1,39 @@
+{
+  "name": "@age-online/lib-react-pages",
+  "description": "AGE Online GUI - pages built with React",
+  "author": "Christoph Sprenger",
+  "version": "0.0.1",
+  "private": true,
+  "sideEffects": false,
+  "main": "dist/cjs/index.js",
+  "module": "dist/es6/index.js",
+  "types": "dist/es6/index.d.ts",
+  "dependencies": {
+    "@age-online/lib-core": "0.0.1",
+    "@age-online/lib-react": "0.0.1",
+    "@age-online/lib-react-emulator": "0.0.1",
+    "@juggle/resize-observer": "^3.2.0",
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.0",
+    "@shopify/react-i18n": "^5.1.0",
+    "@types/react-helmet": "^6.1.0",
+    "mdi-material-ui": "^6.19.0",
+    "react": "^16.13.0",
+    "react-helmet": "^6.1.0",
+    "rxjs": "^6.6.0",
+    "tslib": "^2.0.0"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.0",
+    "typescript": "^4.0.0"
+  },
+  "peerDependencies": {
+    "react-dom": "^16.13.0"
+  },
+  "scripts": {
+    "build": "yarn clean && yarn build:cjs && yarn build:es6",
+    "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs --module commonjs",
+    "build:es6": "tsc -p tsconfig.build.json",
+    "clean": "rimraf dist"
+  }
+}

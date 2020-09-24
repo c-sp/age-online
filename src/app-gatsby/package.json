@@ -1,6 +1,6 @@
 {
   "name": "@age-online/app-gatsby",
-  "description": "AGE Online - Web App created with Gatsby",
+  "description": "AGE Online Web App - created with Gatsby.js",
   "author": "Christoph Sprenger",
   "version": "0.0.1",
   "private": true,
@@ -15,7 +15,7 @@
   ],
   "dependencies": {
     "@age-online/app-common": "0.0.1",
-    "@age-online/lib-gui-react": "0.0.1",
+    "@age-online/lib-react-pages": "0.0.1",
     "gatsby": "^2.24.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0"

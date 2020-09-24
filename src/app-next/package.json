@@ -1,6 +1,6 @@
 {
   "name": "@age-online/app-next",
-  "description": "AGE Online - Web App created with Next.js",
+  "description": "AGE Online Web App - created with Next.js",
   "author": "Christoph Sprenger",
   "version": "0.0.1",
   "private": true,
@@ -15,8 +15,8 @@
   ],
   "dependencies": {
     "@age-online/app-common": "0.0.1",
-    "@age-online/lib-common": "0.0.1",
-    "@age-online/lib-gui-react": "0.0.1",
+    "@age-online/lib-core": "0.0.1",
+    "@age-online/lib-react-pages": "0.0.1",
     "@material-ui/core": "^4.11.0",
     "next": "^9.5.0",
     "react": "^16.13.0",

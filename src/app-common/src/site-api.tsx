@@ -1,14 +1,6 @@
-import {
-    AppPage,
-    FALLBACK_LOCALE,
-    isAppPage,
-    ISiteApi,
-    ISiteLinkProps,
-    isLocale,
-    Locale,
-    TSiteLinkComponent,
-} from '@age-online/lib-gui-react';
+import {AppPage, isAppPage, ISiteApi, ISiteLinkProps, TSiteLinkComponent} from '@age-online/lib-react-pages';
 import React, {FunctionComponent, ReactElement} from 'react';
+import {FALLBACK_LOCALE, isLocale, Locale} from '@age-online/lib-react';
 
 
 export class SiteApi implements ISiteApi {

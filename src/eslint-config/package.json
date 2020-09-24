@@ -1,6 +1,6 @@
 {
   "name": "@age-online/eslint-config",
-  "description": "AGE Online - ESLint configuration",
+  "description": "AGE Online ESLint configuration",
   "author": "Christoph Sprenger",
   "version": "0.0.1",
   "private": true,

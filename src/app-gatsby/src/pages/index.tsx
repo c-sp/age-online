@@ -1,3 +1,3 @@
-import {HomePage} from '@age-online/lib-gui-react';
+import {HomePage} from '@age-online/lib-react-pages';
 
 export default HomePage;

@@ -37,13 +37,13 @@
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --max-warnings=0",
     "serve": "yarn workspace @age-online/app-gatsby serve",
     "test:watch": "karma start src/karma.conf.js",
-    "write-git-info": "yarn workspace @age-online/lib-common write-git-info",
-    "//  DEV NEXT/////////////////////////////////////////////////////////": "",
+    "write-git-info": "yarn workspace @age-online/lib-core write-git-info",
+    "//  DEV NEXT.JS  ////////////////////////////////////////////////////": "",
     "analyze:next": "yarn workspace @age-online/app-next analyze",
     "develop:next": "yarn workspace @age-online/app-next develop",
     "serve:next": "yarn workspace @age-online/app-next serve",
     "//  CI  /////////////////////////////////////////////////////////////": "",
-    "ci:build": "yarn workspace @age-online/lib-common build && yarn workspace @age-online/lib-emulator build && yarn workspace @age-online/lib-gui-react build && yarn workspace @age-online/app-common build && yarn workspace @age-online/app-gatsby build",
+    "ci:build": "yarn workspace @age-online/lib-core build && yarn workspace @age-online/lib-react-emulator build && yarn workspace @age-online/lib-react-pages build && yarn workspace @age-online/app-common build && yarn workspace @age-online/app-gatsby build",
     "ci:test": "karma start src/karma.conf.js --single-run"
   }
 }

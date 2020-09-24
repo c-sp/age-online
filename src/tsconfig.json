@@ -31,14 +31,17 @@
       "@age-online/app-common": [
         "./app-common/src/index"
       ],
-      "@age-online/lib-common": [
-        "./lib-common/src/index"
+      "@age-online/lib-core": [
+        "./lib-core/src/index"
       ],
-      "@age-online/lib-emulator": [
-        "./lib-emulator/src/index"
+      "@age-online/lib-react": [
+        "./lib-react/src/index"
       ],
-      "@age-online/lib-gui-react": [
-        "./lib-gui-react/src/index"
+      "@age-online/lib-react-emulator": [
+        "./lib-react-emulator/src/index"
+      ],
+      "@age-online/lib-react-pages": [
+        "./lib-react-pages/src/index"
       ]
     },
 

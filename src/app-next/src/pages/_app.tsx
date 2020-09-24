@@ -1,5 +1,5 @@
 import {AppHelmet, appPageFromPathname, localeFromPathname, SiteApi} from '@age-online/app-common';
-import {AppContainer, SiteApiContext} from '@age-online/lib-gui-react';
+import {AppContainer, SiteApiContext} from '@age-online/lib-react-pages';
 import App from 'next/app';
 import {AppProps} from 'next/dist/pages/_app';
 import Link from 'next/link';

@@ -1,6 +1,6 @@
 {
   "name": "@age-online/app-common",
-  "description": "AGE Online - Common App Utilities & Files",
+  "description": "AGE Online Web App - Common Utilities & Files",
   "author": "Christoph Sprenger",
   "version": "0.0.1",
   "private": true,
@@ -9,7 +9,7 @@
   "module": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
   "dependencies": {
-    "@age-online/lib-gui-react": "0.0.1",
+    "@age-online/lib-react-pages": "0.0.1",
     "react": "^16.13.0",
     "react-helmet": "^6.1.0",
     "tslib": "^2.0.0"
