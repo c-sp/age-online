@@ -9,6 +9,7 @@
   "module": "dist/es6/index.js",
   "types": "dist/es6/index.d.ts",
   "dependencies": {
+    "@age-online/lib-react": "0.0.1",
     "@age-online/lib-react-pages": "0.0.1",
     "react": "^16.13.0",
     "react-helmet": "^6.1.0",

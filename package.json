@@ -21,14 +21,15 @@
     "eslint": "^7.9.0",
     "eslint-plugin-filenames": "^1.3.0",
     "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react": "^7.21.0",
     "jasmine-core": "^3.6.0",
     "karma": "^5.2.0",
     "karma-chrome-launcher": "^3.1.0",
     "karma-firefox-launcher": "^1.3.0",
     "karma-jasmine": "^4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
-    "karma-webpack": "^4.0.0"
+    "karma-webpack": "^4.0.0",
+    "webpack": "^4.44.0"
   },
   "scripts": {
     "//  DEV  ////////////////////////////////////////////////////////////": "",
@@ -43,7 +44,7 @@
     "develop:next": "yarn workspace @age-online/app-next develop",
     "serve:next": "yarn workspace @age-online/app-next serve",
     "//  CI  /////////////////////////////////////////////////////////////": "",
-    "ci:build": "yarn workspace @age-online/lib-core build && yarn workspace @age-online/lib-react-emulator build && yarn workspace @age-online/lib-react-pages build && yarn workspace @age-online/app-common build && yarn workspace @age-online/app-gatsby build",
+    "ci:build": "yarn workspace @age-online/lib-core build && yarn workspace @age-online/lib-react build && yarn workspace @age-online/lib-react-emulator build && yarn workspace @age-online/lib-react-pages build && yarn workspace @age-online/app-common build && yarn workspace @age-online/app-gatsby build",
     "ci:test": "karma start src/karma.conf.js --single-run"
   }
 }
