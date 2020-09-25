@@ -1,11 +1,4 @@
 /*!
- * The buffer module from node.js, for the browser.
- *
- * @author   Feross Aboukhadijeh <http://feross.org>
- * @license  MIT
- */
-
-/*!
  * domready (c) Dustin Diaz 2014 - License MIT
  * ie10 fix - Mikael Kristiansson 2019
  */
