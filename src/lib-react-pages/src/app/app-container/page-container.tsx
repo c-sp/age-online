@@ -1,9 +1,10 @@
 import {assertElement, observeSize} from '@age-online/lib-core';
 import {createStyles, WithStyles, withStyles} from '@material-ui/core';
 import React, {ReactNode} from 'react';
-import {AppPage, EmulatorState, PageNavBar} from '../../components';
+import {PageNavBar} from '../../components';
 import {IAppState, ICurrentAppStateProps, withCurrentAppState} from '../app-state';
-import {TidyComponent} from '@age-online/lib-react';
+import {AppPage, TidyComponent} from '@age-online/lib-react';
+import {EmulatorState} from '@age-online/lib-react-emulator';
 
 
 const maxWidth = '1000px';

@@ -8,6 +8,7 @@ import {TidyComponent} from '@age-online/lib-react';
 
 const CSS_CLASS_PRESSED = 'pressed';
 
+
 const styles = (theme: Theme) => createStyles({
     container: {
         // No browser gesture handling for this element,
@@ -71,7 +72,7 @@ export interface IButtonControlsProps {
 
 type TButtonControlsProps = IButtonControlsProps & WithStyles;
 
-class ComposedEmulatorButtonControls extends TidyComponent<TButtonControlsProps> {
+class ComposedButtonControls extends TidyComponent<TButtonControlsProps> {
 
     private elemContainer?: HTMLElement | null;
 
@@ -156,6 +157,6 @@ class ComposedEmulatorButtonControls extends TidyComponent<TButtonControlsProps>
     }
 }
 
-export const EmulatorButtonControls = withStyles(styles)(
-    ComposedEmulatorButtonControls,
+export const ButtonControls = withStyles(styles)(
+    ComposedButtonControls,
 );

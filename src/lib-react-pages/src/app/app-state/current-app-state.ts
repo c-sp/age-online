@@ -3,8 +3,9 @@ import {Locale} from '@age-online/lib-react';
 import {Theme} from '@material-ui/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {filter, map, startWith} from 'rxjs/operators';
-import {createTheme, DisplayControls, EmulatorState, PreferredTheme} from '../../components';
+import {createTheme, PreferredTheme} from '../../components';
 import {IAppState, ICurrentAppState, TAppStateKey} from './app-state';
+import {DisplayControls, EmulatorState} from '@age-online/lib-react-emulator';
 
 
 export class CurrentAppState extends Unsubscriber implements ICurrentAppState {

@@ -6,7 +6,7 @@ import React, {Component, ComponentType, CSSProperties, ReactElement, ReactNode}
 import i18nBundle from './icon-site-link.i18n.json';
 import {AppPage} from './site-api';
 import {ISiteApiProps, withSiteApi} from './with-site-api';
-import {withI18nBundle} from '@age-online/lib-react';
+import {withI18nBundle} from '../i18n';
 
 
 export interface IStyleProps {

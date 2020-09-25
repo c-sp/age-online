@@ -10,9 +10,11 @@ import {
     HomeIconSiteLink,
     IStyleProps,
     SettingsIconSiteLink,
-} from '../site-api';
+    TOOLBAR_ICON_STYLE,
+    withI18nBundle,
+} from '@age-online/lib-react';
 import i18nBundle from './page-nav-bar.i18n.json';
-import {TOOLBAR_ICON_STYLE, withI18nBundle} from '@age-online/lib-react';
+import {EmulatorState} from '@age-online/lib-react-emulator';
 
 
 const styles = createStyles({
@@ -34,13 +36,6 @@ const ICON_STYLE_INACTIVE: CSSProperties = {
     opacity: '0.5',
 };
 
-
-export enum EmulatorState {
-    NO_EMULATOR = 'no-emulator',
-    EMULATOR_LOADING = 'emulator-loading',
-    EMULATOR_READY = 'emulator-ready',
-    EMULATOR_ERROR = 'emulator-error',
-}
 
 export interface IPageNavBarProps {
     readonly verticalBar?: boolean;

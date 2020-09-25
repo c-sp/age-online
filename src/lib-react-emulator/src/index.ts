@@ -1,13 +1,9 @@
-import {EmulationFactory, IEmulationFactory, IRomArchive, newRomArchive} from '@age-online/lib-core';
+import {ComponentType} from 'react';
+import {IEmulatorProps} from './api';
+import {Emulator} from './impl';
 
+export * from './api';
 
-export function createEmulationFactory(ageWasmJsUrl: string,
-                                       ageWasmUrl: string): IEmulationFactory {
-
-    return new EmulationFactory(ageWasmJsUrl, ageWasmUrl);
-}
-
-
-export function createRomArchive(archiveName: string): IRomArchive {
-    return newRomArchive(archiveName);
+export function emulatorComponent(): ComponentType<IEmulatorProps> {
+    return Emulator;
 }

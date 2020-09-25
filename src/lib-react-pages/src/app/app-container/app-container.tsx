@@ -1,25 +1,23 @@
-import {CssBaseline, Theme, ThemeProvider} from '@material-ui/core';
+import {CssBaseline, ThemeProvider} from '@material-ui/core';
 import {I18nContext, I18nDetails, I18nManager} from '@shopify/react-i18n';
-import React, {ReactNode} from 'react';
-import {Observable} from 'rxjs';
+import React, {ComponentType, ReactNode} from 'react';
 import {map} from 'rxjs/operators';
-import {AppPage} from '../../components';
 import {AppStateContext, IAppState, PersistentAppState} from '../app-state';
-import {EmulatorContainer} from './emulator-container';
-import {newEmulationFactory$, newRomArchive$} from './lib-react-emulator';
 import {PageContainer} from './page-container';
-import {IEmulationFactory, IRomArchive} from '@age-online/lib-core';
-import {ErrorBoundary, Locale, TidyComponent} from '@age-online/lib-react';
+import {AppPage, ErrorBoundary, Locale, TidyComponent} from '@age-online/lib-react';
+import {IEmulatorProps} from '@age-online/lib-react-emulator';
 
 
 interface IAppContainerState {
-    readonly emulatorActive: boolean;
-    readonly currentTheme: Theme;
+    readonly currentTheme: IAppState['currentTheme'];
+    readonly displayControls: IAppState['displayControls'];
+    readonly romSource: IAppState['romSource'];
+    readonly EmulatorComponent?: ComponentType<IEmulatorProps>;
     readonly error?: unknown;
 }
 
-function calculateAppContainerState({romSource, currentTheme}: IAppState): IAppContainerState {
-    return {emulatorActive: !!romSource, currentTheme};
+function calculateAppContainerState({currentTheme, displayControls, romSource}: IAppState): IAppContainerState {
+    return {currentTheme, displayControls, romSource};
 }
 
 
@@ -36,17 +34,13 @@ export class AppContainer extends TidyComponent<IAppContainerProps, IAppContaine
 
     private readonly i18nManager: I18nManager;
     private readonly persistentAppState: PersistentAppState;
-    private readonly emulationFactory$: Observable<IEmulationFactory>;
-    private readonly romArchive$: Observable<IRomArchive>;
 
     constructor(props: IAppContainerProps) {
         super(props);
-        const {locale, ageWasmJsUrl, ageWasmUrl, globalCss} = props;
+        const {locale, globalCss} = props;
 
         this.i18nManager = new I18nManager(i18nDetails(locale));
         this.persistentAppState = new PersistentAppState(globalCss);
-        this.emulationFactory$ = newEmulationFactory$(ageWasmJsUrl, ageWasmUrl);
-        this.romArchive$ = newRomArchive$('age-online-rom-archive');
 
         this.state = calculateAppContainerState(this.persistentAppState.appState);
     }
@@ -54,9 +48,19 @@ export class AppContainer extends TidyComponent<IAppContainerProps, IAppContaine
     componentDidMount(): void {
         this.unsubscribeOnUnmount(
             this.persistentAppState
-                .appState$('romSource', 'currentTheme')
+                .appState$('romSource', 'currentTheme', 'displayControls')
                 .pipe(map(calculateAppContainerState))
-                .subscribe((state) => this.setState(state)),
+                .subscribe((state) => {
+                    this.setState(state);
+                    if (this.state.EmulatorComponent || !state.romSource) {
+                        return;
+                    }
+                    import('@age-online/lib-react-emulator').then(
+                        mod => this.setState({EmulatorComponent: mod.emulatorComponent()}),
+                        () => { /* no-op*/
+                        }, // TODO handle error
+                    );
+                }),
         );
 
         this.callOnUnmount(() => this.persistentAppState.cleanup());
@@ -76,10 +80,11 @@ export class AppContainer extends TidyComponent<IAppContainerProps, IAppContaine
 
 
     render(): ReactNode {
-        const {i18nManager, persistentAppState, emulationFactory$, romArchive$, props, state} = this;
-        const {currentPage, children} = props;
-        const {emulatorActive, currentTheme, error} = state;
+        const {i18nManager, persistentAppState, props, state} = this;
+        const {ageWasmJsUrl, ageWasmUrl, currentPage, children} = props;
+        const {currentTheme, displayControls, romSource, error, EmulatorComponent} = state;
 
+        const emulatorActive = !!romSource;
         const renderPage = !emulatorActive || (currentPage !== AppPage.HOME);
 
         // Material UI's CssBaseline activates the font "Roboto" on <body>
@@ -99,11 +104,18 @@ export class AppContainer extends TidyComponent<IAppContainerProps, IAppContaine
                     <AppStateContext.Provider value={persistentAppState}>
                         <I18nContext.Provider value={i18nManager}>
 
-                            {emulatorActive && <EmulatorContainer hideEmulator={renderPage}
-                                                                  emulationFactory$={emulationFactory$}
-                                                                  romArchive$={romArchive$}/>}
+                            {emulatorActive && EmulatorComponent
+                            && <EmulatorComponent hideEmulator={renderPage}
+                                                  ageWasmJsUrl={ageWasmJsUrl}
+                                                  ageWasmUrl={ageWasmUrl}
+                                                  displayControls={displayControls}
+                                                  romSource={romSource}
+                                                  onDisplayControls={v => persistentAppState.setDisplayControls(v)}
+                                                  onEmulatorState={v => persistentAppState.setEmulatorState(v)}
+                                                  onRomSource={v => persistentAppState.setRomSource(v)}/>}
 
-                            {renderPage && <PageContainer currentPage={currentPage}>{children}</PageContainer>}
+                            {renderPage
+                            && <PageContainer currentPage={currentPage}>{children}</PageContainer>}
 
                         </I18nContext.Provider>
                     </AppStateContext.Provider>

@@ -2,11 +2,16 @@ import {createStyles, IconButton, WithStyles, withStyles} from '@material-ui/cor
 import {WithI18nProps} from '@shopify/react-i18n';
 import {GoogleController, GoogleControllerOff} from 'mdi-material-ui';
 import React, {Component, ReactNode} from 'react';
-import {cycleDisplayControls, DisplayControls} from '../emulator';
-import {SettingsIconSiteLink} from '../site-api';
 import i18nBundle from './emulator-toolbars.i18n.json';
-import {cssClasses} from '@age-online/lib-core';
-import {Cartridge, OpenLocalRomFile, TOOLBAR_ICON_STYLE, withI18nBundle} from '@age-online/lib-react';
+import {assertNever, cssClasses} from '@age-online/lib-core';
+import {
+    Cartridge,
+    OpenLocalRomFile,
+    SettingsIconSiteLink,
+    TOOLBAR_ICON_STYLE,
+    withI18nBundle,
+} from '@age-online/lib-react';
+import {DisplayControls} from '../../api';
 
 
 const styles = createStyles({
@@ -81,3 +86,21 @@ export const EmulatorToolbar = withStyles(styles)(
         ComposedEmulatorToolbar,
     ),
 );
+
+
+export function cycleDisplayControls(displayControls: DisplayControls): DisplayControls {
+    switch (displayControls) {
+
+        case DisplayControls.HIDDEN:
+            return DisplayControls.VISIBLE;
+
+        case DisplayControls.VISIBLE_OVERLAY:
+            return DisplayControls.HIDDEN;
+
+        case DisplayControls.VISIBLE:
+            return DisplayControls.VISIBLE_OVERLAY;
+
+        default:
+            return assertNever(displayControls);
+    }
+}

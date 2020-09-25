@@ -21,9 +21,9 @@ import {
 import {SettingsOutlined} from '@material-ui/icons';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {Component, ReactNode} from 'react';
-import {EmulatorState} from '../../components';
 import i18nBundle from './emulator-state.i18n.json';
 import {withI18nBundle} from '@age-online/lib-react';
+import {EmulatorState} from '../../api';
 
 
 export interface IStateNoEmulator {

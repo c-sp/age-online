@@ -1,8 +1,9 @@
 import {TGameboyRomSource} from '@age-online/lib-core';
 import {Theme} from '@material-ui/core';
 import {Observable} from 'rxjs';
-import {DisplayControls, EmulatorState, PreferredTheme} from '../../components';
+import {PreferredTheme} from '../../components';
 import {Locale} from '@age-online/lib-react';
+import {DisplayControls, EmulatorState} from '@age-online/lib-react-emulator';
 
 
 export interface IAppState {

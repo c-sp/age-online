@@ -1,9 +1,9 @@
 import {assertElement, cssClasses, IContentSize, IEmulation, observeSize} from '@age-online/lib-core';
 import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core';
 import React, {CSSProperties, ReactNode} from 'react';
-import {DisplayControls} from './display-controls';
-import {EmulatorButtonControls} from './emulator-button-controls';
-import {EmulatorCrossControls} from './emulator-cross-controls';
+import {DisplayControls} from '../../api';
+import {ButtonControls} from './button-controls';
+import {CrossControls} from './cross-controls';
 import {gameboyButton, IButtonsDown, noButtonsDown} from './buttons-down';
 import {KeyboardEventHandler} from './keyboard-event-handler';
 import {TidyComponent} from '@age-online/lib-react';
@@ -73,20 +73,20 @@ const styles = (theme: Theme) => createStyles({
 });
 
 
-export interface IEmulatorProps {
+export interface IEmulationProps {
     readonly emulation: IEmulation;
     readonly pauseEmulation: boolean;
     readonly displayControls: DisplayControls;
 }
 
-interface IEmulatorState extends IButtonsDown {
+interface IEmulationState extends IButtonsDown {
     readonly portrait: boolean;
     readonly canvasSize: IContentSize;
 }
 
-type TEmulatorProps = IEmulatorProps & WithStyles;
+type TEmulationProps = IEmulationProps & WithStyles;
 
-class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
+class ComposedEmulation extends TidyComponent<TEmulationProps, IEmulationState> {
 
     private containerDiv: HTMLDivElement | null = null;
     private screenDiv: HTMLDivElement | null = null;
@@ -96,7 +96,7 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
     private readonly keyboardButtons = noButtonsDown();
     private keyboardEventHandler?: KeyboardEventHandler;
 
-    constructor(props: TEmulatorProps) {
+    constructor(props: TEmulationProps) {
         super(props);
         this.state = {
             ...noButtonsDown(),
@@ -129,7 +129,7 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
             observeSize(
                 assertElement(screenDiv, 'emulator screen <div>'),
                 ({widthPx, heightPx}) => {
-                    const canvasSize: IEmulatorState['canvasSize'] = (widthPx / heightPx > 160 / 144)
+                    const canvasSize: IEmulationState['canvasSize'] = (widthPx / heightPx > 160 / 144)
                         // margin left & right
                         ? {widthPx: Math.floor(heightPx * 160 / 144), heightPx}
                         // margin top & bottom
@@ -147,7 +147,7 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
         );
     }
 
-    componentDidUpdate(prevProps: Readonly<TEmulatorProps>) {
+    componentDidUpdate(prevProps: Readonly<TEmulationProps>) {
         const {props: {emulation, pauseEmulation}} = this;
         emulation.pauseEmulation = pauseEmulation;
 
@@ -200,21 +200,21 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
                 </div>
 
                 {showControls
-                && <EmulatorCrossControls className={cssControlsLeft}
-                                          crossDown={dir => this.buttonDown(dir, touchButtons)}
-                                          crossUp={dir => this.buttonUp(dir, touchButtons)}
-                                          pressingRight={gbRight}
-                                          pressingDown={gbDown}
-                                          pressingLeft={gbLeft}
-                                          pressingUp={gbUp}/>}
+                && <CrossControls className={cssControlsLeft}
+                                  crossDown={dir => this.buttonDown(dir, touchButtons)}
+                                  crossUp={dir => this.buttonUp(dir, touchButtons)}
+                                  pressingRight={gbRight}
+                                  pressingDown={gbDown}
+                                  pressingLeft={gbLeft}
+                                  pressingUp={gbUp}/>}
                 {showControls
-                && <EmulatorButtonControls className={cssControlsRight}
-                                           buttonDown={btn => this.buttonDown(btn, touchButtons)}
-                                           buttonUp={btn => this.buttonUp(btn, touchButtons)}
-                                           pressingB={gbB}
-                                           pressingA={gbA}
-                                           pressingSelect={gbSelect}
-                                           pressingStart={gbStart}/>}
+                && <ButtonControls className={cssControlsRight}
+                                   buttonDown={btn => this.buttonDown(btn, touchButtons)}
+                                   buttonUp={btn => this.buttonUp(btn, touchButtons)}
+                                   pressingB={gbB}
+                                   pressingA={gbA}
+                                   pressingSelect={gbSelect}
+                                   pressingStart={gbStart}/>}
             </div>
         );
     }
@@ -254,6 +254,6 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
     }
 }
 
-export const Emulator = withStyles(styles)(
-    ComposedEmulator,
+export const Emulation = withStyles(styles)(
+    ComposedEmulation,
 );

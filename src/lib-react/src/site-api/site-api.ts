@@ -1,4 +1,4 @@
-import {Locale} from '@age-online/lib-react';
+import {Locale} from '../i18n';
 import {FunctionComponent, ReactNode} from 'react';
 
 

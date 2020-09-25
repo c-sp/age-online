@@ -1,11 +1,20 @@
 import {createStyles, Paper, Theme, Typography, WithStyles, withStyles} from '@material-ui/core';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {ReactNode} from 'react';
-import {AppPage, ISiteApiProps, PreferredTheme, ThemeSelection, withSiteApi} from '../../components';
+import {PreferredTheme, ThemeSelection} from '../../components';
 import {IPersistentAppStateProps, withPersistentAppState} from '../app-state';
 import i18nBundle from './settings-page.i18n.json';
 import {GamepadRoundDown, GamepadRoundLeft, GamepadRoundRight, GamepadRoundUp} from 'mdi-material-ui';
-import {EXTERNAL_LINK_PROPS, LocaleSelection, SEO, TidyComponent, withI18nBundle} from '@age-online/lib-react';
+import {
+    AppPage,
+    EXTERNAL_LINK_PROPS,
+    ISiteApiProps,
+    LocaleSelection,
+    SEO,
+    TidyComponent,
+    withI18nBundle,
+    withSiteApi,
+} from '@age-online/lib-react';
 
 
 const HREF_FREEPIK = 'https://www.flaticon.com/authors/freepik';

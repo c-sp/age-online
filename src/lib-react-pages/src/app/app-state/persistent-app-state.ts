@@ -1,7 +1,8 @@
-import {DisplayControls, isDisplayControls, isPreferredTheme, PreferredTheme} from '../../components';
+import {isPreferredTheme, PreferredTheme} from '../../components';
 import {IAppState, IPersistentAppState} from './app-state';
 import {CurrentAppState} from './current-app-state';
 import {LocalStorage} from './local-storage';
+import {DisplayControls, isDisplayControls} from '@age-online/lib-react-emulator';
 
 
 const KEY_PREFERRED_LOCALE = 'preferred-locale';

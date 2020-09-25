@@ -105,7 +105,7 @@ export interface ICrossControlsProps {
 
 type TCrossControlsProps = ICrossControlsProps & WithStyles;
 
-class ComposedEmulatorCrossControls extends TidyComponent<TCrossControlsProps> {
+class ComposedCrossControls extends TidyComponent<TCrossControlsProps> {
 
     private elemContainer?: HTMLElement | null;
 
@@ -201,6 +201,6 @@ class ComposedEmulatorCrossControls extends TidyComponent<TCrossControlsProps> {
     }
 }
 
-export const EmulatorCrossControls = withStyles(styles)(
-    ComposedEmulatorCrossControls,
+export const CrossControls = withStyles(styles)(
+    ComposedCrossControls,
 );
