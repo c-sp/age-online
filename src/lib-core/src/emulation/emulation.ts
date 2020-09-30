@@ -16,14 +16,33 @@ export class Emulation implements IEmulation {
     private emulatedMillis = 0;
 
     constructor(private readonly wasmInstance: IWasmInstance,
-                readonly cartridge: IGameboyCartridge) {
+                private readonly cartridge: IGameboyCartridge) {
 
-        const romArray = new Uint8Array(cartridge.romData);
-        const bufferPtr = wasmInstance._gb_allocate_rom_buffer(romArray.length);
-        wasmInstance.HEAPU8.set(romArray, bufferPtr);
+        const {romData} = cartridge;
+        const bufferPtr = wasmInstance._gb_allocate_rom_buffer(romData.length);
+        wasmInstance.HEAPU8.set(romData, bufferPtr);
         wasmInstance._gb_new_emulator();
 
         this.cyclesPerSecond = wasmInstance._gb_get_cycles_per_second();
+    }
+
+
+    getCartridge(): IGameboyCartridge {
+        const {cartridge} = this;
+        const ramData = this.readPersistentRam();
+        return ramData ? {...cartridge, ramData} : cartridge;
+    }
+
+    private readPersistentRam(): Uint8Array | null {
+        const {wasmInstance} = this;
+
+        const ramSize = wasmInstance._gb_get_persistent_ram_size();
+        if (ramSize < 1) {
+            return null;
+        }
+
+        const ramPtr = wasmInstance._gb_get_persistent_ram();
+        return wasmInstance.HEAPU8.subarray(ramPtr, ramPtr + ramSize);
     }
 
 

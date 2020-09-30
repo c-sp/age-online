@@ -98,8 +98,11 @@ export class TouchEventHandler {
 
         const elemPoints = new Array<ITouchPoint>();
         for (let i = 0; i < touches.length; ++i) {
-            const {clientX, clientY} = touches[i];
-            elemPoints.push({clientX, clientY});
+            const touch = touches.item(i);
+            if (touch) {
+                const {clientX, clientY} = touch;
+                elemPoints.push({clientX, clientY});
+            }
         }
 
         touchPointsCallback(elemPoints);

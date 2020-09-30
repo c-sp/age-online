@@ -15,9 +15,9 @@ export enum GameboyButton {
 
 export interface IEmulation {
 
-    readonly cartridge: IGameboyCartridge;
-
     pauseEmulation: boolean;
+
+    getCartridge(): IGameboyCartridge;
 
     startEmulation(canvas: HTMLCanvasElement): void;
 

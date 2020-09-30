@@ -40,4 +40,6 @@ export interface ISiteApi {
      * If no locale is specified, the current locale is used.
      */
     navigateLocalized(appPage: AppPage, locale?: Locale): void;
+
+    assetUrl(assetFile: string): string;
 }

@@ -107,10 +107,9 @@ class ComposedEmulation extends TidyComponent<TEmulationProps, IEmulationState> 
 
 
     componentDidMount(): void {
-        const {containerDiv, screenDiv, keyboardButtons, props: {emulation, pauseEmulation}} = this;
+        const {containerDiv, screenDiv, keyboardButtons} = this;
 
         this.initEmulation();
-        emulation.pauseEmulation = pauseEmulation;
 
         this.keyboardEventHandler = new KeyboardEventHandler(
             button => this.buttonDown(button, keyboardButtons),
@@ -158,7 +157,8 @@ class ComposedEmulation extends TidyComponent<TEmulationProps, IEmulationState> 
     }
 
     private initEmulation(): void {
-        const {canvas, props: {emulation}} = this;
+        const {canvas, props: {emulation, pauseEmulation}} = this;
+        emulation.pauseEmulation = pauseEmulation;
         emulation.startEmulation(assertElement(canvas, 'emulator <canvas>'));
     }
 
@@ -242,7 +242,7 @@ class ComposedEmulation extends TidyComponent<TEmulationProps, IEmulationState> 
 
         const buttonDown = touchButtons[button] || keyboardButtons[button];
         if (buttonDown !== state[button]) {
-            this.setState({[button]: buttonDown} as any);
+            this.setState({[button]: buttonDown} as Pick<IButtonsDown, keyof IButtonsDown>);
 
             const gbButton = gameboyButton(button);
             if (buttonDown) {

@@ -1,9 +1,5 @@
-import {assertNever} from './types';
-
-
 export function formatValue(value: unknown): string {
-    const type = typeof value;
-    switch (type) {
+    switch (typeof value) {
 
         case 'undefined':
             return 'undefined';
@@ -12,27 +8,26 @@ export function formatValue(value: unknown): string {
             return value ? 'true' : 'false';
 
         case 'number':
-            return `${value as number}`;
+            return `${value}`;
 
         case 'bigint':
-            return `${value as bigint}n`;
+            return `${value}n`;
 
         case 'string':
-            return `"${value as string}"`;
+            return `"${value}"`;
 
         case 'object':
             return value === null ? 'null' : tryJson();
 
         case 'function':
-            // eslint-disable-next-line @typescript-eslint/ban-types
-            return `function:${(value as Function).name}`;
+            return `function:${value.name}`;
 
         case 'symbol':
-            return (value as symbol).toString();
-
-        default:
-            return assertNever(type);
+            return value.toString();
     }
+    // We rely on TypeScript's switch exhaustiveness check:
+    // in case of a missing switch-case, the TypeScript compiler should nag
+    // about the function not returning any value here.
 
     function tryJson(): string {
         try {

@@ -1,7 +1,7 @@
 import {IEmulation} from './emulation';
 import {Observable} from 'rxjs';
 import {ErrorWithCause} from '../../utilities';
-import {TGameboyRomSource} from '../../gameboy-cartridge';
+import {IGameboyCartridge} from '../../gameboy-cartridge';
 
 
 export class WasmFetchError extends ErrorWithCause {
@@ -21,5 +21,5 @@ export class WasmInitError extends ErrorWithCause {
 
 export interface IEmulationFactory {
 
-    newEmulation$(romSource: TGameboyRomSource): Observable<IEmulation>;
+    newEmulation$(gameboyCartridge: IGameboyCartridge): Observable<IEmulation>;
 }

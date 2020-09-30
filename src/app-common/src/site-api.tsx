@@ -17,6 +17,7 @@ export class SiteApi implements ISiteApi {
 
     constructor(public currentLocale: Locale,
                 private readonly navigateTo: (path: string) => void,
+                private readonly getAssetUrl: (assetFile: string) => string,
                 Link: FunctionComponent<{ href: string }>) {
 
         this.SiteLink = (props: ISiteLinkProps): ReactElement => {
@@ -31,6 +32,10 @@ export class SiteApi implements ISiteApi {
 
     navigateLocalized(appPage: AppPage, locale?: Locale): void {
         this.navigateTo(this.localizePath(appPage, locale));
+    }
+
+    assetUrl(assetFile: string): string {
+        return this.getAssetUrl(assetFile.startsWith('/') ? assetFile : `/${assetFile}`);
     }
 
     private localizePath(path: string, locale?: Locale): string {

@@ -16,6 +16,10 @@ class NoSiteApi implements ISiteApi {
     navigateLocalized(): void {
         throw new Error('site api not implemented');
     }
+
+    assetUrl(): string {
+        throw new Error('site api not implemented');
+    }
 }
 
 

@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
 
     // https://github.com/benmosher/eslint-plugin-import#rules
@@ -7,10 +9,22 @@ module.exports = {
         'plugin:import/typescript', // eslint-plugin-import for TypeScript
     ],
 
+    settings: {
+        // https://github.com/alexgorbatchev/eslint-import-resolver-typescript#configuration
+        'import/resolver': {
+            typescript: {
+                project: path.resolve(__dirname, '..', 'tsconfig.eslint.json'),
+            },
+        },
+    },
+
     rules: {
         // override plugin:import/recommended
 
         'import/no-named-as-default': 0,
+        // TODO how do we handle 'No default export found in imported module "react"  import/default'?
+        //      alwaysTryTypes: true (settings.'import/resolver'.typescript) does not work ...
+        'import/default': 0,
 
 
         // activate further rules
@@ -19,7 +33,7 @@ module.exports = {
         'import/no-cycle': 2,
         // TODO https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-deprecated.md
         //      does not work with TypeScript overloads: https://github.com/benmosher/eslint-plugin-import/issues/1532
-        //      'import/no-deprecated': ERROR,
+        //      'import/no-deprecated': 2,
         'import/no-dynamic-require': 2,
         'import/no-extraneous-dependencies': [2, {
             devDependencies: [

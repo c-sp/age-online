@@ -1,6 +1,7 @@
 const isDev = process.env.NODE_ENV === 'development';
 
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const {LicenseWebpackPlugin} = require('license-webpack-plugin');
 const {extname} = require('path');
 
 const locales = ['de', 'en']; // TODO redundant
@@ -39,12 +40,55 @@ exports.onCreatePage = (param) => {
 
 
 exports.onCreateWebpackConfig = ({actions}) => {
-    // use TypeScript path mappings only during development
+    const webpackConfig = {
+        resolve: {
+            plugins: [],
+        },
+        plugins: [
+            new LicenseWebpackPlugin({
+                outputFilename: 'age-online.licenses.txt',
+                perChunkOutput: false,
+
+                excludedPackageTest: (packageName) => packageName.startsWith('@age-online'),
+
+                // TODO "yarn develop" hangs when setting renderLicenses
+                // renderLicenses: (modules) => {
+                //     const result = modules
+                //         .map(mod => {
+                //             const {
+                //                 name, licenseId, licenseText,
+                //                 packageJson: {author, homepage, repository},
+                //             } = mod;
+                //             const authorName = author && typeof author === 'object' ? author.name : author;
+                //             return [
+                //                 sanitize('Package:    ', name),
+                //                 sanitize('Author:     ', authorName),
+                //                 sanitize('Homepage:   ', homepage),
+                //                 sanitize('Repository: ', repository && repository.url),
+                //                 sanitize('License:    ', licenseId),
+                //                 sanitize('\n', licenseText),
+                //             ]
+                //                 .filter(s => !!s)
+                //                 .join('');
+                //         })
+                //         .filter(s => !!s)
+                //         .join('\n--------------------------------------------------------------------------------\n\n');
+                //     console.log('************************* rendered');
+                //     return result;
+                // },
+            }),
+        ],
+    };
+
     if (isDev) {
-        actions.setWebpackConfig({
-            resolve: {
-                plugins: [new TsconfigPathsPlugin({configFile: '../tsconfig.json'})],
-            },
-        });
+        // use TypeScript path mappings only during development
+        webpackConfig.resolve.plugins.push(new TsconfigPathsPlugin({configFile: '../tsconfig.json'}));
     }
+
+    actions.setWebpackConfig(webpackConfig);
+
+    // function sanitize(prefix, value) {
+    //     const v = typeof value === 'string' ? value.trim() : value;
+    //     return v ? `${prefix}${v}\n` : null;
+    // }
 };

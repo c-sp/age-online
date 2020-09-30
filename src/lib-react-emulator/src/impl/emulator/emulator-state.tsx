@@ -39,7 +39,7 @@ export interface IStateEmulatorError {
     readonly error: unknown;
 }
 
-export interface IStateEmulatorRunning {
+export interface IStateEmulatorReady {
     readonly state: EmulatorState.EMULATOR_READY;
     readonly emulation: IEmulation;
 }
@@ -48,7 +48,7 @@ export type TEmulatorState =
     | IStateNoEmulator
     | IStateEmulatorLoading
     | IStateEmulatorError
-    | IStateEmulatorRunning;
+    | IStateEmulatorReady;
 
 
 const styles = createStyles({

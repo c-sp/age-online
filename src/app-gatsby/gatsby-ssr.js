@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const React = require('react');
 
 const isDev = process.env.NODE_ENV === 'development';

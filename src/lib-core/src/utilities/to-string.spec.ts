@@ -53,8 +53,8 @@ describe('formatValue()', () => {
 
 
     function expectFormat(value: unknown, expectedResult: string): [string, () => unknown] {
-        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        const valueStr = (typeof value === 'symbol') ? value.toString() : `${value}`;
+        let valueStr = JSON.stringify(value);
+        valueStr = valueStr.length < 50 ? valueStr : `${valueStr.substring(0, 47)}...`;
         return [
             `converts ${valueStr} (${typeof value}) to '${expectedResult}'`,
             (): unknown => expect(formatValue(value)).toBe(expectedResult),

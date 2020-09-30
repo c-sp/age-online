@@ -1,7 +1,5 @@
 import {Observable} from 'rxjs';
 import {
-    archivedRomCustomTitleKey,
-    archivedRomInternalTitleKey,
     archivedRomPrimaryKey,
     IndexedDBBlockedError,
     IndexedDBError,
@@ -39,9 +37,7 @@ export function openDatabase$(dbName: string): Observable<IDBDatabase> {
             const {result} = request;
 
             if (oldVersion <= 1) {
-                const store = result.createObjectStore('rom-archive', {keyPath: archivedRomPrimaryKey});
-                store.createIndex(`${archivedRomCustomTitleKey}Idx`, archivedRomCustomTitleKey);
-                store.createIndex(`${archivedRomInternalTitleKey}Idx`, archivedRomInternalTitleKey);
+                result.createObjectStore('rom-archive', {keyPath: archivedRomPrimaryKey});
             }
         };
     });

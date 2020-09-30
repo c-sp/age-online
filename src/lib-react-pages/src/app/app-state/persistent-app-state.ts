@@ -80,7 +80,7 @@ export class PersistentAppState extends CurrentAppState implements IPersistentAp
     }
 
 
-    private readFromStore(): Partial<IAppState> {
+    private readFromStore(): Pick<IAppState, 'preferredTheme' | 'displayControls'> {
         const prefTheme = this.store.getItem(KEY_PREFERRED_THEME);
         const preferredTheme = isPreferredTheme(prefTheme) ? prefTheme : PreferredTheme.AUTO_DETECT;
 

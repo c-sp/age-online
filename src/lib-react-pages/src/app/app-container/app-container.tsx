@@ -6,6 +6,7 @@ import {AppStateContext, IAppState, PersistentAppState} from '../app-state';
 import {PageContainer} from './page-container';
 import {AppPage, ErrorBoundary, Locale, TidyComponent} from '@age-online/lib-react';
 import {IEmulatorProps} from '@age-online/lib-react-emulator';
+import {ErrorWithCause} from '@age-online/lib-core';
 
 
 interface IAppContainerState {
@@ -24,8 +25,6 @@ function calculateAppContainerState({currentTheme, displayControls, romSource}: 
 export interface IAppContainerProps {
     readonly locale: Locale;
     readonly currentPage: AppPage;
-    readonly ageWasmJsUrl: string;
-    readonly ageWasmUrl: string;
     readonly globalCss?: object;
     readonly children?: ReactNode;
 }
@@ -57,8 +56,11 @@ export class AppContainer extends TidyComponent<IAppContainerProps, IAppContaine
                     }
                     import('@age-online/lib-react-emulator').then(
                         mod => this.setState({EmulatorComponent: mod.emulatorComponent()}),
-                        () => { /* no-op*/
-                        }, // TODO handle error
+                        err => {
+                            // we rely on <ErrorBoundary> to display the error
+                            // message and a "reload page" button
+                            throw new ErrorWithCause('error loading emulator library', err);
+                        },
                     );
                 }),
         );
@@ -81,7 +83,7 @@ export class AppContainer extends TidyComponent<IAppContainerProps, IAppContaine
 
     render(): ReactNode {
         const {i18nManager, persistentAppState, props, state} = this;
-        const {ageWasmJsUrl, ageWasmUrl, currentPage, children} = props;
+        const {currentPage, children} = props;
         const {currentTheme, displayControls, romSource, error, EmulatorComponent} = state;
 
         const emulatorActive = !!romSource;
@@ -106,8 +108,6 @@ export class AppContainer extends TidyComponent<IAppContainerProps, IAppContaine
 
                             {emulatorActive && EmulatorComponent
                             && <EmulatorComponent hideEmulator={renderPage}
-                                                  ageWasmJsUrl={ageWasmJsUrl}
-                                                  ageWasmUrl={ageWasmUrl}
                                                   displayControls={displayControls}
                                                   romSource={romSource}
                                                   onDisplayControls={v => persistentAppState.setDisplayControls(v)}

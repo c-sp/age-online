@@ -20,26 +20,22 @@ export default class AgeOnlineApp extends App {
             width: '100%',
         },
     };
-    private readonly ageWasmJsUrl: string;
-    private readonly ageWasmUrl: string;
     private readonly siteApi: SiteApi;
 
     constructor(props: AppProps) {
         super(props);
         const {asPath, basePath} = props.router;
 
-        this.ageWasmJsUrl = `${basePath}/age-wasm/age_wasm.js`;
-        this.ageWasmUrl = `${basePath}/age-wasm/age_wasm.wasm`;
-
         this.siteApi = new SiteApi(
             localeFromPathname(asPath),
             path => void Router.push(path),
+            assetFile => `${basePath}/${assetFile}`,
             ({href, children}) => <Link href={href} prefetch={false}><a>{children}</a></Link>,
         );
     }
 
     render(): ReactElement {
-        const {globalCss, ageWasmJsUrl, ageWasmUrl, siteApi, props} = this;
+        const {globalCss, siteApi, props} = this;
         const {Component, router: {asPath, basePath}} = props;
 
         const locale = localeFromPathname(asPath);
@@ -52,8 +48,6 @@ export default class AgeOnlineApp extends App {
             <SiteApiContext.Provider value={siteApi}>
                 <AppContainer locale={locale}
                               currentPage={currentPage}
-                              ageWasmJsUrl={ageWasmJsUrl}
-                              ageWasmUrl={ageWasmUrl}
                               globalCss={globalCss}>
                     <Component {...props.pageProps}/>
                 </AppContainer>

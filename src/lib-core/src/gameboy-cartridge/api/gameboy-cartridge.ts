@@ -87,6 +87,7 @@ export interface IGameboyCartridge {
      */
     readonly ramIsPersistent: boolean;
 
+    readonly romHashMD5: string;
     readonly romData: Uint8Array;
     readonly ramData?: Uint8Array;
 }

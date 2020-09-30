@@ -1,32 +1,30 @@
 import {Observable} from 'rxjs';
 import {openDatabase$} from './open-database';
 import {map, shareReplay} from 'rxjs/operators';
-import {IArchivedRom, IArchivedRomTitle, IRomArchive} from './api';
+import {IArchivedRom, IRomArchive} from './api';
 
 
 class RomArchive implements IRomArchive {
 
     private readonly indexedDB$: Observable<IDBDatabase>;
 
-    constructor(readonly archiveName: string) {
+    constructor(archiveName: string) {
         this.indexedDB$ = openDatabase$(archiveName).pipe(shareReplay(1));
     }
 
-    readRomList$(): Observable<IArchivedRomTitle[]> {
+    readRomList$(): Observable<IArchivedRom[]> {
         return this.indexedDB$.pipe(map(() => []));
     }
 
-    readRom$(): Observable<IArchivedRom | null> {
+    readRomData$(): Observable<Uint8Array | null> {
         return this.indexedDB$.pipe(map(() => null));
     }
 
-    addRom$(): Observable<IArchivedRom> {
-        return this.indexedDB$.pipe(map(() => {
-            throw new Error('addRom$ not implemented');
-        }));
+    readRamData$(): Observable<Uint8Array | null> {
+        return this.indexedDB$.pipe(map(() => null));
     }
 
-    updateRomTitle$(): Observable<IArchivedRom | null> {
+    writeRamData$(): Observable<unknown> {
         return this.indexedDB$.pipe(map(() => null));
     }
 }

@@ -1,6 +1,6 @@
 import {ServerStyleSheets} from '@material-ui/core';
 import Document, {DocumentContext, DocumentInitialProps, Head, Html, Main, NextScript} from 'next/document';
-import React, {Component, HTMLAttributes} from 'react';
+import React, {Children, Component, HTMLAttributes} from 'react';
 import {Helmet, HelmetData, HelmetDatum} from 'react-helmet';
 
 
@@ -56,7 +56,7 @@ export default class AgeOnlineDocument extends Document<IAdditionalDocumentProps
             ...initialProps,
             helmet: Helmet.renderStatic(),
             // Styles fragment is rendered after the app and page rendering finish.
-            styles: [...React.Children.toArray(initialProps.styles), sheets.getStyleElement()],
+            styles: [...Children.toArray(initialProps.styles), sheets.getStyleElement()],
         };
     }
 

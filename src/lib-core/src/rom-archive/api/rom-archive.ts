@@ -1,16 +1,16 @@
-import {IArchivedRom, IArchivedRomTitle} from './archived-rom';
+import {IArchivedRom} from './archived-rom';
 import {Observable} from 'rxjs';
 
 
 export interface IRomArchive {
 
-    readRomList$(): Observable<IArchivedRomTitle[]>;
+    readRomList$(): Observable<IArchivedRom[]>;
 
-    readRom$(romHash: string): Observable<IArchivedRom | null>;
+    readRomData$(romHashMD5: string): Observable<Uint8Array | null>;
 
-    addRom$(romData: Uint8Array, ramData: Uint8Array | null): Observable<IArchivedRom>;
+    readRamData$(romHashMD5: string): Observable<Uint8Array | null>;
 
-    updateRomTitle$(romHash: string, customTitle: string): Observable<IArchivedRom | null>;
+    writeRamData$(romHashMD5: string, ramData: Uint8Array): Observable<unknown>;
 }
 
 

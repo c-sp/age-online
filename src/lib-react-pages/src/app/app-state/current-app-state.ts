@@ -64,28 +64,11 @@ export class CurrentAppState extends Unsubscriber implements ICurrentAppState {
     }
 
 
-    protected updateState(newState: Partial<IAppState>): void {
-        const updatedState = {...this.appState};
-        const updatedKeys = new Array<string>();
-
-        Object.keys(updatedState).forEach((k) => {
-            // Partial<IAppState> allows explicitly setting properties to
-            // undefined which contradicts their original app-state-type:
-            //
-            // e.g. updateState({currentTheme: undefined})
-            //
-            // We thus filter undefined values.
-
-            const key = k as keyof IAppState;
-            const value = newState[key];
-
-            if (value !== undefined) {
-                updatedKeys.push(key);
-                (updatedState as any)[key] = value;
-            }
-        });
-
+    protected updateState<K extends keyof IAppState>(newState: Pick<IAppState, K>): void {
+        const updatedKeys = Object.keys(newState);
         if (updatedKeys.length) {
+
+            const updatedState = {...this.appState, ...newState};
             this.appStateSubject.next([updatedKeys, updatedState]);
         }
     }

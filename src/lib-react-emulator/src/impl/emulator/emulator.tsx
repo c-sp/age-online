@@ -1,13 +1,14 @@
-import {cssClasses, EmulationFactory, IEmulation, IEmulationFactory, TGameboyRomSource} from '@age-online/lib-core';
+import {cssClasses, EmulationFactory, IEmulationFactory, newRomArchive, TGameboyRomSource} from '@age-online/lib-core';
 import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core';
 import React, {ReactNode} from 'react';
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {EmulatorStateDetails, TEmulatorState} from './emulator-state';
 import {EmulatorState, IEmulatorProps} from '../../api';
-import {TidyComponent} from '@age-online/lib-react';
+import {ISiteApiProps, TidyComponent, withSiteApi} from '@age-online/lib-react';
 import {Emulation} from '../emulation';
 import {EmulatorCloseBar, EmulatorStartStopBar, EmulatorToolbar} from '../emulator-bars';
+import {newEmulation$} from './new-emulation';
 
 
 const styles = (theme: Theme) => createStyles({
@@ -55,7 +56,7 @@ interface IEmulatorState {
     readonly emulatorState: TEmulatorState;
 }
 
-type TEmulatorProps = IEmulatorProps & WithStyles;
+type TEmulatorProps = IEmulatorProps & WithStyles & ISiteApiProps;
 
 class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
 
@@ -71,11 +72,14 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
 
     private readonly romSourceSub: BehaviorSubject<TGameboyRomSource | null>;
     private readonly emulationFactory: IEmulationFactory;
+    private readonly romArchive = newRomArchive('age-online-rom-archive');
 
     constructor(props: TEmulatorProps) {
         super(props);
 
-        const {ageWasmJsUrl, ageWasmUrl, romSource} = props;
+        const {romSource, siteApi} = props;
+        const ageWasmJsUrl = siteApi.assetUrl('/age-wasm/age_wasm.js');
+        const ageWasmUrl = siteApi.assetUrl('/age-wasm/age_wasm.wasm');
 
         this.romSourceSub = new BehaviorSubject<TGameboyRomSource | null>(romSource);
         this.emulationFactory = new EmulationFactory(ageWasmJsUrl, ageWasmUrl);
@@ -94,27 +98,20 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
 
 
     componentDidMount(): void {
-        const {romSourceSub, emulationFactory} = this;
+        const {romSourceSub, emulationFactory, romArchive} = this;
 
         this.unsubscribeOnUnmount(
             romSourceSub
                 .asObservable()
                 .pipe(
-                    switchMap((romSource): Observable<IEmulation | null> => {
-                        if (!romSource) {
-                            return of(null);
-                        }
-                        // re-mount the emulator component for every new rom
-                        this.setEmulatorState({state: EmulatorState.EMULATOR_LOADING});
-                        return emulationFactory.newEmulation$(romSource);
-                    }),
+                    switchMap(romSource => newEmulation$(
+                        romSource, this.state.emulatorState, emulationFactory, romArchive,
+                    )),
                 )
                 .subscribe(
-                    emulation => {
-                        this.setEmulatorState(emulation
-                            ? {state: EmulatorState.EMULATOR_READY, emulation}
-                            : {state: EmulatorState.NO_EMULATOR});
-                    },
+                    emulation => this.setEmulatorState(emulation
+                        ? {state: EmulatorState.EMULATOR_READY, emulation}
+                        : {state: EmulatorState.NO_EMULATOR}),
                     (error: unknown) => this.setEmulatorState({state: EmulatorState.EMULATOR_ERROR, error}),
                 ),
         );
@@ -128,7 +125,7 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
         const {props, romSourceSub} = this;
 
         if (romSource !== props.romSource) {
-            romSourceSub.next(romSource);
+            romSourceSub.next(props.romSource);
         }
     }
 
@@ -195,5 +192,7 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
 }
 
 export const Emulator = withStyles(styles)(
-    ComposedEmulator,
+    withSiteApi(
+        ComposedEmulator,
+    ),
 );

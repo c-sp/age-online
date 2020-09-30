@@ -1,5 +1,6 @@
 import {bitwiseAnd, ErrorWithCause} from '../utilities';
 import {CartridgeCgbFunctions, CartridgeMBC, IGameboyCartridge} from './api';
+import {Md5} from 'ts-md5';
 
 
 export class InvalidRomFileError extends ErrorWithCause {
@@ -14,7 +15,12 @@ const CART_HEADER_CHECKSUM = 0x14D;
 
 export function newGameboyCartridge(romBuffer: ArrayBuffer, ignoreHeaderChecksum?: boolean): IGameboyCartridge {
     const romData = new Uint8Array(romBuffer);
+
+    // validate rom data before calculating any hash
+
+    const mbc = readRomMBC(romData);
     const romBanks = readRomBanks(romData);
+    const ramBytes = readRamBytes(romData);
 
     const headerChecksum = romData[CART_HEADER_CHECKSUM];
     const headerChecksumComputed = computeHeaderChecksum(romData);
@@ -24,6 +30,19 @@ export function newGameboyCartridge(romBuffer: ArrayBuffer, ignoreHeaderChecksum
         throw new InvalidRomFileError(reason);
     }
 
+    // Calculate the rom hash.
+    //
+    // The hashing library was chosen based on the performance results at:
+    // https://brillout.com/test-javascript-hash-implementations/
+    //
+    // Since there don't seem to be any type declarations for YaMD5 we use
+    // ts-md5 instead which is based on YaMD5.
+
+    const romHashMD5 = new Md5()
+        .start()
+        .appendByteArray(romData)
+        .end() as string;
+
     return {
         romTitle: readRomTitle(romData),
         japanese: readJapanese(romData),
@@ -31,11 +50,12 @@ export function newGameboyCartridge(romBuffer: ArrayBuffer, ignoreHeaderChecksum
         sgbFunctions: readSgbFunctions(romData),
         headerChecksum,
         headerChecksumComputed,
-        mbc: readRomMBC(romData),
+        mbc,
         romBanks,
         romBytes: romBanks * 16 * 1024,
-        ramBytes: readRamBytes(romData),
+        ramBytes,
         ramIsPersistent: hasBattery(romData),
+        romHashMD5,
         romData,
     };
 }

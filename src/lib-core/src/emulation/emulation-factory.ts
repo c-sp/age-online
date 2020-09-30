@@ -4,7 +4,7 @@ import {catchError, map, shareReplay, switchMap, take} from 'rxjs/operators';
 import {Emulation} from './emulation';
 import {IWasmInstance} from './wasm-instance';
 import {IEmulation, IEmulationFactory, WasmFetchError, WasmInitError} from './api';
-import {loadGameboyCartridge$, TGameboyRomSource} from '../gameboy-cartridge';
+import {IGameboyCartridge} from '../gameboy-cartridge';
 
 
 export class EmulationFactory implements IEmulationFactory {
@@ -44,6 +44,7 @@ export class EmulationFactory implements IEmulationFactory {
             take(1),
 
             // initialize new wasm module
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
             switchMap(([wasmInit, wasmBinary]) => from(wasmInit.default({wasmBinary})).pipe(
                 catchError(err => {
                     throw new WasmInitError(err);
@@ -59,12 +60,9 @@ export class EmulationFactory implements IEmulationFactory {
     }
 
 
-    newEmulation$(romSource: TGameboyRomSource): Observable<IEmulation> {
-        return combineLatest([
-            this.ageWasmInstance$,
-            loadGameboyCartridge$(romSource),
-        ]).pipe(
-            map(([wasmInstance, gameboyRom]) => new Emulation(wasmInstance, gameboyRom)),
+    newEmulation$(gameboyCartridge: IGameboyCartridge): Observable<IEmulation> {
+        return this.ageWasmInstance$.pipe(
+            map(wasmInstance => new Emulation(wasmInstance, gameboyCartridge)),
         );
     }
 }

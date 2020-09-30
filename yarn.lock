@@ -1968,6 +1968,11 @@
     "@types/glob" "*"
     "@types/node" "*"
 
+"@types/source-list-map@*":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@types/source-list-map/-/source-list-map-0.1.2.tgz#0078836063ffaf17412349bba364087e0ac02ec9"
+  integrity sha512-K5K+yml8LTo9bWJI/rECfIPrGgxdpeNbj+d53lwN4QjW1MCwlkhUms+gtdzigTeUyBr09+u8BwOIY3MXvHdcsA==
+
 "@types/tmp@^0.0.33":
   version "0.0.33"
   resolved "https://registry.yarnpkg.com/@types/tmp/-/tmp-0.0.33.tgz#1073c4bc824754ae3d10cfab88ab0237ba964e4d"
@@ -1982,6 +1987,15 @@
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/warning/-/warning-3.0.0.tgz#0d2501268ad8f9962b740d387c4654f5f8e23e52"
   integrity sha1-DSUBJorY+ZYrdA04fEZU9fjiPlI=
+
+"@types/webpack-sources@^0.1.5":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@types/webpack-sources/-/webpack-sources-0.1.8.tgz#078d75410435993ec8a0a2855e88706f3f751f81"
+  integrity sha512-JHB2/xZlXOjzjBB6fMOpH1eQAfsrpqVVIbneE0Rok16WXwFaznaI5vfg75U5WgGJm7V9W1c4xeRQDjX/zwvghA==
+  dependencies:
+    "@types/node" "*"
+    "@types/source-list-map" "*"
+    source-map "^0.6.1"
 
 "@types/yargs-parser@*":
   version "15.0.0"
@@ -5413,6 +5427,17 @@ eslint-import-resolver-node@^0.3.3:
     debug "^2.6.9"
     resolve "^1.13.1"
 
+eslint-import-resolver-typescript@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-import-resolver-typescript/-/eslint-import-resolver-typescript-2.3.0.tgz#0870988098bc6c6419c87705e6b42bee89425445"
+  integrity sha512-MHSXvmj5e0SGOOBhBbt7C+fWj1bJbtSYFAD85Xeg8nvUtuooTod2HQb8bfhE9f5QyyNxEfgzqOYFCvmdDIcCuw==
+  dependencies:
+    debug "^4.1.1"
+    glob "^7.1.6"
+    is-glob "^4.0.1"
+    resolve "^1.17.0"
+    tsconfig-paths "^3.9.0"
+
 eslint-loader@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/eslint-loader/-/eslint-loader-2.2.1.tgz#28b9c12da54057af0845e2a6112701a2f6bf8337"
@@ -8714,6 +8739,14 @@ levn@^0.4.1:
   dependencies:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
+
+license-webpack-plugin@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/license-webpack-plugin/-/license-webpack-plugin-2.3.0.tgz#c00f70d5725ba0408de208acb9e66612cc2eceda"
+  integrity sha512-JK/DXrtN6UeYQSgkg5q1+pgJ8aiKPL9tnz9Wzw+Ikkf+8mJxG56x6t8O+OH/tAeF/5NREnelTEMyFtbJNkjH4w==
+  dependencies:
+    "@types/webpack-sources" "^0.1.5"
+    webpack-sources "^1.2.0"
 
 lie@~3.3.0:
   version "3.3.0"
@@ -13295,6 +13328,11 @@ tryer@^1.0.1:
   resolved "https://registry.yarnpkg.com/tryer/-/tryer-1.0.1.tgz#f2c85406800b9b0f74c9f7465b81eaad241252f8"
   integrity sha512-c3zayb8/kWWpycWYg87P71E1S1ZL6b6IJxfb5fvsUgsf0S2MVGaDhDXXjDMpdCpfWXqptc+4mXwmiy1ypXqRAA==
 
+ts-md5@^1.2.0:
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/ts-md5/-/ts-md5-1.2.7.tgz#b76471fc2fd38f0502441f6c3b9494ed04537401"
+  integrity sha512-emODogvKGWi1KO1l9c6YxLMBn6CEH3VrH5mVPIyOtxBG52BvV4jP3GWz6bOZCz61nLgBc3ffQYE4+EHfCD+V7w==
+
 ts-pnp@^1.1.6:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/ts-pnp/-/ts-pnp-1.2.0.tgz#a500ad084b0798f1c3071af391e65912c86bca92"
@@ -14039,7 +14077,7 @@ webpack-merge@^4.2.2:
   dependencies:
     lodash "^4.17.15"
 
-webpack-sources@1.4.3, webpack-sources@^1.1.0, webpack-sources@^1.4.0, webpack-sources@^1.4.1, webpack-sources@^1.4.3:
+webpack-sources@1.4.3, webpack-sources@^1.1.0, webpack-sources@^1.2.0, webpack-sources@^1.4.0, webpack-sources@^1.4.1, webpack-sources@^1.4.3:
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-1.4.3.tgz#eedd8ec0b928fbf1cbfe994e22d2d890f330a933"
   integrity sha512-lgTS3Xhv1lCOKo7SA5TjKXMjpSM4sBjNV5+q2bqesbSPs5FjGmU6jjtBSkX9b4qW87vDIsCIlUPOEhbZrMdjeQ==

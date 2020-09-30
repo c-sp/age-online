@@ -157,8 +157,6 @@ jobs:
           name: ${{ env.ARTIFACT_NAME }}
           path: ${{ env.ARTIFACT_PATH }}
 
-      # TODO download AGE wasm binaries
-
       - name: deploy Web App
         uses: JamesIves/github-pages-deploy-action@3.5.9
         with:

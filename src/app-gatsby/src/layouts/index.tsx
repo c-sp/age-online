@@ -40,26 +40,22 @@ export default class RootLayout extends Component<TRootLayoutProps> {
             height: '100%',
         },
     };
-    private readonly ageWasmJsUrl: string;
-    private readonly ageWasmUrl: string;
     private readonly siteApi: SiteApi;
 
     constructor(props: TRootLayoutProps) {
         super(props);
         const {path} = props;
 
-        this.ageWasmJsUrl = withPrefix('/age-wasm/age_wasm.js');
-        this.ageWasmUrl = withPrefix('/age-wasm/age_wasm.wasm');
-
         this.siteApi = new SiteApi(
             localeFromPathname(path),
             toPath => void navigate(toPath),
+            assetFile => withPrefix(assetFile),
             ({href, children}) => <Link to={href}>{children}</Link>,
         );
     }
 
     render(): ReactNode {
-        const {globalCss, ageWasmJsUrl, ageWasmUrl, siteApi, props} = this;
+        const {globalCss, siteApi, props} = this;
         const {children, path, pageContext: {pathPrefix}} = props;
 
         const locale = localeFromPathname(path);
@@ -72,8 +68,6 @@ export default class RootLayout extends Component<TRootLayoutProps> {
             <SiteApiContext.Provider value={siteApi}>
                 <AppContainer locale={locale}
                               currentPage={currentPage}
-                              ageWasmJsUrl={ageWasmJsUrl}
-                              ageWasmUrl={ageWasmUrl}
                               globalCss={globalCss}>
                     {children}
                 </AppContainer>
