@@ -53,7 +53,7 @@ describe('formatValue()', () => {
 
 
     function expectFormat(value: unknown, expectedResult: string): [string, () => unknown] {
-        let valueStr = JSON.stringify(value);
+        let valueStr = JSON.stringify(value) ?? 'undefined';
         valueStr = valueStr.length < 50 ? valueStr : `${valueStr.substring(0, 47)}...`;
         return [
             `converts ${valueStr} (${typeof value}) to '${expectedResult}'`,
