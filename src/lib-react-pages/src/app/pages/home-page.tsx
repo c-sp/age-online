@@ -1,18 +1,9 @@
-import {LastGitCommit} from '@age-online/lib-core';
-import {Button, createStyles, IconButton, Paper, Theme, Typography, WithStyles, withStyles} from '@material-ui/core';
-import {GitHub} from '@material-ui/icons';
+import {Button, createStyles, Paper, Theme, WithStyles, withStyles} from '@material-ui/core';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {Component, ReactNode} from 'react';
 import {IPersistentAppStateProps, withPersistentAppState} from '../app-state';
 import i18nBundle from './home-page.i18n.json';
-import {
-    Cartridge,
-    COMMON_I18N_REPLACEMENTS,
-    EXTERNAL_LINK_PROPS,
-    OpenLocalRomFile,
-    SEO,
-    withI18nBundle,
-} from '@age-online/lib-react';
+import {Cartridge, COMMON_I18N_REPLACEMENTS, OpenLocalRomFile, SEO, withI18nBundle} from '@age-online/lib-react';
 
 
 const styles = (theme: Theme) => createStyles({
@@ -62,33 +53,6 @@ class ComposedHomePage extends Component<THomePageProps> {
 
     render(): ReactNode {
         const {classes, i18n, persistentAppState} = this.props;
-
-        const hrefCommit = `https://github.com/c-sp/age-online/tree/${LastGitCommit.hash}`;
-        const hrefBranch = `https://github.com/c-sp/age-online/tree/${LastGitCommit.branch}`;
-
-        const commitedOn = new Date(parseInt(LastGitCommit.committedOn, 10) * 1000);
-        const commitReplacements = {
-            ...COMMON_I18N_REPLACEMENTS,
-
-            commitLink: <a href={hrefCommit}
-                           aria-label={i18n.translate('link:commit')}
-                           {...EXTERNAL_LINK_PROPS}>{LastGitCommit.shortHash}</a>,
-
-            commitDate: <span style={{whiteSpace: 'nowrap'}}>{i18n.formatDate(commitedOn, {
-                // https://tc39.es/ecma402/#datetimeformat-objects
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                timeZoneName: 'short',
-            })}</span>,
-
-            branchLink: <a href={hrefBranch}
-                           aria-label={i18n.translate('link:branch')}
-                           {...EXTERNAL_LINK_PROPS}>{LastGitCommit.branch}</a>,
-        };
-
         return (
             <Paper component={'main'} className={classes.main} elevation={0}>
                 <SEO i18n={i18n}/>
@@ -102,20 +66,6 @@ class ComposedHomePage extends Component<THomePageProps> {
                             <span>{i18n.translate('page:open-rom-file', COMMON_I18N_REPLACEMENTS)}</span>
                         </StyledButton>
                     </OpenLocalRomFile>
-                </div>
-
-                <div>
-                    <a href={'https://github.com/c-sp/age-online'}
-                       aria-label={i18n.translate('link:repo')}
-                       {...EXTERNAL_LINK_PROPS}>
-
-                        <IconButton aria-label={i18n.translate('link:repo')} color="primary">
-                            <GitHub fontSize="large"/>
-                        </IconButton>
-                    </a>
-
-                    <Typography component={'div'}
-                                variant="caption">{i18n.translate('page:commit', commitReplacements)}</Typography>
                 </div>
 
             </Paper>

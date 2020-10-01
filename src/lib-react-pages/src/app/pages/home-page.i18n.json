@@ -15,24 +15,8 @@
     "en": "(Another Gameboy Emulator)",
     "de": "(Another Gameboy Emulator)"
   },
-  "page:commit": {
-    "en": "deployed commit: {commitLink}{br}({commitDate}){br}branch: {branchLink}",
-    "de": "aktiver Commit: {commitLink}{br}({commitDate}){br}Branch: {branchLink}"
-  },
   "page:open-rom-file": {
     "en": "open rom file{br}(.gb .cgb .gbc .zip)",
     "de": "Rom Datei öffnen{br}(.gb .cgb .gbc .zip)"
-  },
-  "link:repo": {
-    "en": "AGE Online on GitHub",
-    "de": "AGE Online auf GitHub"
-  },
-  "link:commit": {
-    "en": "GitHub link to deployed AGE Online commit",
-    "de": "GitHub Link zum installierten AGE Online Commit"
-  },
-  "link:branch": {
-    "en": "GitHub link to deployed AGE Online branch",
-    "de": "GitHub Link zum installierten AGE Online Branch"
   }
 }

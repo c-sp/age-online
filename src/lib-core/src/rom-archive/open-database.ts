@@ -8,6 +8,11 @@ import {
 } from './api';
 
 
+export const ROM_INFO_STORE = 'age-online-rom-info';
+export const ROM_DATA_STORE = 'age-online-rom-data';
+export const RAM_DATA_STORE = 'age-online-ram-data';
+
+
 export function openDatabase$(dbName: string): Observable<IDBDatabase> {
     return new Observable<IDBDatabase>(subscriber => {
 
@@ -34,10 +39,12 @@ export function openDatabase$(dbName: string): Observable<IDBDatabase> {
         // upgrade old IndexedDB
         request.onupgradeneeded = ev => {
             const {oldVersion} = ev;
-            const {result} = request;
+            const {result: db} = request;
 
-            if (oldVersion <= 1) {
-                result.createObjectStore('rom-archive', {keyPath: archivedRomPrimaryKey});
+            if (oldVersion <= 2) {
+                db.createObjectStore(ROM_INFO_STORE, {keyPath: archivedRomPrimaryKey});
+                db.createObjectStore(ROM_DATA_STORE, {keyPath: archivedRomPrimaryKey});
+                db.createObjectStore(RAM_DATA_STORE, {keyPath: archivedRomPrimaryKey});
             }
         };
     });

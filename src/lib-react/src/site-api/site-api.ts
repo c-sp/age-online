@@ -5,6 +5,7 @@ import {FunctionComponent, ReactNode} from 'react';
 export enum AppPage {
     HOME = '/',
     SETTINGS = '/settings',
+    ABOUT = '/about',
 }
 
 export function isAppPage(value: unknown): value is AppPage {

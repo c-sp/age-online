@@ -10,5 +10,9 @@
   "settings": {
     "en": "AGE Online Settings",
     "de": "AGE Online Einstellungen"
+  },
+  "about": {
+    "en": "About AGE",
+    "de": "Über AGE"
   }
 }

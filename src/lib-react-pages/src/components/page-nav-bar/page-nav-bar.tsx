@@ -3,6 +3,7 @@ import {createStyles, WithStyles, withStyles} from '@material-ui/core';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {Component, ComponentType, CSSProperties, ReactNode} from 'react';
 import {
+    AboutIconSiteLink,
     AppPage,
     EmulatorErrorIconSiteLink,
     EmulatorLoadingIconSiteLink,
@@ -59,6 +60,7 @@ class ComposedPageNavBar extends Component<TPageNavBarProps> {
 
                 <HomeIcon style={this.iconStyle(AppPage.HOME)}/>
                 <SettingsIconSiteLink style={this.iconStyle(AppPage.SETTINGS)}/>
+                <AboutIconSiteLink style={this.iconStyle(AppPage.ABOUT)}/>
 
             </nav>
         );

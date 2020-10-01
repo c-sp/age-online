@@ -3,7 +3,6 @@ export interface IArchivedRom {
     readonly romCustomTitle: string | null;
     readonly romInternalTitle: string;
     readonly addedOn: Date;
-    readonly lastRun: Date | null;
 }
 
 export interface IArchivedRomData {

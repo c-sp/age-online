@@ -51,31 +51,33 @@ exports.onCreateWebpackConfig = ({actions}) => {
 
                 excludedPackageTest: (packageName) => packageName.startsWith('@age-online'),
 
-                // TODO "yarn develop" hangs when setting renderLicenses
-                // renderLicenses: (modules) => {
-                //     const result = modules
-                //         .map(mod => {
-                //             const {
-                //                 name, licenseId, licenseText,
-                //                 packageJson: {author, homepage, repository},
-                //             } = mod;
-                //             const authorName = author && typeof author === 'object' ? author.name : author;
-                //             return [
-                //                 sanitize('Package:    ', name),
-                //                 sanitize('Author:     ', authorName),
-                //                 sanitize('Homepage:   ', homepage),
-                //                 sanitize('Repository: ', repository && repository.url),
-                //                 sanitize('License:    ', licenseId),
-                //                 sanitize('\n', licenseText),
-                //             ]
-                //                 .filter(s => !!s)
-                //                 .join('');
-                //         })
-                //         .filter(s => !!s)
-                //         .join('\n--------------------------------------------------------------------------------\n\n');
-                //     console.log('************************* rendered');
-                //     return result;
-                // },
+                licenseFileOverrides: {
+                    // use LICENSE.txt instead of License.d.ts ...
+                    'mdi-material-ui': 'LICENSE.txt',
+                },
+
+                renderLicenses: (modules) => modules
+                    .sort((a, b) => (a.name < b.name ? -1 : a.name === b.name ? 0 : 1))
+                    .map(mod => {
+                        const {
+                            name, licenseId, licenseText,
+                            packageJson: {author, homepage, repository},
+                        } = mod;
+                        const authorName = author && typeof author === 'object' ? author.name : author;
+                        const repo = repository && typeof repository === 'object' ? repository.url : repository;
+                        return [
+                            sanitize('Package:    ', name),
+                            sanitize('Author:     ', authorName),
+                            sanitize('Homepage:   ', homepage),
+                            sanitize('Repository: ', repo),
+                            sanitize('License:    ', licenseId),
+                            sanitize('\n', licenseText),
+                        ]
+                            .filter(s => !!s)
+                            .join('');
+                    })
+                    .filter(s => !!s)
+                    .join('\n--------------------------------------------------------------------------------\n\n'),
             }),
         ],
     };
@@ -87,8 +89,8 @@ exports.onCreateWebpackConfig = ({actions}) => {
 
     actions.setWebpackConfig(webpackConfig);
 
-    // function sanitize(prefix, value) {
-    //     const v = typeof value === 'string' ? value.trim() : value;
-    //     return v ? `${prefix}${v}\n` : null;
-    // }
+    function sanitize(prefix, value) {
+        const v = typeof value === 'string' ? value.trim() : value;
+        return v ? `${prefix}${v}\n` : null;
+    }
 };

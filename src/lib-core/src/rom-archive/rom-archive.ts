@@ -1,7 +1,9 @@
 import {Observable} from 'rxjs';
-import {openDatabase$} from './open-database';
-import {map, shareReplay} from 'rxjs/operators';
-import {IArchivedRom, IRomArchive} from './api';
+import {openDatabase$, RAM_DATA_STORE} from './open-database';
+import {map, shareReplay, switchMap} from 'rxjs/operators';
+import {IArchivedRamData, IArchivedRom, IRomArchive} from './api';
+import {txWrite$} from './tx-write';
+import {txRead$} from './tx-read';
 
 
 class RomArchive implements IRomArchive {
@@ -20,12 +22,19 @@ class RomArchive implements IRomArchive {
         return this.indexedDB$.pipe(map(() => null));
     }
 
-    readRamData$(): Observable<Uint8Array | null> {
-        return this.indexedDB$.pipe(map(() => null));
+    readRamData$(romHashMD5: string): Observable<Uint8Array | null> {
+        return this.indexedDB$.pipe(
+            switchMap(db => txRead$<IArchivedRamData>(db, RAM_DATA_STORE, romHashMD5)),
+            map(v => v?.ramData ?? null),
+        );
     }
 
-    writeRamData$(): Observable<unknown> {
-        return this.indexedDB$.pipe(map(() => null));
+    writeRamData$(romHashMD5: string, ramData: Uint8Array): Observable<unknown> {
+        const archiveRamData: IArchivedRamData = {romHashMD5, ramData};
+
+        return this.indexedDB$.pipe(
+            switchMap(db => txWrite$(db, RAM_DATA_STORE, archiveRamData)),
+        );
     }
 }
 

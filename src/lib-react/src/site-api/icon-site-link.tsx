@@ -1,6 +1,6 @@
 import {Badge, IconButton} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
-import {Error, Home, SettingsOutlined, SettingsRounded, VideogameAsset} from '@material-ui/icons';
+import {Error, Home, Info, SettingsOutlined, SettingsRounded, VideogameAsset} from '@material-ui/icons';
 import {WithI18nProps} from '@shopify/react-i18n';
 import React, {Component, ComponentType, CSSProperties, ReactElement, ReactNode} from 'react';
 import i18nBundle from './icon-site-link.i18n.json';
@@ -79,3 +79,4 @@ export const EmulatorRunningIconSiteLink = iconSiteLink(AppPage.HOME, VideogameA
 
 export const HomeIconSiteLink = iconSiteLink(AppPage.HOME, Home, 'home');
 export const SettingsIconSiteLink = iconSiteLink(AppPage.SETTINGS, SettingsRounded, 'settings');
+export const AboutIconSiteLink = iconSiteLink(AppPage.ABOUT, Info, 'about');

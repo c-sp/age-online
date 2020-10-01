@@ -1,0 +1,50 @@
+{
+  "seo:title": {
+    "en": "About AGE",
+    "de": "Über AGE"
+  },
+  "seo:description": {
+    "en": "information about AGE Online including repository links",
+    "de": "Informationen zu AGE Online und Repository Links"
+  },
+  "heading": {
+    "en": "About AGE",
+    "de": "Über AGE"
+  },
+  "text1": {
+    "en": "AGE - Another Gameboy Emulator lets you run Gameboy roms in your Browser.",
+    "de": "Mit AGE - Another Gameboy Emulator können Gameboy Roms im Browser gestartet werden."
+  },
+  "text2": {
+    "en": "AGE does not provide any Gameboy roms by itself, but you can store roms to your browser's memory to always have them available.",
+    "de": "AGE stellt selber keine Gameboy Roms zur Verfügung, kann aber Roms im Speicher des Browsers ablegen, so dass sie immer zur Verfügung stehen."
+  },
+  "third-party": {
+    "en": "AGE makes use of {licensesLink}.",
+    "de": "AGE verwendet {licensesLink}."
+  },
+  "third-party:link": {
+    "en": "third party software",
+    "de": "Fremdsoftware"
+  },
+  "third-party:link-label": {
+    "en": "third party software licenses",
+    "de": "Fremdsoftware Lizenzen"
+  },
+  "commit": {
+    "en": "deployed commit: {commitLink}{br}({commitDate}){br}branch: {branchLink}",
+    "de": "aktiver Commit: {commitLink}{br}({commitDate}){br}Branch: {branchLink}"
+  },
+  "link:repo": {
+    "en": "AGE Online on GitHub",
+    "de": "AGE Online auf GitHub"
+  },
+  "link:commit": {
+    "en": "GitHub link to deployed AGE Online commit",
+    "de": "GitHub Link zum installierten AGE Online Commit"
+  },
+  "link:branch": {
+    "en": "GitHub link to deployed AGE Online branch",
+    "de": "GitHub Link zum installierten AGE Online Branch"
+  }
+}
