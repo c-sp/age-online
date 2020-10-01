@@ -1,5 +1,9 @@
-@babel/runtime
-MIT
+Package:    @babel/runtime
+Author:     Sebastian McKenzie <sebmck@gmail.com>
+Homepage:   https://babeljs.io/
+Repository: https://github.com/babel/babel.git
+License:    MIT
+
 MIT License
 
 Copyright (c) 2014-present Sebastian McKenzie and other contributors
@@ -23,10 +27,15 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-@juggle/resize-observer
-Apache-2.0
-                                 Apache License
+Package:    @juggle/resize-observer
+Author:     Juggle
+Homepage:   https://juggle.studio/resize-observer/
+Repository: git+ssh://git@github.com/juggle/resize-observer.git
+License:    Apache-2.0
+
+Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
 
@@ -228,9 +237,14 @@ Apache-2.0
    See the License for the specific language governing permissions and
    limitations under the License.
 
+--------------------------------------------------------------------------------
 
-@material-ui/core
-MIT
+Package:    @material-ui/core
+Author:     Material-UI Team
+Homepage:   https://material-ui.com/
+Repository: https://github.com/mui-org/material-ui.git
+License:    MIT
+
 The MIT License (MIT)
 
 Copyright (c) 2014 Call-Em-All
@@ -253,9 +267,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-@material-ui/icons
-MIT
+Package:    @material-ui/icons
+Author:     Material-UI Team
+Homepage:   https://github.com/mui-org/material-ui/tree/master/packages/material-ui-icons
+Repository: https://github.com/mui-org/material-ui.git
+License:    MIT
+
 The MIT License (MIT)
 
 Copyright (c) 2014 Call-Em-All
@@ -278,9 +297,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-@material-ui/styles
-MIT
+Package:    @material-ui/styles
+Author:     Material-UI Team
+Homepage:   https://github.com/mui-org/material-ui/tree/master/packages/material-ui-styles
+Repository: https://github.com/mui-org/material-ui.git
+License:    MIT
+
 The MIT License (MIT)
 
 Copyright (c) 2014 Call-Em-All
@@ -303,9 +327,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-@material-ui/system
-MIT
+Package:    @material-ui/system
+Author:     Material-UI Team
+Homepage:   https://github.com/mui-org/material-ui/tree/master/packages/material-ui-system
+Repository: https://github.com/mui-org/material-ui.git
+License:    MIT
+
 The MIT License (MIT)
 
 Copyright (c) 2014 Call-Em-All
@@ -328,9 +357,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-@material-ui/utils
-MIT
+Package:    @material-ui/utils
+Author:     Material-UI Team
+Homepage:   https://github.com/mui-org/material-ui/tree/master/packages/material-ui-utils
+Repository: https://github.com/mui-org/material-ui.git
+License:    MIT
+
 The MIT License (MIT)
 
 Copyright (c) 2014 Call-Em-All
@@ -353,9 +387,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-@reach/router
-MIT
+Package:    @reach/router
+Author:     Ryan Florence
+Homepage:   https://github.com/reach/router#readme
+Repository: git+https://github.com/reach/router.git
+License:    MIT
+
 The MIT License (MIT)
 
 Copyright (c) 2018-present, Ryan Florence
@@ -366,27 +405,61 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-@shopify/dates
-MIT
+Package:    @shopify/dates
+Author:     Shopify Inc.
+Homepage:   https://github.com/Shopify/quilt/blob/master/packages/dates/README.md
+Repository: git+https://github.com/Shopify/quilt.git
+License:    MIT
 
-@shopify/decorators
-MIT
+--------------------------------------------------------------------------------
 
-@shopify/function-enhancers
-MIT
+Package:    @shopify/decorators
+Author:     Shopify Inc.
+Homepage:   https://github.com/Shopify/quilt/blob/master/packages/decorators/README.md
+Repository: git+https://github.com/Shopify/quilt.git
+License:    MIT
 
-@shopify/i18n
-MIT
+--------------------------------------------------------------------------------
 
-@shopify/react-hooks
-MIT
+Package:    @shopify/function-enhancers
+Author:     Shopify Inc.
+Homepage:   https://github.com/Shopify/quilt/blob/master/packages/function-enhancers/README.md
+Repository: git+https://github.com/Shopify/quilt.git
+License:    MIT
 
-@shopify/react-i18n
-MIT
+--------------------------------------------------------------------------------
 
-ansi-styles
-MIT
+Package:    @shopify/i18n
+Author:     Shopify Inc.
+Homepage:   https://github.com/Shopify/quilt/blob/master/packages/i18n/README.md
+Repository: git+https://github.com/Shopify/quilt.git
+License:    MIT
+
+--------------------------------------------------------------------------------
+
+Package:    @shopify/react-hooks
+Author:     Shopify Inc.
+Homepage:   https://github.com/Shopify/quilt/blob/master/packages/react-hooks/README.md
+Repository: git+https://github.com/Shopify/quilt.git
+License:    MIT
+
+--------------------------------------------------------------------------------
+
+Package:    @shopify/react-i18n
+Author:     Shopify Inc.
+Homepage:   https://github.com/Shopify/quilt/blob/master/packages/react-i18n/README.md
+Repository: git+https://github.com/Shopify/quilt.git
+License:    MIT
+
+--------------------------------------------------------------------------------
+
+Package:    ansi-styles
+Author:     Sindre Sorhus
+Repository: chalk/ansi-styles
+License:    MIT
+
 MIT License
 
 Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
@@ -397,9 +470,13 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-autoprefixer
-MIT
+Package:    autoprefixer
+Author:     Andrey Sitnik <andrey@sitnik.ru>
+Repository: postcss/autoprefixer
+License:    MIT
+
 The MIT License (MIT)
 
 Copyright 2013 Andrey Sitnik <andrey@sitnik.ru>
@@ -421,9 +498,14 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-balanced-match
-MIT
+Package:    balanced-match
+Author:     Julian Gruber
+Homepage:   https://github.com/juliangruber/balanced-match
+Repository: git://github.com/juliangruber/balanced-match.git
+License:    MIT
+
 (MIT)
 
 Copyright (c) 2013 Julian Gruber &lt;julian@juliangruber.com&gt;
@@ -446,9 +528,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-brace-expansion
-MIT
+Package:    brace-expansion
+Author:     Julian Gruber
+Homepage:   https://github.com/juliangruber/brace-expansion
+Repository: git://github.com/juliangruber/brace-expansion.git
+License:    MIT
+
 MIT License
 
 Copyright (c) 2013 Julian Gruber <julian@juliangruber.com>
@@ -471,9 +558,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-browserslist
-MIT
+Package:    browserslist
+Author:     Andrey Sitnik <andrey@sitnik.ru>
+Repository: browserslist/browserslist
+License:    MIT
+
 The MIT License (MIT)
 
 Copyright 2014 Andrey Sitnik <andrey@sitnik.ru> and other contributors
@@ -495,9 +586,13 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-caniuse-lite
-CC-BY-4.0
+Package:    caniuse-lite
+Author:     Ben Briggs
+Repository: ben-eb/caniuse-lite
+License:    CC-BY-4.0
+
 Attribution 4.0 International
 
 =======================================================================
@@ -894,9 +989,12 @@ public licenses.
 
 Creative Commons may be contacted at creativecommons.org.
 
+--------------------------------------------------------------------------------
 
-chalk
-MIT
+Package:    chalk
+Repository: chalk/chalk
+License:    MIT
+
 MIT License
 
 Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
@@ -907,9 +1005,14 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-clean-css
-MIT
+Package:    clean-css
+Author:     Jakub Pawlowicz <contact@jakubpawlowicz.com> (http://twitter.com/jakubpawlowicz)
+Homepage:   https://github.com/jakubpawlowicz/clean-css
+Repository: https://github.com/jakubpawlowicz/clean-css.git
+License:    MIT
+
 Copyright (C) 2017 JakubPawlowicz.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -930,9 +1033,13 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-clsx
-MIT
+Package:    clsx
+Author:     Luke Edwards
+Repository: lukeed/clsx
+License:    MIT
+
 MIT License
 
 Copyright (c) Luke Edwards <luke.edwards05@gmail.com> (lukeed.com)
@@ -943,9 +1050,13 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-color-convert
-MIT
+Package:    color-convert
+Author:     Heather Arthur <fayearthur@gmail.com>
+Repository: Qix-/color-convert
+License:    MIT
+
 Copyright (c) 2011-2016 Heather Arthur <fayearthur@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining
@@ -967,10 +1078,14 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
+Package:    color-name
+Author:     DY <dfcreative@gmail.com>
+Homepage:   https://github.com/dfcreative/color-name
+Repository: git@github.com:dfcreative/color-name.git
+License:    MIT
 
-color-name
-MIT
 The MIT License (MIT)
 Copyright (c) 2015 Dmitry Ivanov
 
@@ -980,8 +1095,14 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-colorette
-MIT
+--------------------------------------------------------------------------------
+
+Package:    colorette
+Author:     Jorge Bucaran
+Homepage:   https://github.com/jorgebucaran/colorette
+Repository: jorgebucaran/colorette
+License:    MIT
+
 Copyright © Jorge Bucaran <<https://jorgebucaran.com>>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -990,9 +1111,13 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-concat-map
-MIT
+Package:    concat-map
+Author:     James Halliday
+Repository: git://github.com/substack/node-concat-map.git
+License:    MIT
+
 This software is released under the MIT license:
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -1012,9 +1137,13 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-core-util-is
-MIT
+Package:    core-util-is
+Author:     Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)
+Repository: git://github.com/isaacs/core-util-is
+License:    MIT
+
 Copyright Node.js contributors. All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -1035,9 +1164,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-css-vendor
-MIT
+Package:    css-vendor
+Author:     Oleg Slobodskoi
+Repository: git@github.com:cssinjs/css-vendor.git
+License:    MIT
+
 The MIT License (MIT)
 Copyright (c) 2014-present Oleg Slobodskoi
 
@@ -1047,9 +1180,13 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-dom-helpers
-MIT
+Package:    dom-helpers
+Author:     Jason Quense
+Repository: git+https://github.com/react-bootstrap/dom-helpers.git
+License:    MIT
+
 The MIT License (MIT)
 
 Copyright (c) 2015 Jason Quense
@@ -1072,17 +1209,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-electron-to-chromium
-ISC
+--------------------------------------------------------------------------------
+
+Package:    electron-to-chromium
+Author:     Kilian Valkhof
+Repository: https://github.com/kilian/electron-to-chromium/
+License:    ISC
+
 Copyright 2018 Kilian Valkhof
 
 Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
 
 THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-escape-string-regexp
-MIT
+Package:    escape-string-regexp
+Author:     Sindre Sorhus
+Repository: sindresorhus/escape-string-regexp
+License:    MIT
+
 The MIT License (MIT)
 
 Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
@@ -1105,9 +1251,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-gatsby
-MIT
+Package:    gatsby
+Author:     Kyle Mathews <mathews.kyle@gmail.com>
+Homepage:   https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby#readme
+Repository: git+https://github.com/gatsbyjs/gatsby.git
+License:    MIT
+
 The MIT License (MIT)
 
 Copyright (c) 2015 Gatsbyjs
@@ -1130,10 +1281,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
+Package:    gatsby-link
+Author:     Kyle Mathews <mathews.kyle@gmail.com>
+Homepage:   https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-link#readme
+Repository: https://github.com/gatsbyjs/gatsby.git
+License:    MIT
 
-gatsby-link
-MIT
 The MIT License (MIT)
 
 Copyright (c) 2015 Gatsbyjs
@@ -1156,10 +1311,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
+Package:    gatsby-plugin-layout
+Homepage:   https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-layout#readme
+Repository: https://github.com/gatsbyjs/gatsby.git
+License:    MIT
 
-gatsby-plugin-layout
-MIT
 The MIT License (MIT)
 
 Copyright (c) 2015 Gatsbyjs
@@ -1182,10 +1340,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
+Package:    gatsby-plugin-material-ui
+Repository: https://github.com/hupe1980/gatsby-plugin-material-ui
+License:    MIT
 
-gatsby-plugin-material-ui
-MIT
 MIT License
 
 Copyright (c) 2018 
@@ -1208,9 +1368,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-gatsby-plugin-react-helmet
-MIT
+Package:    gatsby-plugin-react-helmet
+Author:     Kyle Mathews <matthews.kyle@gmail.com>
+Homepage:   https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-react-helmet#readme
+Repository: https://github.com/gatsbyjs/gatsby.git
+License:    MIT
+
 The MIT License (MIT)
 
 Copyright (c) 2015 Gatsbyjs
@@ -1233,10 +1398,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
+Package:    gatsby-plugin-sitemap
+Author:     Nicholas Young &lt;nicholas@nicholaswyoung.com&gt;
+Homepage:   https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-sitemap#readme
+Repository: https://github.com/gatsbyjs/gatsby.git
+License:    MIT
 
-gatsby-plugin-sitemap
-MIT
 The MIT License (MIT)
 
 Copyright (c) 2015 Gatsbyjs
@@ -1259,10 +1428,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
+Package:    gatsby-react-router-scroll
+Author:     Jimmy Jia
+Homepage:   https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-react-router-scroll#readme
+Repository: https://github.com/gatsbyjs/gatsby.git
+License:    MIT
 
-gatsby-react-router-scroll
-MIT
 The MIT License (MIT)
 
 Copyright (c) 2015 Gatsbyjs
@@ -1285,10 +1458,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
+Package:    has-flag
+Author:     Sindre Sorhus
+Repository: sindresorhus/has-flag
+License:    MIT
 
-has-flag
-MIT
 MIT License
 
 Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
@@ -1299,9 +1475,13 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-hoist-non-react-statics
-BSD-3-Clause
+Package:    hoist-non-react-statics
+Author:     Michael Ridgway <mcridgway@gmail.com>
+Repository: git://github.com/mridgway/hoist-non-react-statics.git
+License:    BSD-3-Clause
+
 Software License Agreement (BSD License)
 ========================================
 
@@ -1332,9 +1512,14 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+--------------------------------------------------------------------------------
 
-hyphenate-style-name
-BSD-3-Clause
+Package:    hyphenate-style-name
+Author:     Espen Hovlandsdal <espen@hovlandsdal.com>
+Homepage:   https://github.com/rexxars/hyphenate-style-name#readme
+Repository: git+ssh://git@github.com/rexxars/hyphenate-style-name.git
+License:    BSD-3-Clause
+
 Copyright (c) 2015, Espen Hovlandsdal
 All rights reserved.
 
@@ -1363,10 +1548,12 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+--------------------------------------------------------------------------------
 
+Package:    immediate
+Repository: git://github.com/calvinmetcalf/immediate.git
+License:    MIT
 
-immediate
-MIT
 Copyright (c) 2012 Barnesandnoble.com, llc, Donavon West, Domenic Denicola, Brian Cavalier
 
 Permission is hereby granted, free of charge, to any person obtaining
@@ -1388,9 +1575,12 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-inherits
-ISC
+Package:    inherits
+Repository: git://github.com/isaacs/inherits
+License:    ISC
+
 The ISC License
 
 Copyright (c) Isaac Z. Schlueter
@@ -1407,10 +1597,13 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 
+--------------------------------------------------------------------------------
 
+Package:    invariant
+Author:     Andres Suarez <zertosh@gmail.com>
+Repository: https://github.com/zertosh/invariant
+License:    MIT
 
-invariant
-MIT
 MIT License
 
 Copyright (c) 2013-present, Facebook, Inc.
@@ -1433,15 +1626,30 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-is-in-browser
-MIT
+Package:    is-in-browser
+Author:     Jared Anderson
+Homepage:   https://github.com/tuxsudo/is-in-browser#readme
+Repository: git+https://github.com/tuxsudo/is-in-browser.git
+License:    MIT
 
-isarray
-MIT
+--------------------------------------------------------------------------------
 
-jss
-MIT
+Package:    isarray
+Author:     Julian Gruber
+Homepage:   https://github.com/juliangruber/isarray
+Repository: git://github.com/juliangruber/isarray.git
+License:    MIT
+
+--------------------------------------------------------------------------------
+
+Package:    jss
+Author:     JSS Team
+Homepage:   https://cssinjs.org/
+Repository: https://github.com/cssinjs/jss
+License:    MIT
+
 The MIT License (MIT)
 Copyright (c) 2014-present Oleg Isonen (Slobodskoi) & contributors
 
@@ -1451,9 +1659,14 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-jss-plugin-camel-case
-MIT
+Package:    jss-plugin-camel-case
+Author:     JSS Team
+Homepage:   https://cssinjs.org/jss-camel-case
+Repository: https://github.com/cssinjs/jss
+License:    MIT
+
 The MIT License (MIT)
 Copyright (c) 2014-present Oleg Isonen (Slobodskoi) & contributors
 
@@ -1463,9 +1676,14 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-jss-plugin-default-unit
-MIT
+Package:    jss-plugin-default-unit
+Author:     JSS Team
+Homepage:   https://cssinjs.org/jss-default-unit
+Repository: https://github.com/cssinjs/jss
+License:    MIT
+
 The MIT License (MIT)
 Copyright (c) 2014-present Oleg Isonen (Slobodskoi) & contributors
 
@@ -1475,9 +1693,14 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-jss-plugin-global
-MIT
+Package:    jss-plugin-global
+Author:     JSS Team
+Homepage:   https://cssinjs.org/jss-global
+Repository: https://github.com/cssinjs/jss
+License:    MIT
+
 The MIT License (MIT)
 Copyright (c) 2014-present Oleg Isonen (Slobodskoi) & contributors
 
@@ -1487,9 +1710,14 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-jss-plugin-nested
-MIT
+Package:    jss-plugin-nested
+Author:     JSS Team
+Homepage:   https://cssinjs.org/jss-nested
+Repository: https://github.com/cssinjs/jss
+License:    MIT
+
 The MIT License (MIT)
 Copyright (c) 2014-present Oleg Isonen (Slobodskoi) & contributors
 
@@ -1499,9 +1727,14 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-jss-plugin-props-sort
-MIT
+Package:    jss-plugin-props-sort
+Author:     JSS Team
+Homepage:   https://cssinjs.org/jss-plugin-props-sort
+Repository: https://github.com/cssinjs/jss
+License:    MIT
+
 The MIT License (MIT)
 Copyright (c) 2014-present Oleg Isonen (Slobodskoi) & contributors
 
@@ -1511,9 +1744,14 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-jss-plugin-rule-value-function
-MIT
+Package:    jss-plugin-rule-value-function
+Author:     JSS Team
+Homepage:   https://cssinjs.org/
+Repository: https://github.com/cssinjs/jss
+License:    MIT
+
 The MIT License (MIT)
 Copyright (c) 2014-present Oleg Isonen (Slobodskoi) & contributors
 
@@ -1523,9 +1761,14 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-jss-plugin-vendor-prefixer
-MIT
+Package:    jss-plugin-vendor-prefixer
+Author:     JSS Team
+Homepage:   https://cssinjs.org/jss-plugin-vendor-prefixer
+Repository: https://github.com/cssinjs/jss
+License:    MIT
+
 The MIT License (MIT)
 Copyright (c) 2014-present Oleg Isonen (Slobodskoi) & contributors
 
@@ -1535,9 +1778,13 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-jszip
-(MIT OR GPL-3.0)
+Package:    jszip
+Author:     Stuart Knightley <stuart@stuartk.com>
+Repository: https://github.com/Stuk/jszip.git
+License:    (MIT OR GPL-3.0)
+
 JSZip is dual licensed. You may use it under the MIT license *or* the GPLv3
 license.
 
@@ -2190,9 +2437,12 @@ copy of the Program in return for a fee.
 
                      END OF TERMS AND CONDITIONS
 
+--------------------------------------------------------------------------------
 
-lie
-MIT
+Package:    lie
+Repository: https://github.com/calvinmetcalf/lie.git
+License:    MIT
+
 #Copyright (c) 2014-2018 Calvin Metcalf, Jordan Harband
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -2201,10 +2451,15 @@ The above copyright notice and this permission notice shall be included in all c
 
 **THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.**
 
+--------------------------------------------------------------------------------
 
-mdi-material-ui
-WTFPL
-        DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
+Package:    mdi-material-ui
+Author:     Wertarbyte
+Homepage:   https://github.com/TeamWertarbyte/mdi-material-ui#readme
+Repository: git+https://github.com/TeamWertarbyte/mdi-material-ui.git
+License:    WTFPL
+
+DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
                     Version 2, December 2004 
 
  Copyright (C) 2004 Sam Hocevar <sam@hocevar.net> 
@@ -2218,9 +2473,13 @@ WTFPL
 
   0. You just DO WHAT THE FUCK YOU WANT TO.
 
+--------------------------------------------------------------------------------
 
-minimatch
-ISC
+Package:    minimatch
+Author:     Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me)
+Repository: git://github.com/isaacs/minimatch.git
+License:    ISC
+
 The ISC License
 
 Copyright (c) Isaac Z. Schlueter and Contributors
@@ -2237,12 +2496,20 @@ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
 IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-mitt
-MIT
+Package:    mitt
+Homepage:   https://github.com/developit/mitt
+Repository: developit/mitt
+License:    MIT
 
-node-releases
-MIT
+--------------------------------------------------------------------------------
+
+Package:    node-releases
+Author:     Sergey Rubanov <chi187@gmail.com>
+Repository: git+https://github.com/chicoxyzzy/node-releases.git
+License:    MIT
+
 The MIT License
 
 Copyright (c) 2017 Sergey Rubanov (https://github.com/chicoxyzzy)
@@ -2265,9 +2532,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-normalize-range
-MIT
+Package:    normalize-range
+Author:     James Talmage
+Repository: jamestalmage/normalize-range
+License:    MIT
+
 The MIT License (MIT)
 
 Copyright (c) James Talmage <james@talmage.io> (github.com/jamestalmage)
@@ -2290,9 +2561,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-num2fraction
-MIT
+Package:    num2fraction
+Author:     yisi
+Repository: git@github.com:yisibl/num2fraction.git
+License:    MIT
+
 The MIT License (MIT)
 
 Copyright (c) 2014 PostCSS
@@ -2315,10 +2590,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
+Package:    object-assign
+Author:     Sindre Sorhus
+Repository: sindresorhus/object-assign
+License:    MIT
 
-object-assign
-MIT
 The MIT License (MIT)
 
 Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
@@ -2341,9 +2619,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-pako
-(MIT AND Zlib)
+Package:    pako
+Homepage:   https://github.com/nodeca/pako
+Repository: nodeca/pako
+License:    (MIT AND Zlib)
+
 (The MIT License)
 
 Copyright (C) 2014-2017 by Vitaly Puzrin and Andrei Tuputcyn
@@ -2366,9 +2648,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-pify
-MIT
+Package:    pify
+Author:     Sindre Sorhus
+Repository: sindresorhus/pify
+License:    MIT
+
 MIT License
 
 Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
@@ -2379,12 +2665,22 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-popper.js
-MIT
+Package:    popper.js
+Author:     Federico Zivolo <federico.zivolo@gmail.com>
+Homepage:   https://popper.js.org
+Repository: git+https://github.com/FezVrasta/popper.js.git
+License:    MIT
 
-postcss
-MIT
+--------------------------------------------------------------------------------
+
+Package:    postcss
+Author:     Andrey Sitnik <andrey@sitnik.ru>
+Homepage:   https://postcss.org/
+Repository: postcss/postcss
+License:    MIT
+
 The MIT License (MIT)
 
 Copyright 2013 Andrey Sitnik <andrey@sitnik.ru>
@@ -2406,9 +2702,14 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-postcss-value-parser
-MIT
+Package:    postcss-value-parser
+Author:     Bogdan Chadkin <trysound@yandex.ru>
+Homepage:   https://github.com/TrySound/postcss-value-parser
+Repository: https://github.com/TrySound/postcss-value-parser.git
+License:    MIT
+
 Copyright (c) Bogdan Chadkin <trysound@yandex.ru>
 
 Permission is hereby granted, free of charge, to any person
@@ -2432,9 +2733,13 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-process-nextick-args
-MIT
+Package:    process-nextick-args
+Homepage:   https://github.com/calvinmetcalf/process-nextick-args
+Repository: https://github.com/calvinmetcalf/process-nextick-args.git
+License:    MIT
+
 # Copyright (c) 2015 Calvin Metcalf
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -2455,9 +2760,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.**
 
+--------------------------------------------------------------------------------
 
-prop-types
-MIT
+Package:    prop-types
+Homepage:   https://facebook.github.io/react/
+Repository: facebook/prop-types
+License:    MIT
+
 MIT License
 
 Copyright (c) 2013-present, Facebook, Inc.
@@ -2480,9 +2789,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-react-dom
-MIT
+Package:    react-dom
+Homepage:   https://reactjs.org/
+Repository: https://github.com/facebook/react.git
+License:    MIT
+
 MIT License
 
 Copyright (c) Facebook, Inc. and its affiliates.
@@ -2505,9 +2818,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-react-hot-loader
-MIT
+Package:    react-hot-loader
+Author:     Dan Abramov
+Homepage:   https://github.com/gaearon/react-hot-loader
+Repository: https://github.com/gaearon/react-hot-loader/
+License:    MIT
+
 MIT License
 
 Copyright (c) 2016 Dan Abramov
@@ -2530,9 +2848,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-react-is
-MIT
+Package:    react-is
+Homepage:   https://reactjs.org/
+Repository: https://github.com/facebook/react.git
+License:    MIT
+
 MIT License
 
 Copyright (c) Facebook, Inc. and its affiliates.
@@ -2555,9 +2877,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-react-transition-group
-BSD-3-Clause
+Package:    react-transition-group
+Homepage:   https://github.com/reactjs/react-transition-group#readme
+Repository: https://github.com/reactjs/react-transition-group.git
+License:    BSD-3-Clause
+
 BSD 3-Clause License
 
 Copyright (c) 2018, React Community
@@ -2589,9 +2915,12 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+--------------------------------------------------------------------------------
 
-readable-stream
-MIT
+Package:    readable-stream
+Repository: git://github.com/nodejs/readable-stream
+License:    MIT
+
 Node.js is licensed for use as follows:
 
 """
@@ -2640,10 +2969,15 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 IN THE SOFTWARE.
 """
 
+--------------------------------------------------------------------------------
 
-rxjs
-Apache-2.0
-                               Apache License
+Package:    rxjs
+Author:     Ben Lesh <ben@benlesh.com>
+Homepage:   https://github.com/ReactiveX/RxJS
+Repository: https://github.com/reactivex/rxjs.git
+License:    Apache-2.0
+
+Apache License
                          Version 2.0, January 2004
                       http://www.apache.org/licenses/
 
@@ -2844,11 +3178,15 @@ Apache-2.0
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
- 
 
+--------------------------------------------------------------------------------
 
-safe-buffer
-MIT
+Package:    safe-buffer
+Author:     Feross Aboukhadijeh
+Homepage:   https://github.com/feross/safe-buffer
+Repository: git://github.com/feross/safe-buffer.git
+License:    MIT
+
 The MIT License (MIT)
 
 Copyright (c) Feross Aboukhadijeh
@@ -2871,9 +3209,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-scheduler
-MIT
+Package:    scheduler
+Homepage:   https://reactjs.org/
+Repository: https://github.com/facebook/react.git
+License:    MIT
+
 MIT License
 
 Copyright (c) Facebook, Inc. and its affiliates.
@@ -2896,12 +3238,20 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-set-immediate-shim
-MIT
+Package:    set-immediate-shim
+Author:     Sindre Sorhus
+Repository: sindresorhus/set-immediate-shim
+License:    MIT
 
-source-map
-BSD-3-Clause
+--------------------------------------------------------------------------------
+
+Package:    source-map
+Author:     Nick Fitzgerald <nfitzgerald@mozilla.com>
+Homepage:   https://github.com/mozilla/source-map
+Repository: http://github.com/mozilla/source-map.git
+License:    BSD-3-Clause
 
 Copyright (c) 2009-2011, Mozilla Foundation and contributors
 All rights reserved.
@@ -2931,9 +3281,13 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+--------------------------------------------------------------------------------
 
-string_decoder
-MIT
+Package:    string_decoder
+Homepage:   https://github.com/nodejs/string_decoder
+Repository: git://github.com/nodejs/string_decoder.git
+License:    MIT
+
 Node.js is licensed for use as follows:
 
 """
@@ -2982,10 +3336,13 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 IN THE SOFTWARE.
 """
 
+--------------------------------------------------------------------------------
 
+Package:    supports-color
+Author:     Sindre Sorhus
+Repository: chalk/supports-color
+License:    MIT
 
-supports-color
-MIT
 MIT License
 
 Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
@@ -2996,9 +3353,13 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-tiny-warning
-MIT
+Package:    tiny-warning
+Author:     Alex Reardon <alexreardon@gmail.com>
+Repository: https://github.com/alexreardon/tiny-warning.git
+License:    MIT
+
 MIT License
 
 Copyright (c) 2019 Alexander Reardon
@@ -3021,11 +3382,21 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-ts-md5
-MIT
+--------------------------------------------------------------------------------
 
-tslib
-0BSD
+Package:    ts-md5
+Homepage:   https://github.com/cotag/ts-md5
+Repository: git+https://github.com/cotag/ts-md5.git
+License:    MIT
+
+--------------------------------------------------------------------------------
+
+Package:    tslib
+Author:     Microsoft Corp.
+Homepage:   https://www.typescriptlang.org/
+Repository: https://github.com/Microsoft/tslib.git
+License:    0BSD
+
 Copyright (c) Microsoft Corporation.
 
 Permission to use, copy, modify, and/or distribute this software for any
@@ -3039,8 +3410,14 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 
-util-deprecate
-MIT
+--------------------------------------------------------------------------------
+
+Package:    util-deprecate
+Author:     Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/)
+Homepage:   https://github.com/TooTallNate/util-deprecate
+Repository: git://github.com/TooTallNate/util-deprecate.git
+License:    MIT
+
 (The MIT License)
 
 Copyright (c) 2014 Nathan Rajlich <nathan@tootallnate.net>
@@ -3066,9 +3443,14 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
+--------------------------------------------------------------------------------
 
-webpack
-MIT
+Package:    webpack
+Author:     Tobias Koppers @sokra
+Homepage:   https://github.com/webpack/webpack
+Repository: https://github.com/webpack/webpack.git
+License:    MIT
+
 Copyright JS Foundation and other contributors
 
 Permission is hereby granted, free of charge, to any person obtaining
