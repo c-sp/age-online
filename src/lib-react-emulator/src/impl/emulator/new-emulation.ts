@@ -7,18 +7,16 @@ import {
     loadGameboyCartridge$,
     TGameboyRomSource,
 } from '@age-online/lib-core';
-import {TEmulatorState} from './emulator-state';
-import {EmulatorState} from '../../api';
-import {map, switchMap} from 'rxjs/operators';
+import {map, switchMap, take} from 'rxjs/operators';
 
 
 export function newEmulation$(romSource: TGameboyRomSource | null,
-                              currentEmulatorState: TEmulatorState,
+                              oldEmulation: IEmulation | null,
                               emulationFactory: IEmulationFactory,
                               romArchive: IRomArchive): Observable<IEmulation | null> {
 
-    const cleanupOldEmulation$ = currentEmulatorState.state === EmulatorState.EMULATOR_READY
-        ? saveRam$(currentEmulatorState.emulation)
+    const cleanupOldEmulation$ = oldEmulation
+        ? saveRam$(oldEmulation)
         : of(null);
 
     const createNewEmulation$ = romSource
@@ -27,6 +25,8 @@ export function newEmulation$(romSource: TGameboyRomSource | null,
 
     return cleanupOldEmulation$.pipe(
         switchMap(() => createNewEmulation$),
+        // close the IndexedDB when the new emulation is ready
+        take(1),
     );
 
 

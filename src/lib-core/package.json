@@ -10,6 +10,7 @@
   "types": "dist/es6/index.d.ts",
   "dependencies": {
     "@juggle/resize-observer": "^3.2.0",
+    "idb": "^5.0.0",
     "jszip": "^3.5.0",
     "ts-md5": "^1.2.0",
     "rxjs": "^6.6.0",

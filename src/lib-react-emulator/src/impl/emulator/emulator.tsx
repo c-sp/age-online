@@ -1,11 +1,11 @@
 import {cssClasses, EmulationFactory, IEmulationFactory, newRomArchive, TGameboyRomSource} from '@age-online/lib-core';
 import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core';
-import React, {ReactNode} from 'react';
-import {BehaviorSubject} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
+import React, {Component, ReactNode} from 'react';
+import {BehaviorSubject, of} from 'rxjs';
+import {catchError, concatMap, map} from 'rxjs/operators';
 import {EmulatorStateDetails, TEmulatorState} from './emulator-state';
 import {EmulatorState, IEmulatorProps} from '../../api';
-import {ISiteApiProps, TidyComponent, withSiteApi} from '@age-online/lib-react';
+import {ISiteApiProps, withSiteApi} from '@age-online/lib-react';
 import {Emulation} from '../emulation';
 import {EmulatorCloseBar, EmulatorStartStopBar, EmulatorToolbar} from '../emulator-bars';
 import {newEmulation$} from './new-emulation';
@@ -58,7 +58,7 @@ interface IEmulatorState {
 
 type TEmulatorProps = IEmulatorProps & WithStyles & ISiteApiProps;
 
-class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
+class ComposedEmulator extends Component<TEmulatorProps, IEmulatorState> {
 
     static getDerivedStateFromProps(nextProps: TEmulatorProps,
                                     prevState: IEmulatorState): Partial<IEmulatorState> | null {
@@ -70,9 +70,10 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
     }
 
 
-    private readonly romSourceSub: BehaviorSubject<TGameboyRomSource | null>;
+    private readonly romSourceSubject: BehaviorSubject<TGameboyRomSource | null>;
     private readonly emulationFactory: IEmulationFactory;
     private readonly romArchive = newRomArchive('age-online-rom-archive');
+    private isUnmounting = false;
 
     constructor(props: TEmulatorProps) {
         super(props);
@@ -81,7 +82,7 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
         const ageWasmJsUrl = siteApi.assetUrl('/age-wasm/age_wasm.js');
         const ageWasmUrl = siteApi.assetUrl('/age-wasm/age_wasm.wasm');
 
-        this.romSourceSub = new BehaviorSubject<TGameboyRomSource | null>(romSource);
+        this.romSourceSubject = new BehaviorSubject<TGameboyRomSource | null>(romSource);
         this.emulationFactory = new EmulationFactory(ageWasmJsUrl, ageWasmUrl);
 
         this.state = {
@@ -92,41 +93,62 @@ class ComposedEmulator extends TidyComponent<TEmulatorProps, IEmulatorState> {
     }
 
     private setEmulatorState(emulatorState: TEmulatorState): void {
-        this.setState({emulatorState});
         this.props.onEmulatorState?.(emulatorState.state);
+        if (!this.isUnmounting) {
+            this.setState({emulatorState});
+        }
     }
 
 
     componentDidMount(): void {
-        const {romSourceSub, emulationFactory, romArchive} = this;
+        const {romSourceSubject, emulationFactory, romArchive} = this;
 
-        this.unsubscribeOnUnmount(
-            romSourceSub
-                .asObservable()
-                .pipe(
-                    switchMap(romSource => newEmulation$(
-                        romSource, this.state.emulatorState, emulationFactory, romArchive,
-                    )),
-                )
-                .subscribe(
-                    emulation => this.setEmulatorState(emulation
-                        ? {state: EmulatorState.EMULATOR_READY, emulation}
-                        : {state: EmulatorState.NO_EMULATOR}),
-                    (error: unknown) => this.setEmulatorState({state: EmulatorState.EMULATOR_ERROR, error}),
-                ),
-        );
+        romSourceSubject
+            .asObservable()
+            .pipe(
+                concatMap(romSource => {
+                    // re-mount the emulator component for every new rom and
+                    // display the loading hint
+                    const {emulatorState} = this.state;
+                    this.setEmulatorState({state: EmulatorState.EMULATOR_LOADING});
 
-        this.callOnUnmount(
-            () => this.props.onEmulatorState?.(EmulatorState.NO_EMULATOR),
-        );
+                    const oldEmulation = emulatorState.state === EmulatorState.EMULATOR_READY
+                        ? emulatorState.emulation
+                        : null;
+
+                    return newEmulation$(romSource, oldEmulation, emulationFactory, romArchive).pipe(
+                        map(
+                            (emulation): TEmulatorState => (emulation
+                                ? {state: EmulatorState.EMULATOR_READY, emulation}
+                                : {state: EmulatorState.NO_EMULATOR}),
+                        ),
+                        // catch the error within concatMap so that we don't stop
+                        // listening to romSourceSubject due to of()'s complete()
+                        catchError(
+                            (error: unknown) => of<TEmulatorState>({state: EmulatorState.EMULATOR_ERROR, error}),
+                        ),
+                    );
+                }),
+            )
+            .subscribe(emulatorState => this.setEmulatorState(emulatorState));
     }
 
     componentDidUpdate({romSource}: Readonly<TEmulatorProps>) {
-        const {props, romSourceSub} = this;
+        const {props, romSourceSubject} = this;
 
         if (romSource !== props.romSource) {
-            romSourceSub.next(props.romSource);
+            romSourceSubject.next(props.romSource);
         }
+    }
+
+    componentWillUnmount() {
+        // don't call setState after ram saving
+        this.isUnmounting = true;
+
+        // trigger ram saving
+        const {romSourceSubject} = this;
+        romSourceSubject.next(null);
+        romSourceSubject.complete();
     }
 
 

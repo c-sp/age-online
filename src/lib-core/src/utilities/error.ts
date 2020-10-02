@@ -6,7 +6,7 @@ export class ErrorWithCause extends Error {
     // note that we don't overwrite ".stack", see also:
     // https://www.joyent.com/node-js/production/design/errors
 
-    constructor(message?: string, readonly cause?: Error) {
+    constructor(message?: string, readonly cause?: unknown) {
         super(message);
     }
 }
