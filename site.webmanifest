@@ -15,5 +15,7 @@
     ],
     "theme_color": "#5050ff",
     "background_color": "#5050ff",
-    "display": "standalone"
+    "display": "standalone",
+    "lang": "en",
+    "start_url": "/age-online"
 }
