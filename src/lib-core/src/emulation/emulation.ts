@@ -18,10 +18,18 @@ export class Emulation implements IEmulation {
     constructor(private readonly wasmInstance: IWasmInstance,
                 private readonly cartridge: IGameboyCartridge) {
 
-        const {romData} = cartridge;
+        const {romData, ramData} = cartridge;
         const bufferPtr = wasmInstance._gb_allocate_rom_buffer(romData.length);
         wasmInstance.HEAPU8.set(romData, bufferPtr);
         wasmInstance._gb_new_emulator();
+
+        const gbRamSize = wasmInstance._gb_get_persistent_ram_size();
+        if (ramData && gbRamSize) {
+            const ramOffset = wasmInstance._gb_get_persistent_ram();
+            const ram = gbRamSize >= ramData.length ? ramData : ramData.subarray(0, gbRamSize);
+            wasmInstance.HEAPU8.set(ram, ramOffset);
+            wasmInstance._gb_set_persistent_ram();
+        }
 
         this.cyclesPerSecond = wasmInstance._gb_get_cycles_per_second();
     }

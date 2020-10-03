@@ -13,31 +13,31 @@ const KEY_DISPLAY_CONTROLS = 'display-controls';
 export class PersistentAppState extends CurrentAppState implements IPersistentAppState {
 
     private readonly store = new LocalStorage('age-online');
-    private preferDarkTheme = false;
+    private preferLightTheme = false;
 
     constructor(globalCss?: object) {
         super(globalCss);
         this.updateState(this.readFromStore());
 
         if (typeof window !== 'undefined') {
-            const onChangePreferDark = ({matches}: MediaQueryListEvent | MediaQueryList): void => {
-                this.preferDarkTheme = matches;
+            const onChangePreferLight = ({matches}: MediaQueryListEvent | MediaQueryList): void => {
+                this.preferLightTheme = matches;
                 this.setPreferredTheme(this.appState.preferredTheme);
             };
 
-            const preferDarkMQL = window.matchMedia('(prefers-color-scheme: dark)');
+            const preferLightMQL = window.matchMedia('(prefers-color-scheme: light)');
             // not supported by Safari 13.1:
-            // preferDarkMQL.addEventListener('change', onChangePreferDark);
-            preferDarkMQL.addListener(onChangePreferDark);
+            // preferLightMQL.addEventListener('change', onChangePreferLight);
+            preferLightMQL.addListener(onChangePreferLight);
 
             this.callOnCleanup(
                 // not supported by Safari 13.1:
-                // () => preferDarkMQL.removeEventListener('change', onChangePreferDark),
-                () => preferDarkMQL.removeListener(onChangePreferDark),
+                // () => preferLightMQL.removeEventListener('change', onChangePreferLight),
+                () => preferLightMQL.removeListener(onChangePreferLight),
             );
 
             // initialize theme
-            onChangePreferDark(preferDarkMQL);
+            onChangePreferLight(preferLightMQL);
         }
     }
 
@@ -53,11 +53,11 @@ export class PersistentAppState extends CurrentAppState implements IPersistentAp
     setPreferredTheme(preferredTheme: IAppState['preferredTheme']): void {
         this.store.setItem(KEY_PREFERRED_THEME, preferredTheme);
 
-        const {lightTheme, darkTheme, preferDarkTheme} = this;
-        const {AUTO_DETECT, DARK} = PreferredTheme;
-        const newTheme = (preferredTheme === DARK) || ((preferredTheme === AUTO_DETECT) && preferDarkTheme)
-            ? darkTheme
-            : lightTheme;
+        const {lightTheme, darkTheme, preferLightTheme} = this;
+        const {AUTO_DETECT, LIGHT} = PreferredTheme;
+        const newTheme = (preferredTheme === LIGHT) || ((preferredTheme === AUTO_DETECT) && preferLightTheme)
+            ? lightTheme
+            : darkTheme;
 
         const {appState} = this;
         if ((newTheme !== appState.currentTheme) || (preferredTheme !== appState.preferredTheme)) {
