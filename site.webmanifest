@@ -17,5 +17,5 @@
     "background_color": "#5050ff",
     "display": "standalone",
     "lang": "en",
-    "start_url": "/age-online"
+    "start_url": "/age-online/"
 }
