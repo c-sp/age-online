@@ -27,17 +27,17 @@ workbox.core.clientsClaim();
  */
 self.__precacheManifest = [
   {
-    "url": "webpack-runtime-4ca39ad3e12dc8c2ee86.js"
+    "url": "webpack-runtime-e180d3dc35adaa3b21b9.js"
   },
   {
     "url": "framework-31b0cf64db6087316fb4.js"
   },
   {
-    "url": "app-e1f7a88ec6916732db9a.js"
+    "url": "app-c30b713d78f37c8df160.js"
   },
   {
     "url": "offline-plugin-app-shell-fallback/index.html",
-    "revision": "732c074c28340505a49e86cebb22767a"
+    "revision": "f6bd5e7eb5b056dee2e0d62feb97d09b"
   },
   {
     "url": "component---cache-caches-gatsby-plugin-offline-app-shell-js-ce4cee30ef32ea09476a.js"
@@ -48,7 +48,7 @@ self.__precacheManifest = [
   },
   {
     "url": "page-data/app-data.json",
-    "revision": "a2340720447a1aa5ef70294b7259514d"
+    "revision": "d0091448c43c44d4591789cea4d41acb"
   },
   {
     "url": "polyfill-bd6ac05d9a7014d4831d.js"
@@ -56,10 +56,10 @@ self.__precacheManifest = [
 ].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerRoute(/(\.js$|\.css$|static\/)/, new workbox.strategies.CacheFirst(), 'GET');
-workbox.routing.registerRoute(/^https?:.*\/page-data\/.*\.json/, new workbox.strategies.StaleWhileRevalidate(), 'GET');
-workbox.routing.registerRoute(/^https?:.*\.(png|jpg|jpeg|webp|svg|gif|tiff|js|woff|woff2|json|css)$/, new workbox.strategies.StaleWhileRevalidate(), 'GET');
-workbox.routing.registerRoute(/^https?:\/\/fonts\.googleapis\.com\/css/, new workbox.strategies.StaleWhileRevalidate(), 'GET');
+workbox.routing.registerRoute(/^https?:.*age_wasm/u, new workbox.strategies.StaleWhileRevalidate(), 'GET');
+workbox.routing.registerRoute(/(\.js$|\.css$|\.woff.?$|static\/)/u, new workbox.strategies.CacheFirst(), 'GET');
+workbox.routing.registerRoute(/^https?:.*\/page-data\/.*\.json$/u, new workbox.strategies.StaleWhileRevalidate(), 'GET');
+workbox.routing.registerRoute(/^https?:.*\.(json|png|svg|txt)$/u, new workbox.strategies.StaleWhileRevalidate(), 'GET');
 
 /* global importScripts, workbox, idbKeyval */
 importScripts(`idb-keyval-3.2.0-iife.min.js`)
@@ -143,7 +143,7 @@ const navigationRoute = new NavigationRoute(async ({ event }) => {
   // Check for resources + the app bundle
   // The latter may not exist if the SW is updating to a new version
   const resources = await idbKeyval.get(`resources:${pathname}`)
-  if (!resources || !(await caches.match(`/age-online/app-e1f7a88ec6916732db9a.js`))) {
+  if (!resources || !(await caches.match(`/age-online/app-c30b713d78f37c8df160.js`))) {
     return await fetch(event.request)
   }
 
