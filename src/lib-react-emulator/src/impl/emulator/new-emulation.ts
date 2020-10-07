@@ -7,7 +7,7 @@ import {
     loadGameboyCartridge$,
     TGameboyRomSource,
 } from '@age-online/lib-core';
-import {map, switchMap, take} from 'rxjs/operators';
+import {catchError, map, switchMap, take} from 'rxjs/operators';
 
 
 export function newEmulation$(romSource: TGameboyRomSource | null,
@@ -17,7 +17,7 @@ export function newEmulation$(romSource: TGameboyRomSource | null,
 
     const cleanupOldEmulation$ = oldEmulation
         ? saveRam$(oldEmulation)
-        : of(null);
+        : of(undefined);
 
     const createNewEmulation$ = romSource
         ? loadCartridge$(romSource)
@@ -30,11 +30,17 @@ export function newEmulation$(romSource: TGameboyRomSource | null,
     );
 
 
-    function saveRam$(emulation: IEmulation): Observable<unknown> {
+    function saveRam$(emulation: IEmulation): Observable<void> {
         const {romHashMD5, ramData} = emulation.getCartridge();
         return ramData
-            ? romArchive.writeRamData$(romHashMD5, ramData)
-            : of(null);
+            ? romArchive.writeRamData$(romHashMD5, ramData).pipe(
+                catchError(err => {
+                    // TODO display a warning to the user
+                    console.warn('could not save ram', err);
+                    return of(undefined);
+                }),
+            )
+            : of(undefined);
     }
 
     function loadCartridge$(romSrc: TGameboyRomSource): Observable<IEmulation> {
@@ -52,6 +58,11 @@ export function newEmulation$(romSource: TGameboyRomSource | null,
                         ? {...cart, ramData}
                         : cart),
                 ),
+                catchError(err => {
+                    // TODO display a warning to the user
+                    console.warn('could not load ram', err);
+                    return of(cart);
+                }),
             )
             : of(cart);
     }

@@ -13,11 +13,11 @@
   },
   "text1": {
     "en": "AGE - Another Gameboy Emulator lets you run Gameboy roms in your Browser.",
-    "de": "Mit AGE - Another Gameboy Emulator können Gameboy Roms im Browser gestartet werden."
+    "de": "Mit AGE - Another Gameboy Emulator können Gameboy Roms im Browser abgespielt werden."
   },
   "text2": {
-    "en": "AGE does not provide any Gameboy roms by itself, but you can store roms to your browser's memory to always have them available.",
-    "de": "AGE stellt selber keine Gameboy Roms zur Verfügung, kann aber Roms im Speicher des Browsers ablegen, so dass sie immer zur Verfügung stehen."
+    "en": "AGE does not provide any Gameboy roms by itself. Game state (for roms with battery-supported ram) is saved and loaded automatically by the browser.",
+    "de": "AGE stellt selber keine Gameboy Roms zur Verfügung. Der jeweilige Spielstand (für Roms mit Batterie-gestütztem Ram) wird über den Browser automatisch gespeichert und geladen."
   },
   "third-party": {
     "en": "AGE makes use of {licensesLink}.",

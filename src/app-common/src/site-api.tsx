@@ -45,26 +45,28 @@ export class SiteApi implements ISiteApi {
 }
 
 
-export function localeFromPathname(pathname: string): Locale {
-    const [locale] = splitPathname(pathname);
-    return isLocale(locale) ? locale : FALLBACK_LOCALE;
+export interface IPathInfo {
+    readonly basePath: string;
+    readonly locale: Locale;
+    readonly currentPage?: AppPage;
 }
 
-export function appPageFromPathname(pathname: string): AppPage {
-    // ['en', 'foo'] => ['foo']
-    // ['xy', 'foo'] => ['xy', 'foo']
-    const pathParts = splitPathname(pathname);
-    const pagePath = isLocale(pathParts[0]) ? pathParts.slice(1) : pathParts;
+export function getPathInfo(pathname: string, pathPrefix: string): IPathInfo {
+    const basePath = pathPrefix.replace(/\/$/u, ''); // remove trailing slash
 
-    const appPageStr = `/${pagePath[0]}`;
-    return isAppPage(appPageStr) ? appPageStr : AppPage.HOME;
-}
+    // '/de/foo' => ['', 'de', 'foo'] => ['de', 'foo']
+    // '/foo' => ['', 'foo'] => ['foo']
+    const pathParts = (pathname.startsWith(basePath) ? pathname.substring(basePath.length) : pathname)
+        .replace(/\/$/u, '') // remove trailing slash
+        .split('/')
+        .slice(1);
 
-/**
- * '/de/foo' => ['', 'de', 'foo'] => ['de', 'foo']
- *
- * '/foo' => ['', 'foo'] => ['foo']
- */
-function splitPathname(pathname: string): string[] {
-    return pathname.split('/').slice(1);
+    const [pathLocale] = pathParts;
+    const locale = isLocale(pathLocale) ? pathLocale : FALLBACK_LOCALE;
+
+    const pathAppPage = isLocale(pathLocale) ? pathParts[1] : pathParts[0];
+    const appPageStr = `/${pathAppPage ?? ''}`;
+    const currentPage = isAppPage(appPageStr) ? appPageStr : undefined;
+
+    return {basePath, locale, currentPage};
 }

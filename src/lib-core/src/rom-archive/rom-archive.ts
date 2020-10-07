@@ -53,7 +53,7 @@ class RomArchive implements IRomArchive {
         );
     }
 
-    writeRamData$(romHashMD5: string, ramData: Uint8Array): Observable<unknown> {
+    writeRamData$(romHashMD5: string, ramData: Uint8Array): Observable<void> {
         return this.indexedDB$.pipe(
             switchMap(db => from(writeRam(db, {romHashMD5, ramData}))),
         );

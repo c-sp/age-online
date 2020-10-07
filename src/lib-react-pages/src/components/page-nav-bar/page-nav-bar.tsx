@@ -32,9 +32,14 @@ const styles = createStyles({
     },
 });
 
+const ICON_STYLE_ACTIVE: CSSProperties = {
+    ...TOOLBAR_ICON_STYLE,
+    opacity: 1,
+};
+
 const ICON_STYLE_INACTIVE: CSSProperties = {
     ...TOOLBAR_ICON_STYLE,
-    opacity: '0.5',
+    opacity: 0.5,
 };
 
 
@@ -89,7 +94,7 @@ class ComposedPageNavBar extends Component<TPageNavBarProps> {
     }
 
     private iconStyle(appPage: AppPage): CSSProperties {
-        return this.props.currentPage === appPage ? TOOLBAR_ICON_STYLE : ICON_STYLE_INACTIVE;
+        return this.props.currentPage === appPage ? ICON_STYLE_ACTIVE : ICON_STYLE_INACTIVE;
     }
 }
 

@@ -17,7 +17,7 @@ export interface IRomArchive {
 
     readRamData$(romHashMD5: string): Observable<Uint8Array | undefined>;
 
-    writeRamData$(romHashMD5: string, ramData: Uint8Array): Observable<unknown>;
+    writeRamData$(romHashMD5: string, ramData: Uint8Array): Observable<void>;
 }
 
 

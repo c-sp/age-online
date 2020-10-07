@@ -16,6 +16,8 @@ const styles = (theme: Theme) => createStyles({
         position: 'relative',
         height: '100%',
         backgroundColor: theme.palette.background.paper,
+        minWidth: '320px',
+        minHeight: '320px',
     },
     hint: {
         // flex layout for centered loading-hint

@@ -24,7 +24,7 @@ function calculateAppContainerState({currentTheme, displayControls, romSource}: 
 
 export interface IAppContainerProps {
     readonly locale: Locale;
-    readonly currentPage: AppPage;
+    readonly currentPage?: AppPage;
     readonly globalCss?: object;
     readonly children?: ReactNode;
 }

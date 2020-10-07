@@ -1,7 +1,11 @@
-/* eslint-disable no-undef */
 const React = require('react');
 
 const isDev = process.env.NODE_ENV === 'development';
+
+// This file contains server code as well as client code.
+// ESLint treats it as Node.js module, so we ignore all client-specific symbols.
+/* eslint-disable no-undef */
+
 
 
 // Sort the redirection script to the top as redirection should happen

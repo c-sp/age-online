@@ -1,6 +1,6 @@
 import {FormControlLabel, Radio, RadioGroup, withStyles} from '@material-ui/core';
 import React, {Component, ReactNode} from 'react';
-import {FlagDE, FlagUS} from '../icons';
+import {FlagDeIcon, FlagUsIcon} from '../icons';
 import {Locale, sanitizeLocale} from './locale';
 
 
@@ -36,8 +36,8 @@ class ComposedLocaleSelection extends Component<ILocaleSelectionProps> {
         const {props} = this;
         const {color, onSelect, selectedLocale} = props;
 
-        const svgDe = <FlagDE fontSize="large"/>;
-        const svgEn = <FlagUS fontSize="large"/>;
+        const svgDe = <FlagDeIcon fontSize="large"/>;
+        const svgEn = <FlagUsIcon fontSize="large"/>;
 
         return <RadioGroup value={selectedLocale}
                            onChange={(ev): void => onSelect?.(sanitizeLocale(ev.target.value))}

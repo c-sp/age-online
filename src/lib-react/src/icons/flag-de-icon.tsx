@@ -5,7 +5,7 @@ import React, {ReactElement} from 'react';
 /**
  * based on https://www.flaticon.com/free-icon/germany_197571
  */
-export function FlagDE(props: SvgIconProps): ReactElement {
+export function FlagDeIcon(props: SvgIconProps): ReactElement {
     return (
         <SvgIcon viewBox={'0 0 512 512'} {...props}>
             <path style={{fill: '#FFDA44'}}

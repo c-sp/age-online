@@ -2,7 +2,7 @@ import {SvgIcon, SvgIconProps} from '@material-ui/core';
 import React, {ReactElement} from 'react';
 
 
-export function Cartridge(props: SvgIconProps): ReactElement {
+export function CartridgeIcon(props: SvgIconProps): ReactElement {
     return (
         <SvgIcon viewBox={'0 0 100 100'} {...props}>
             <path d={`

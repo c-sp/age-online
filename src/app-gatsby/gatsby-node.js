@@ -8,7 +8,7 @@ const locales = ['de', 'en']; // TODO redundant
 
 
 exports.onCreatePage = (param) => {
-    const {page, actions, pathPrefix} = param;
+    const {page, actions} = param;
     const {createPage, deletePage} = actions;
 
     // ignore pages auto-created by Gatsby
@@ -24,13 +24,11 @@ exports.onCreatePage = (param) => {
     locales.forEach((locale) => createPage(newPage(locale)));
 
     function newPage(locale) {
-        let {context, path} = page;
-        context = {...context, pathPrefix: noTrailingSlash(pathPrefix)};
-
-        if (locale) {
-            path = noTrailingSlash(`/${locale}${path}`);
+        if (!locale) {
+            return page;
         }
-        return {...page, context, path};
+        const {path} = page;
+        return {...page, path: noTrailingSlash(`/${locale}${path}`)};
     }
 
     function noTrailingSlash(pathname) {

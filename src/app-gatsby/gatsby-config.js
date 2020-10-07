@@ -18,7 +18,9 @@ pathPrefix = pathPrefix.startsWith('/') ? pathPrefix : `/${pathPrefix}`;
 
 module.exports = {
     siteMetadata: {
-        siteUrl: 'https://c-sp.github.io/age-online',
+        // "siteUrl" set for gatsby-plugin-sitemap
+        // (which also appends the path-prefix which is why we skip it here)
+        siteUrl: 'https://c-sp.github.io',
     },
     pathPrefix,
     plugins: [
@@ -45,6 +47,38 @@ module.exports = {
 
         // this (optional) plugin enables Progressive Web App + Offline functionality
         // to learn more, visit: https://gatsby.dev/offline
-        'gatsby-plugin-offline',
+        {
+            resolve: 'gatsby-plugin-offline',
+            options: {
+                workboxConfig: {
+                    // our self served fonts are versioned
+                    //  => no cache busting required, similar to hashed files
+                    dontCacheBustURLsMatching: /(\.js$|\.css$|\.woff.?$|static\/)/u,
+                    runtimeCaching: [
+                        {
+                            // TODO this should be CacheFirst once the files are hashed
+                            urlPattern: /^https?:.*age_wasm/u,
+                            handler: 'StaleWhileRevalidate',
+                        },
+                        {
+                            // based on dontCacheBustURLsMatching
+                            urlPattern: /(\.js$|\.css$|\.woff.?$|static\/)/u,
+                            handler: 'CacheFirst',
+                        },
+                        {
+                            // page-data.json files, static query results and app-data.json
+                            // are not content hashed
+                            urlPattern: /^https?:.*\/page-data\/.*\.json$/u,
+                            handler: 'StaleWhileRevalidate',
+                        },
+                        {
+                            // cache other resources
+                            urlPattern: /^https?:.*\.(json|png|svg|txt)$/u,
+                            handler: 'StaleWhileRevalidate',
+                        },
+                    ],
+                },
+            },
+        },
     ],
 };

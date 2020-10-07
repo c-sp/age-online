@@ -5,7 +5,7 @@ import React, {ReactElement} from 'react';
 /**
  * based on https://www.flaticon.com/free-icon/united-states-of-america_197484
  */
-export function FlagUS(props: SvgIconProps): ReactElement {
+export function FlagUsIcon(props: SvgIconProps): ReactElement {
     return (
         <SvgIcon viewBox={'0 0 512 512'} {...props}>
             <circle style={{fill: '#F0F0F0'}} cx="256" cy="256" r="256"/>

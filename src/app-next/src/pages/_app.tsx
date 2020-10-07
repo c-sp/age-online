@@ -1,4 +1,4 @@
-import {AppHelmet, appPageFromPathname, localeFromPathname, SiteApi} from '@age-online/app-common';
+import {AppHelmet, getPathInfo, IPathInfo, SiteApi} from '@age-online/app-common';
 import {SiteApiContext} from '@age-online/lib-react';
 import {AppContainer} from '@age-online/lib-react-pages';
 import App from 'next/app';
@@ -24,22 +24,26 @@ export default class AgeOnlineApp extends App {
 
     constructor(props: AppProps) {
         super(props);
-        const {asPath, basePath} = props.router;
+        const {basePath} = props.router;
 
         this.siteApi = new SiteApi(
-            localeFromPathname(asPath),
+            this.currentPathInfo().locale,
             path => void Router.push(path),
             assetFile => `${basePath}/${assetFile}`,
             ({href, children}) => <Link href={href} prefetch={false}><a>{children}</a></Link>,
         );
     }
 
+    private currentPathInfo(): IPathInfo {
+        const {asPath, basePath} = this.props.router;
+        return getPathInfo(asPath, basePath);
+    }
+
     render(): ReactElement {
         const {globalCss, siteApi, props} = this;
-        const {Component, router: {asPath, basePath}} = props;
+        const {Component} = props;
+        const {basePath, locale, currentPage} = this.currentPathInfo();
 
-        const locale = localeFromPathname(asPath);
-        const currentPage = appPageFromPathname(asPath);
         siteApi.currentLocale = locale;
 
         return <>

@@ -3,7 +3,7 @@ import {WithI18nProps} from '@shopify/react-i18n';
 import React, {Component, ReactNode} from 'react';
 import {IPersistentAppStateProps, withPersistentAppState} from '../app-state';
 import i18nBundle from './home-page.i18n.json';
-import {Cartridge, COMMON_I18N_REPLACEMENTS, OpenLocalRomFile, SEO, withI18nBundle} from '@age-online/lib-react';
+import {CartridgeIcon, COMMON_I18N_REPLACEMENTS, OpenLocalRomFile, SEO, withI18nBundle} from '@age-online/lib-react';
 
 
 const styles = (theme: Theme) => createStyles({
@@ -62,7 +62,7 @@ class ComposedHomePage extends Component<THomePageProps> {
                 <div>
                     <OpenLocalRomFile openRomFile={localFile => persistentAppState.setRomSource({localFile})}>
                         <StyledButton color="primary" component="span">
-                            <Cartridge style={{fontSize: '100px'}}/>
+                            <CartridgeIcon style={{fontSize: '100px'}}/>
                             <span>{i18n.translate('page:open-rom-file', COMMON_I18N_REPLACEMENTS)}</span>
                         </StyledButton>
                     </OpenLocalRomFile>

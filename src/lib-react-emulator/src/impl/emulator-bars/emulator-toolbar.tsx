@@ -5,7 +5,7 @@ import React, {Component, ReactNode} from 'react';
 import i18nBundle from './emulator-toolbars.i18n.json';
 import {assertNever, cssClasses} from '@age-online/lib-core';
 import {
-    Cartridge,
+    CartridgeIcon,
     OpenLocalRomFile,
     SettingsIconSiteLink,
     TOOLBAR_ICON_STYLE,
@@ -18,6 +18,8 @@ const styles = createStyles({
     root: {
         display: 'flex',
         alignItems: 'center',
+        flexWrap: 'wrap',
+        maxWidth: 'calc(100% - 128px)',
     },
 });
 
@@ -43,7 +45,7 @@ class ComposedEmulatorToolbar extends Component<TEmulatorToolbarProps> {
 
                 <OpenLocalRomFile openRomFile={file => openRomFile?.(file)}>
                     <IconButton component="span" aria-label={i18n.translate('open-rom-file')}>
-                        <Cartridge style={TOOLBAR_ICON_STYLE}/>
+                        <CartridgeIcon style={TOOLBAR_ICON_STYLE}/>
                     </IconButton>
                 </OpenLocalRomFile>
 

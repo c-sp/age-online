@@ -21,4 +21,3 @@ export interface IEmulatorProps {
 
     onRomSource?(romSource: TGameboyRomSource | null): void;
 }
-

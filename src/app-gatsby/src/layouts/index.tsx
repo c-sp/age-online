@@ -1,4 +1,4 @@
-import {AppHelmet, appPageFromPathname, localeFromPathname, SiteApi} from '@age-online/app-common';
+import {AppHelmet, getPathInfo, IPathInfo, SiteApi} from '@age-online/app-common';
 import {SiteApiContext} from '@age-online/lib-react';
 import {AppContainer} from '@age-online/lib-react-pages';
 import {Link, navigate, PageProps, withPrefix} from 'gatsby';
@@ -44,26 +44,40 @@ export default class RootLayout extends Component<TRootLayoutProps> {
 
     constructor(props: TRootLayoutProps) {
         super(props);
-        const {path} = props;
 
         this.siteApi = new SiteApi(
-            localeFromPathname(path),
+            this.currentPathInfo().locale,
             toPath => void navigate(toPath),
             assetFile => withPrefix(assetFile),
             ({href, children}) => <Link to={href}>{children}</Link>,
         );
     }
 
-    render(): ReactNode {
-        const {globalCss, siteApi, props} = this;
-        const {children, path, pageContext: {pathPrefix}} = props;
+    private currentPathInfo(): IPathInfo {
+        // we call withPrefix('/') and remove the trailing slash
+        // because withPrefix('') returns ''
+        return getPathInfo(this.props.location.pathname, withPrefix('/'));
+    }
 
-        const locale = localeFromPathname(path);
-        const currentPage = appPageFromPathname(path);
+    render(): ReactNode {
+        // during build time props looked like this: { path: '/*', '*': 'age-online/<...>' }
+        // which is why we rely on props.location.pathname instead
+        const {globalCss, siteApi, props: {children, location: {pathname}}} = this;
+
+        // Workaround for messed up rendering with gatsby-plugin-offline's app-shell:
+        // the "home" page is never updated including it's nav-bar icon and
+        // the emulator component is never shown when choosing a Gameboy rom
+        // file to run.
+        // See also: https://github.com/gatsbyjs/gatsby/issues/11738
+        if (pathname.includes('offline-plugin-app-shell-fallback')) {
+            return null;
+        }
+
+        const {basePath, locale, currentPage} = this.currentPathInfo();
         siteApi.currentLocale = locale;
 
         return <>
-            <AppHelmet basePath={pathPrefix}/>
+            <AppHelmet basePath={basePath}/>
 
             <SiteApiContext.Provider value={siteApi}>
                 <AppContainer locale={locale}

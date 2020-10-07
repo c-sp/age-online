@@ -35,6 +35,10 @@ const styles = (theme: Theme) => createStyles({
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
+        imageRendering: 'pixelated', // TODO remove imageRendering CSS when switching to WebGL
+    },
+    canvasFirefox: {
+        imageRendering: 'crisp-edges',
     },
     controls: {
         alignSelf: 'end',
@@ -194,7 +198,7 @@ class ComposedEmulation extends TidyComponent<TEmulationProps, IEmulationState> 
                 <div className={classes.screen}
                      ref={(div) => void (this.screenDiv = div)}>
 
-                    <canvas className={classes.canvas}
+                    <canvas className={`${classes.canvas} ${classes.canvasFirefox}`}
                             style={canvasStyle}
                             ref={(canvas) => void (this.canvas = canvas)}/>
                 </div>

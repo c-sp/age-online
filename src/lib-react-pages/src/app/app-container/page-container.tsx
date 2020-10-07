@@ -53,7 +53,7 @@ interface IPageContainerState {
 }
 
 export interface IPageContainerProps {
-    readonly currentPage: AppPage;
+    readonly currentPage?: AppPage;
 }
 
 type TPageContainerProps = IPageContainerProps & ICurrentAppStateProps & WithStyles;
