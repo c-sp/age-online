@@ -27,7 +27,7 @@ workbox.core.clientsClaim();
  */
 self.__precacheManifest = [
   {
-    "url": "webpack-runtime-e180d3dc35adaa3b21b9.js"
+    "url": "webpack-runtime-155007f3f411a4241418.js"
   },
   {
     "url": "framework-31b0cf64db6087316fb4.js"
@@ -37,7 +37,7 @@ self.__precacheManifest = [
   },
   {
     "url": "offline-plugin-app-shell-fallback/index.html",
-    "revision": "f6bd5e7eb5b056dee2e0d62feb97d09b"
+    "revision": "294f4bf3a818da379578e9d8775b2888"
   },
   {
     "url": "component---cache-caches-gatsby-plugin-offline-app-shell-js-ce4cee30ef32ea09476a.js"
@@ -48,7 +48,7 @@ self.__precacheManifest = [
   },
   {
     "url": "page-data/app-data.json",
-    "revision": "d0091448c43c44d4591789cea4d41acb"
+    "revision": "e82e85f25d6267ed0d1082cec6ee71b8"
   },
   {
     "url": "polyfill-bd6ac05d9a7014d4831d.js"
@@ -56,7 +56,7 @@ self.__precacheManifest = [
 ].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerRoute(/^https?:.*age_wasm/u, new workbox.strategies.StaleWhileRevalidate(), 'GET');
+workbox.routing.registerRoute(/^https?:.*(age_wasm|age-audio-worklet)/u, new workbox.strategies.StaleWhileRevalidate(), 'GET');
 workbox.routing.registerRoute(/(\.js$|\.css$|\.woff.?$|static\/)/u, new workbox.strategies.CacheFirst(), 'GET');
 workbox.routing.registerRoute(/^https?:.*\/page-data\/.*\.json$/u, new workbox.strategies.StaleWhileRevalidate(), 'GET');
 workbox.routing.registerRoute(/^https?:.*\.(json|png|svg|txt)$/u, new workbox.strategies.StaleWhileRevalidate(), 'GET');
