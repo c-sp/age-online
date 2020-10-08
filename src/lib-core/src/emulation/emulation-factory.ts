@@ -12,7 +12,8 @@ export class EmulationFactory implements IEmulationFactory {
     private readonly ageWasmInstance$: Observable<IWasmInstance>;
 
     constructor(ageWasmJsUrl: string,
-                ageWasmUrl: string) {
+                ageWasmUrl: string,
+                private readonly ageAudioWorkletUrl: string) {
 
         this.ageWasmInstance$ = combineLatest([
 
@@ -61,8 +62,10 @@ export class EmulationFactory implements IEmulationFactory {
 
 
     newEmulation$(gameboyCartridge: IGameboyCartridge): Observable<IEmulation> {
-        return this.ageWasmInstance$.pipe(
-            map(wasmInstance => new Emulation(wasmInstance, gameboyCartridge)),
+        const {ageWasmInstance$, ageAudioWorkletUrl} = this;
+
+        return ageWasmInstance$.pipe(
+            map(wasmInstance => new Emulation(wasmInstance, gameboyCartridge, ageAudioWorkletUrl)),
         );
     }
 }

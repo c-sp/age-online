@@ -57,7 +57,7 @@ module.exports = {
                     runtimeCaching: [
                         {
                             // TODO this should be CacheFirst once the files are hashed
-                            urlPattern: /^https?:.*age_wasm/u,
+                            urlPattern: /^https?:.*(age_wasm|age-audio-worklet)/u,
                             handler: 'StaleWhileRevalidate',
                         },
                         {

@@ -2,6 +2,7 @@ import {Renderer} from './renderer';
 import {IWasmInstance} from './wasm-instance';
 import {GameboyButton, IEmulation} from './api';
 import {IGameboyCartridge} from '../gameboy-cartridge';
+import {AudioStreamer} from './audio';
 
 
 export class Emulation implements IEmulation {
@@ -11,12 +12,14 @@ export class Emulation implements IEmulation {
     private readonly cyclesPerSecond: number;
 
     private renderer?: Renderer;
+    private audioStreamer?: AudioStreamer;
     private animationRequestHandle?: number;
     private lastTimestamp?: number;
     private emulatedMillis = 0;
 
     constructor(private readonly wasmInstance: IWasmInstance,
-                private readonly cartridge: IGameboyCartridge) {
+                private readonly cartridge: IGameboyCartridge,
+                private readonly ageAudioWorkletUrl: string) {
 
         const {romData, ramData} = cartridge;
         const bufferPtr = wasmInstance._gb_allocate_rom_buffer(romData.length);
@@ -58,6 +61,7 @@ export class Emulation implements IEmulation {
         this.stopEmulation();
 
         this.renderer = new Renderer(canvas);
+        this.audioStreamer = new AudioStreamer(this.ageAudioWorkletUrl);
         this.requestAnimationFrame();
     }
 
@@ -66,7 +70,10 @@ export class Emulation implements IEmulation {
         if (animationRequestHandle) { // the handle is non-zero
             cancelAnimationFrame(animationRequestHandle);
 
+            this.audioStreamer?.close();
+
             this.renderer = undefined;
+            this.audioStreamer = undefined;
             this.animationRequestHandle = undefined;
             this.lastTimestamp = undefined;
         }
@@ -77,7 +84,7 @@ export class Emulation implements IEmulation {
     }
 
     private runEmulation(timestamp: number): void {
-        const {pauseEmulation, lastTimestamp, cyclesPerSecond, wasmInstance, renderer} = this;
+        const {pauseEmulation, lastTimestamp, cyclesPerSecond, wasmInstance, renderer, audioStreamer} = this;
 
         if (lastTimestamp && !pauseEmulation) {
             // we assume at least 30 fps, anything less will throttle the emulation
@@ -90,7 +97,13 @@ export class Emulation implements IEmulation {
             const cyclesToEmulate = cycles - wasmInstance._gb_get_emulated_cycles();
 
             if (cyclesToEmulate > 0) {
-                const newFrame = wasmInstance._gb_emulate(cyclesToEmulate, 48000);
+                const newFrame = wasmInstance._gb_emulate(cyclesToEmulate, audioStreamer?.sampleRate ?? 48000);
+
+                const audioBufferOffset = wasmInstance._gb_get_audio_buffer();
+                const audioBufferEnd = audioBufferOffset + (wasmInstance._gb_get_audio_buffer_size() * 4);
+                const audioBuffer = wasmInstance.HEAP16.slice(audioBufferOffset / 2, audioBufferEnd / 2);
+                audioStreamer?.stream(audioBuffer);
+
                 if (newFrame) {
                     const bufferOfs = wasmInstance._gb_get_screen_front_buffer();
                     const screenBytes = new Uint8ClampedArray(wasmInstance.HEAPU8.buffer, bufferOfs, 160 * 144 * 4);

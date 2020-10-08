@@ -15,10 +15,10 @@ module.exports = {
     parserOptions: {ecmaVersion: 2020},
 
     extends: [
+        '@age-online/eslint-config/env',
         '@age-online/eslint-config/eslint',
         '@age-online/eslint-config/filenames',
         '@age-online/eslint-config/imports',
-        '@age-online/eslint-config/node-files',
         '@age-online/eslint-config/react',
         '@age-online/eslint-config/typescript',
     ],

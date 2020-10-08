@@ -81,11 +81,12 @@ class ComposedEmulator extends Component<TEmulatorProps, IEmulatorState> {
         super(props);
 
         const {romSource, siteApi} = props;
-        const ageWasmJsUrl = siteApi.assetUrl('/age-wasm/age_wasm.js');
-        const ageWasmUrl = siteApi.assetUrl('/age-wasm/age_wasm.wasm');
+        const ageWasmJsUrl = siteApi.assetUrl('/modules/age_wasm.js');
+        const ageWasmUrl = siteApi.assetUrl('/modules/age_wasm.wasm');
+        const ageAudioWorkletUrl = siteApi.assetUrl('/modules/age-audio-worklet.js');
 
         this.romSourceSubject = new BehaviorSubject<TGameboyRomSource | null>(romSource);
-        this.emulationFactory = new EmulationFactory(ageWasmJsUrl, ageWasmUrl);
+        this.emulationFactory = new EmulationFactory(ageWasmJsUrl, ageWasmUrl, ageAudioWorkletUrl);
 
         this.state = {
             pauseEmulation: false,
