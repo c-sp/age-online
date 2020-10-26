@@ -1,8 +1,3 @@
-// import side effects
-// eslint-disable-next-line import/no-unassigned-import
-import 'audioworklet-polyfill';
-
-
 export class AudioStreamer {
 
     private readonly audioCtx: AudioContext;

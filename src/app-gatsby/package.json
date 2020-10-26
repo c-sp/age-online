@@ -17,9 +17,10 @@
     "@age-online/app-common": "0.0.1",
     "@age-online/lib-react": "0.0.1",
     "@age-online/lib-react-pages": "0.0.1",
+    "audioworklet-polyfill": "^1.1.2",
     "gatsby": "^2.24.0",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0"
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
   },
   "devDependencies": {
     "@material-ui/styles": "^4.10.0",
