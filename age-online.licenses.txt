@@ -2837,7 +2837,7 @@ SOFTWARE.
 
 Package:    react-dom
 Homepage:   https://reactjs.org/
-Repository: https://github.com/facebook/react.git
+Repository: git+https://github.com/facebook/react.git
 License:    MIT
 
 MIT License
