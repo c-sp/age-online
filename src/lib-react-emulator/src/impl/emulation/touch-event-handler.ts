@@ -124,7 +124,7 @@ export class TouchEventHandler {
                 }
                 break;
 
-            case 'mouseleave': // TODO ugly, capture mouse events somehow?
+            case 'mouseleave':
                 if (mouseIsDown) {
                     this.mouseIsDown = false;
                     touchPointsCallback([]);

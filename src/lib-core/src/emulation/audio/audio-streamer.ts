@@ -1,3 +1,8 @@
+// import side effects
+// eslint-disable-next-line import/no-unassigned-import
+import 'audioworklet-polyfill';
+
+
 export class AudioStreamer {
 
     private readonly audioCtx: AudioContext;
@@ -24,6 +29,7 @@ export class AudioStreamer {
                 err => console.error('audioWorklet.addModule() failure', err),
             );
         } else {
+            // this should not happen anymore with audioworklet-polyfill
             console.log('audioWorklet not available');
         }
     }

@@ -8,9 +8,6 @@
  */
 export class LocalStorage {
 
-    // TODO https://caniuse.com/#feat=mdn-api_permissions_persistent-storage_permission
-    //      (see also: https://web.dev/persistent-storage/)
-
     private readonly store: Storage | null;
 
     constructor(private readonly globalPrefix: string) {

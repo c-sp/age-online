@@ -14,6 +14,6 @@ module.exports = {
         // override plugin:react/recommended
 
         'react/display-name': 0,
-        'react/prop-types': 0, // TODO maybe switch this on?
+        'react/prop-types': 0,
     },
 };
