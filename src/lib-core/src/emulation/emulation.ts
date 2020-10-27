@@ -7,15 +7,14 @@ import {AudioStreamer} from './audio';
 
 export class Emulation implements IEmulation {
 
-    pauseEmulation = false;
-
+    private pauseEmu = false;
     private readonly cyclesPerSecond: number;
+    private emulatedMillis = 0;
 
     private renderer?: Renderer;
     private audioStreamer?: AudioStreamer;
-    private animationRequestHandle?: number;
     private lastTimestamp?: number;
-    private emulatedMillis = 0;
+    private animationRequestHandle?: number;
 
     constructor(private readonly wasmInstance: IWasmInstance,
                 private readonly cartridge: IGameboyCartridge,
@@ -65,6 +64,15 @@ export class Emulation implements IEmulation {
         this.requestAnimationFrame();
     }
 
+    isEmulationPaused(): boolean {
+        return this.pauseEmu || !this.audioStreamer || this.audioStreamer.audioContextSuspended;
+    }
+
+    async pauseEmulation(pauseEmulation: boolean): Promise<void> {
+        this.pauseEmu = pauseEmulation;
+        return this.audioStreamer ? this.audioStreamer.resumeAudioContext() : Promise.resolve();
+    }
+
     stopEmulation(): void {
         const {animationRequestHandle} = this;
         if (animationRequestHandle) { // the handle is non-zero
@@ -84,9 +92,9 @@ export class Emulation implements IEmulation {
     }
 
     private runEmulation(timestamp: number): void {
-        const {pauseEmulation, lastTimestamp, cyclesPerSecond, wasmInstance, renderer, audioStreamer} = this;
+        const {pauseEmu, lastTimestamp, cyclesPerSecond, wasmInstance, renderer, audioStreamer} = this;
 
-        if (lastTimestamp && !pauseEmulation) {
+        if (lastTimestamp && !pauseEmu && !audioStreamer?.audioContextSuspended) {
             // we assume at least 30 fps, anything less will throttle the emulation
             // (this will also handle the tab becoming active again,
             // if the browser stops handling animation-frame-requests during tab inactivity)

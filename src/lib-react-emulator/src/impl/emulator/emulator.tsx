@@ -1,7 +1,7 @@
 import {cssClasses, EmulationFactory, IEmulationFactory, newRomArchive, TGameboyRomSource} from '@age-online/lib-core';
 import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core';
 import React, {Component, ReactNode} from 'react';
-import {BehaviorSubject, of} from 'rxjs';
+import {BehaviorSubject, noop, of} from 'rxjs';
 import {catchError, concatMap, map} from 'rxjs/operators';
 import {EmulatorStateDetails, TEmulatorState} from './emulator-state';
 import {EmulatorState, IEmulatorProps} from '../../api';
@@ -53,7 +53,7 @@ const styles = (theme: Theme) => createStyles({
 
 
 interface IEmulatorState {
-    readonly pauseEmulation: boolean;
+    readonly triggerRender: number;
     readonly showBars: boolean;
     readonly emulatorState: TEmulatorState;
 }
@@ -61,16 +61,6 @@ interface IEmulatorState {
 type TEmulatorProps = IEmulatorProps & WithStyles & ISiteApiProps;
 
 class ComposedEmulator extends Component<TEmulatorProps, IEmulatorState> {
-
-    static getDerivedStateFromProps(nextProps: TEmulatorProps,
-                                    prevState: IEmulatorState): Partial<IEmulatorState> | null {
-
-        return !nextProps.hideEmulator || !prevState.showBars
-            ? null
-            // hide the toolbar when navigating to another page
-            : {showBars: false};
-    }
-
 
     private readonly romSourceSubject: BehaviorSubject<TGameboyRomSource | null>;
     private readonly emulationFactory: IEmulationFactory;
@@ -89,7 +79,7 @@ class ComposedEmulator extends Component<TEmulatorProps, IEmulatorState> {
         this.emulationFactory = new EmulationFactory(ageWasmJsUrl, ageWasmUrl, ageAudioWorkletUrl);
 
         this.state = {
-            pauseEmulation: false,
+            triggerRender: 0,
             showBars: false,
             emulatorState: {state: EmulatorState.NO_EMULATOR},
         };
@@ -99,6 +89,20 @@ class ComposedEmulator extends Component<TEmulatorProps, IEmulatorState> {
         this.props.onEmulatorState?.(emulatorState.state);
         if (!this.isUnmounting) {
             this.setState({emulatorState});
+        }
+    }
+
+    private pauseEmulation(pauseEmulation: boolean): void {
+        const {state: {emulatorState, triggerRender}} = this;
+
+        if (emulatorState.state === EmulatorState.EMULATOR_READY) {
+            emulatorState.emulation.pauseEmulation(pauseEmulation).then(
+                () => this.setState({
+                    showBars: emulatorState.emulation.isEmulationPaused(),
+                    triggerRender: triggerRender + 1,
+                }),
+                noop, // ignore errors
+            );
         }
     }
 
@@ -136,11 +140,14 @@ class ComposedEmulator extends Component<TEmulatorProps, IEmulatorState> {
             .subscribe(emulatorState => this.setEmulatorState(emulatorState));
     }
 
-    componentDidUpdate({romSource}: Readonly<TEmulatorProps>) {
+    componentDidUpdate({romSource, hideEmulator}: Readonly<TEmulatorProps>) {
         const {props, romSourceSubject} = this;
 
         if (romSource !== props.romSource) {
             romSourceSubject.next(props.romSource);
+        }
+        if (props.hideEmulator && (hideEmulator !== props.hideEmulator)) {
+            this.pauseEmulation(true); // emulator now hidden => pause emulation
         }
     }
 
@@ -158,13 +165,14 @@ class ComposedEmulator extends Component<TEmulatorProps, IEmulatorState> {
     render(): ReactNode {
         const {
             props: {hideEmulator, classes, displayControls, onDisplayControls, onRomSource},
-            state: {pauseEmulation, showBars, emulatorState},
+            state: {triggerRender, showBars, emulatorState},
         } = this;
 
         const {EMULATOR_READY} = EmulatorState;
-        const pauseEmu = hideEmulator || pauseEmulation;
 
         const toolbar = showBars || (emulatorState.state !== EMULATOR_READY);
+        const emulation = emulatorState.state === EmulatorState.EMULATOR_READY ? emulatorState.emulation : undefined;
+
         const classNames = cssClasses(
             classes.container,
             emulatorState.state === EMULATOR_READY ? '' : classes.hint,
@@ -184,9 +192,11 @@ class ComposedEmulator extends Component<TEmulatorProps, IEmulatorState> {
                 {!hideEmulator && <EmulatorStateDetails emulatorState={emulatorState}
                                                         onConfirmError={() => onRomSource?.(null)}/>}
 
-                {(emulatorState.state === EMULATOR_READY) && <Emulation emulation={emulatorState.emulation}
-                                                                        pauseEmulation={pauseEmu}
-                                                                        displayControls={displayControls}/>}
+                {emulation && <Emulation emulation={emulation}
+                                         pausedOnInit={() => {
+                                             this.setState({showBars: true, triggerRender: triggerRender + 1});
+                                         }}
+                                         displayControls={displayControls}/>}
 
                 {toolbar && <>
                     <EmulatorToolbar className={cssClasses(classes.toolbar, classes.bar)}
@@ -203,12 +213,12 @@ class ComposedEmulator extends Component<TEmulatorProps, IEmulatorState> {
                                       closeEmulator={() => onRomSource?.(null)}/>
                 </>}
 
-                {toolbar && (emulatorState.state === EMULATOR_READY) && (
+                {toolbar && emulation && (
                     <EmulatorStartStopBar className={cssClasses(classes.startStopBar, classes.bar)}
-                                          emulationPaused={pauseEmu}
-                                          startStopEmulator={
-                                              () => this.setState({pauseEmulation: !pauseEmulation})
-                                          }/>
+                                          emulationPaused={emulation.isEmulationPaused()}
+                                          startStopEmulator={() => {
+                                              this.pauseEmulation(!emulation?.isEmulationPaused());
+                                          }}/>
                 )}
 
             </div>

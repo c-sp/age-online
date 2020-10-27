@@ -79,8 +79,8 @@ const styles = (theme: Theme) => createStyles({
 
 export interface IEmulationProps {
     readonly emulation: IEmulation;
-    readonly pauseEmulation: boolean;
     readonly displayControls: DisplayControls;
+    pausedOnInit?(): void;
 }
 
 interface IEmulationState extends IButtonsDown {
@@ -151,8 +151,7 @@ class ComposedEmulation extends TidyComponent<TEmulationProps, IEmulationState> 
     }
 
     componentDidUpdate(prevProps: Readonly<TEmulationProps>) {
-        const {props: {emulation, pauseEmulation}} = this;
-        emulation.pauseEmulation = pauseEmulation;
+        const {props: {emulation}} = this;
 
         if (prevProps.emulation !== emulation) {
             prevProps.emulation.stopEmulation();
@@ -161,9 +160,11 @@ class ComposedEmulation extends TidyComponent<TEmulationProps, IEmulationState> 
     }
 
     private initEmulation(): void {
-        const {canvas, props: {emulation, pauseEmulation}} = this;
-        emulation.pauseEmulation = pauseEmulation;
+        const {canvas, props: {emulation, pausedOnInit}} = this;
         emulation.startEmulation(assertElement(canvas, 'emulator <canvas>'));
+        if (emulation.isEmulationPaused()) {
+            pausedOnInit?.();
+        }
     }
 
 

@@ -15,13 +15,17 @@ export enum GameboyButton {
 
 export interface IEmulation {
 
-    pauseEmulation: boolean;
-
     getCartridge(): IGameboyCartridge;
+
 
     startEmulation(canvas: HTMLCanvasElement): void;
 
+    isEmulationPaused(): boolean;
+
+    pauseEmulation(pauseEmulation: boolean): Promise<void>;
+
     stopEmulation(): void;
+
 
     buttonDown(button: GameboyButton): void;
 

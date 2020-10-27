@@ -40,12 +40,28 @@ export class AudioStreamer {
         );
     }
 
+
+    get audioContextSuspended(): boolean {
+        return this.audioCtx.state === 'suspended';
+    }
+
+    async resumeAudioContext(): Promise<void> {
+        const {audioCtx} = this;
+        return audioCtx.state === 'suspended'
+            ? audioCtx.resume()
+            : Promise.resolve();
+    }
+
+
+
     get sampleRate(): number {
         // according to http://blog.mecheye.net/2017/09/i-dont-know-who-the-web-audio-api-is-designed-for/
         // the sample rate can change when switching audio devices
         return this.audioCtx.sampleRate;
     }
 
+
+    // TODO use gain node instead?
     set volume(volume: number) {
         this.vol = volume;
 
