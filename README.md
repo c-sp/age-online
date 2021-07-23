@@ -14,4 +14,12 @@ makes use of (among others) [Gatsby](https://www.gatsbyjs.com/) and
 [React](https://reactjs.org/) and is localized with
 [@shopify/react-i18n](https://www.npmjs.com/package/@shopify/react-i18n).
 
-AGE Online is a work in progress.
+AGE Online is a work in progress. Current features:
+
+* on-screen controls for use on mobile devices
+* interface language adjustable
+  (just english and german at the moment)
+* savegames are stored by your browser
+  (using the [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API))
+* light and dark theme available via
+  [Material UI](https://material-ui.com)
