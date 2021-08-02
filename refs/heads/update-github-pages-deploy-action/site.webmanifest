@@ -1,0 +1,21 @@
+{
+    "name": "AGE Online",
+    "short_name": "AGE Online",
+    "icons": [
+        {
+            "src": "/age-online/android-chrome-192x192.png?v=BGa7OnrlGG",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/age-online/android-chrome-512x512.png?v=BGa7OnrlGG",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#5050ff",
+    "background_color": "#5050ff",
+    "display": "standalone",
+    "lang": "en",
+    "start_url": "/age-online/"
+}
