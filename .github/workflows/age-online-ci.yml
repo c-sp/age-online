@@ -158,11 +158,9 @@ jobs:
           path: ${{ env.ARTIFACT_PATH }}
 
       - name: deploy Web App
-        uses: JamesIves/github-pages-deploy-action@3.5.9
+        uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: ${{ env.ARTIFACT_PATH }}
-          TARGET_FOLDER: ${{ steps.target-folder.outputs.target_folder }}
-          CLEAN: true
-          CLEAN_EXCLUDE: '["refs"]'
+          branch: gh-pages
+          folder: ${{ env.ARTIFACT_PATH }}
+          target-folder: ${{ steps.target-folder.outputs.target_folder }}
+          clean-exclude: '["refs"]'
