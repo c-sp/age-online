@@ -1,7 +1,5 @@
 ![](https://github.com/c-sp/age-online/workflows/AGE%20Online%20CI/badge.svg)
 
-[Try out AGE Online](https://c-sp.github.io/age-online)
-
 # Another Gameboy Emulator - Online
 
 AGE Online is based on
